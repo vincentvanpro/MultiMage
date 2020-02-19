@@ -1,6 +1,6 @@
 # Project plan (First sprint)
 
-Setup libGDX.
+Setup libGDX. \n
 Write short story.
 Write code for simple movements.
 Items for inventory.
