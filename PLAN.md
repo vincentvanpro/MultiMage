@@ -1,3 +1,5 @@
+WHEN TALTECH GIVES US SERVER, THEN WE ARE DOING IT
+
 # Project plan (First sprint)
 
 * Setup libGDX. 
@@ -12,6 +14,9 @@
 
 
 # Second Sprint
-* Design levels
+* Design levels (draw or find ones)
+* The models (at least one)
 * Design interface (skills, player view)
+* START DOING CODING
+* implement first movements for an object
 * ...
