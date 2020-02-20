@@ -8,3 +8,9 @@
 * Think out level up system.
 * Think out character skills.
 * Find and create assets.
+
+
+# Second Sprint
+* Design levels
+* Design interface (skills, player view)
+* ...
