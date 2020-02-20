@@ -8,6 +8,7 @@
 * Think out level up system.
 * Think out character skills.
 * Find and create assets.
+* Player and main menu prototypes/view
 
 
 # Second Sprint
