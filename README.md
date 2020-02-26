@@ -13,6 +13,14 @@ with his/her HP and damage from skills level up. You also can gain items that
 boost characteristics. These items are all passive, which means you cannot use them.
 
 # Script
+You start as a mage. In the beginning of the game you can choose a class.
+Class what you choose won't affect on story.
+The story begins from that you are in a cage in the dungeoun.
+Wind started to blow and door suddenly opened.You understand that you have been 
+there three years but door wasn't closed. So, your goal is revenge. You need to 
+defeat dungeon masterand put him into this cage and close this time.
+After escaping from the cage you will find scroll where you can read about controls. 
+Dungeon consists of four levels. Every level has its own boss. Last boss is a dungeon master.
 
 # The goal
 
