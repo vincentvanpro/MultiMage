@@ -37,21 +37,21 @@ As you progress through the game, it becomes harder and harder with every minute
 Each level you've passed also adds a difficulty.
 
 # Hero description
-Sword-mage based on defence, high HP and defence;
+Sword-mage based on defence, high HP and defence; looks like mage with sword
 * 1 skill - magic dagger, distance throwing, one-target, cooldown;
 * 2 skill - magic barrier, that absorbs damage taken 40%, 10 sec;
 * passive - bonus armour with level up, 2x for him, 1.5x to all group members;
 * ult - throws a sword into an area, which damages all around this area, cooldown;
 
 
-Archer-mage based on attack speed/damage, average HP and small defence;
+Archer-mage based on attack speed/damage, average HP and small defence; looks like mage with bow
 * 1 skill - magic arrow, distant skill, one-target, cooldown;
 * 2 skill - magic that increases speed attack -> DPS, cooldown;
 * passive - flamed arrows damage enemies every sec and deal additional damage;
 * ult - buff a bow, increased damage 300% for 15 sec, cooldown;
 
 
-Classic-mage based on area damage, small HP and defence
+Classic-mage based on area damage, small HP and defence; looks like mage
 * 1 skill - magic fireball, deals area damage, cooldown;
 * 2 skill - freezes enemies for 3 sec, deals minor damage, cooldown;
 * passive - skills cooldown faster;
