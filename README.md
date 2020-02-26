@@ -12,7 +12,7 @@ the stronger enemies become. As you kill and progress with the game, your hero
 with his/her HP and damage from skills level up. You also can gain items that
 boost characteristics. These items are all passive, which means you cannot use them.
 
-# Script and goal
+# Script and the goal
 You start as a mage. In the beginning of the game you can choose a class.
 Class what you choose won't affect on story.
 The story begins from that you are in a cage in the dungeoun.
