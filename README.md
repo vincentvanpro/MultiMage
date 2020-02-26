@@ -11,6 +11,8 @@ the stronger enemies become. As you kill and progress with the game, your hero
 with his/her HP and damage from skills level up. You also can gain items that
 boost characteristics. These items are all passive, which means you cannot use them.
 
+# Script
+
 # The goal
 
 # Mechanics
@@ -21,6 +23,10 @@ Other items do not have restrictions.
 Stacking an item changes one or more of its effects.
 For example: item that blocks damage, +15%, the next you've gained will give a 
 slitely less %, and this value cannot reach 100%.
+
+We have the difficulty multiplier. This applies to an enemy strength.
+As you progress through the game, it becomes harder and harder with every minute you mess around.
+Each level you've passed also adds a difficulty.
 
 # Hero description
 
