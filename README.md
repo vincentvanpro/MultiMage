@@ -13,10 +13,11 @@ the stronger enemies become. As you kill and progress with the game, your hero
 with his/her HP and damage from skills level up. You also can gain items that
 boost characteristics. These items are all passive, which means you cannot use them.
 
-# Hero descryptions
+# Goal of the game
 
+# Hero descryptions
 
 # Enemies
 
 
-# Goal of the game
+
