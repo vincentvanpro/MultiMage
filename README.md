@@ -20,7 +20,7 @@ Other items do not have restrictions.
 Stacking an item changes one or more of its effects.
 For example: item that blocks damage, +15%, the next you've gained will give a slitely less %, and this value cannot reach 100%.
 
-# Hero descryptions
+# Hero description
 
 # Enemies
 
