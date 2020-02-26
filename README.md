@@ -15,10 +15,12 @@ boost characteristics. These items are all passive, which means you cannot use t
 
 # Mechanics
 Each item you get has effects, some of them are negative, some are positive.
-Each hero has 3 slots for equipment - leg, chest and head armour. You can carry only one at one.
+Each hero has 3 slots for equipment - leg, chest and head armour. 
+You can carry only one at one.
 Other items do not have restrictions. 
 Stacking an item changes one or more of its effects.
-For example: item that blocks damage, +15%, the next you've gained will give a slitely less %, and this value cannot reach 100%.
+For example: item that blocks damage, +15%, the next you've gained will give a 
+slitely less %, and this value cannot reach 100%.
 
 # Hero description
 
