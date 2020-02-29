@@ -4,7 +4,7 @@ import aurelienribon.tweenengine.TweenAccessor;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class SpriteAccessor implements TweenAccessor<Sprite> {
-
+    // for the first fade-away image
     public static final int ALPHA = 0;
 
     @Override
