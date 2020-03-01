@@ -16,6 +16,7 @@ public class Splash implements Screen {
     private SpriteBatch batch;
     private TweenManager tweenManager;
 
+
     @Override
     public void show() {
         batch = new SpriteBatch();

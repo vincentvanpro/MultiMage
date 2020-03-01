@@ -19,6 +19,7 @@ public class SpriteAccessor implements TweenAccessor<Sprite> {
         }
     }
 
+
     @Override
     public void setValues(Sprite target, int tweenType, float[] newValues) {
         switch (tweenType) {

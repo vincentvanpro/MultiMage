@@ -21,6 +21,7 @@ public class MainMenu implements Screen {
     private BitmapFont white, black;
     private Label heading;
 
+
     @Override
     public void show() {
         stage = new Stage();
