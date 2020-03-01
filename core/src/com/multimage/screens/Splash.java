@@ -27,14 +27,12 @@ public class Splash implements Screen {
         splash.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Tween.set(splash, SpriteAccessor.ALPHA).target(0).start(tweenManager);
-        Tween.to(splash, SpriteAccessor.ALPHA, 2).target(1).start(tweenManager).repeatYoyo(1, 2)
-                .setCallback(new TweenCallback() {
-                    @Override
-                    public void onEvent(int type, BaseTween<?> source) {
-                        ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
-
-                    }
-                }).start(tweenManager);
+        Tween.to(splash, SpriteAccessor.ALPHA, 2).target(1).repeatYoyo(1, 2).setCallback(new TweenCallback() {
+            @Override
+            public void onEvent(int i, BaseTween<?> baseTween) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+            }
+        }).start(tweenManager);
     }
 
     @Override
