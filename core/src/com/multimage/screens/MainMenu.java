@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.RemoveActorAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -28,7 +27,7 @@ public class MainMenu implements Screen {
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
-    private TextButton buttonPlay, buttonExit;
+    private TextButton buttonPlay, buttonExit, buttonPreferences;
     private BitmapFont white, black;
     private Label heading;
     private TweenManager tweenManager;
@@ -76,6 +75,15 @@ public class MainMenu implements Screen {
         });
         buttonPlay.pad(15);
 
+        buttonPreferences = new TextButton("SETTINGS", textButtonStyle);
+        buttonPreferences.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new PreferencesMenu());
+            }
+        });
+        buttonPreferences.pad(15);
+
         // heading
         heading = new Label(MultiMageGame.TITLE, new Label.LabelStyle(white, Color.WHITE));
         heading.setFontScale(1f);
@@ -85,6 +93,9 @@ public class MainMenu implements Screen {
         table.getCell(heading).spaceBottom(100);
         table.row();
         table.add(buttonPlay);
+        table.getCell(heading).spaceBottom(15);
+        table.row();
+        table.add(buttonPreferences);
         table.getCell(heading).spaceBottom(15);
         table.row();
         table.add(buttonExit);
@@ -109,9 +120,11 @@ public class MainMenu implements Screen {
         // heading and buttons fade-in
         Timeline.createSequence().beginSequence()
                 .push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
+                .push(Tween.set(buttonPreferences, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0))
                 .push(Tween.from(heading, ActorAccessor.ALPHA, .5f).target(0))
                 .push(Tween.to(buttonPlay, ActorAccessor.ALPHA, .5f).target(1))
+                .push(Tween.to(buttonPreferences, ActorAccessor.ALPHA, .5f).target(1))
                 .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .5f).target(1))
                 .end().start(tweenManager);
 
