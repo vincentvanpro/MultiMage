@@ -6,14 +6,21 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.multimage.MultiMageGame;
+
 
 public class PreferencesMenu implements Screen {
 
@@ -25,15 +32,11 @@ public class PreferencesMenu implements Screen {
 
     private Stage stage;
     private TextureAtlas atlas;
+
+
     private Skin skin;
-    private Table table;
-    private BitmapFont white, black;
-    private MultiMageGame parent;
-    private Label heading;
-    private Label volumeMusicLabel;
-    private Label volumeSoundLabel;
-    private Label musicOnOffLabel;
-    private Label soundOnOffLabel;
+    private Skin skinForSlidersAndCheckBox;
+    private TextureAtlas atlasUiAtlas;
 
     protected Preferences getPrefs() {
         return Gdx.app.getPreferences(PREFS_NAME);
@@ -76,22 +79,26 @@ public class PreferencesMenu implements Screen {
     }
 
 
-
     @Override
     public void show() {
         stage = new Stage();
 
         Gdx.input.setInputProcessor(stage);
 
+        // fonts
+        BitmapFont white = new BitmapFont(Gdx.files.internal("font/white32.fnt"), false);
+        BitmapFont black = new BitmapFont(Gdx.files.internal("font/black32.fnt"), false);
+
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(atlas);
+        atlasUiAtlas = new TextureAtlas("ui/skin.atlas");
+        skinForSlidersAndCheckBox = new Skin(atlasUiAtlas);
+        skinForSlidersAndCheckBox.add("default-font", black);
+        skinForSlidersAndCheckBox.load(Gdx.files.internal("ui/skin.json"));
 
-        table = new Table(skin);
+        Table table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        // fonts
-        white = new BitmapFont(Gdx.files.internal("font/white32.fnt"), false);
-        black = new BitmapFont(Gdx.files.internal("font/black32.fnt"), false);
+        table.setFillParent(true);
 
         // buttons
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -101,17 +108,62 @@ public class PreferencesMenu implements Screen {
         textButtonStyle.pressedOffsetY = -1;
         textButtonStyle.font = black;
 
-        //music
-        // final CheckBox musicCheckbox = new CheckBox(null, skin);
-        // musicCheckbox.setChecked(parent.getPreferences().isMusicEnabled() );
-        // musicCheckbox.addListener(new EventListener() {
-        //     @Override
-        //     public boolean handle(Event event) {
-        //         boolean enabled = musicCheckbox.isChecked();
-        //         parent.getPreferences().setMusicEnabled( enabled );
-        //         return false;
-        //     }
-        // });
+        // musicBox
+        final CheckBox musicCheckbox = new CheckBox("MUSIC", skinForSlidersAndCheckBox);
+        musicCheckbox.setChecked(isMusicEnabled());
+        setMusicEnabled(isMusicEnabled());
+        musicCheckbox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(event.getListenerActor() == musicCheckbox) {
+                    // set music
+                    setMusicEnabled(!musicCheckbox.isChecked());
+                    Gdx.app.log(MultiMageGame.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
+                }
+            }
+        });
+
+        // SoundBox
+        final CheckBox soundCheckbox = new CheckBox("SOUND", skinForSlidersAndCheckBox);
+        soundCheckbox.setChecked(isSoundEffectsEnabled());
+        setSoundEffectsEnabled(isSoundEffectsEnabled());
+        soundCheckbox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(event.getListenerActor() == soundCheckbox) {
+                    setSoundEffectsEnabled(!soundCheckbox.isChecked());
+                    Gdx.app.log(MultiMageGame.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
+                    // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
+                }
+            }
+        });
+
+        // volumeMUSIC Slider
+        final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
+        volumeMusicSlider.setValue(100f);
+        setMusicVolume(100f);
+        volumeMusicSlider.addListener( new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                setMusicVolume(volumeMusicSlider.getValue());
+                // Gdx.app.log(MultiMageGame.TITLE, "Sound " + (getMusicVolume()));
+                return false;
+            }
+        });
+
+        // volumeSOUND Slider
+        final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
+        volumeSoundSlider.setValue(100f);
+        setSoundVolume(100f);
+        volumeSoundSlider.addListener( new EventListener() {
+            @Override
+            public boolean handle(Event event) {
+                setSoundVolume(volumeSoundSlider.getValue());
+                // Gdx.app.log(MultiMageGame.TITLE, "Sound " + (getSoundVolume()));
+                return false;
+
+            }
+        });
 
         // return to main screen button
         final TextButton backButton = new TextButton("BACK", textButtonStyle);
@@ -123,29 +175,33 @@ public class PreferencesMenu implements Screen {
         });
         backButton.pad(15);
 
-        heading = new Label("PREFERENCES", new Label.LabelStyle(white, Color.WHITE));
-        volumeMusicLabel = new Label( null, new Label.LabelStyle(white, Color.WHITE));
-        volumeSoundLabel = new Label( null, new Label.LabelStyle(white, Color.WHITE));
-        musicOnOffLabel = new Label( null, new Label.LabelStyle(white, Color.WHITE));
-        soundOnOffLabel = new Label( null, new Label.LabelStyle(white, Color.WHITE));
+        Label heading = new Label("PREFERENCES", new Label.LabelStyle(white, Color.WHITE));
+        Label volumeMusicLabel = new Label("music", new Label.LabelStyle(white, Color.WHITE));
+        Label volumeSoundLabel = new Label("sound", new Label.LabelStyle(white, Color.WHITE));
+        Label musicOnOffLabel = new Label("on/off", new Label.LabelStyle(white, Color.WHITE));
+        Label soundOnOffLabel = new Label("on/off", new Label.LabelStyle(white, Color.WHITE));
 
         heading.setFontScale(1f);
 
         table.add(heading);
+        table.getCell(heading).spaceBottom(100);
         table.row();
         table.add(volumeMusicLabel);
-        //table.add(volumeMusicSlider);
+        table.add(volumeMusicSlider);
         table.row();
         table.add(musicOnOffLabel);
-        //table.add(musicCheckbox);
+        table.add(musicCheckbox);
+        table.getCell(heading).spaceBottom(15);
         table.row();
         table.add(volumeSoundLabel);
-        //table.add(soundMusicSlider);
+        table.add(volumeSoundSlider);
         table.row();
         table.add(soundOnOffLabel);
-        //table.add(soundEffectsCheckbox);
+        table.add(soundCheckbox);
+        table.getCell(heading).spaceBottom(15);
         table.row();
         table.add(backButton);
+        table.getCell(backButton).spaceTop(50);
 
         stage.addActor(table);
     }
@@ -184,5 +240,7 @@ public class PreferencesMenu implements Screen {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
+        skinForSlidersAndCheckBox.dispose();
+        atlasUiAtlas.dispose();
     }
 }
