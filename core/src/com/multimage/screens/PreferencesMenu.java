@@ -85,12 +85,12 @@ public class PreferencesMenu implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        // fonts
+        // font
         BitmapFont white = new BitmapFont(Gdx.files.internal("font/white32.fnt"), false);
         BitmapFont black = new BitmapFont(Gdx.files.internal("font/black32.fnt"), false);
 
         atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(atlas);
+        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
         atlasUiAtlas = new TextureAtlas("ui/skin.atlas");
         skinForSlidersAndCheckBox = new Skin(atlasUiAtlas);
         skinForSlidersAndCheckBox.add("default-font", black);
@@ -100,13 +100,6 @@ public class PreferencesMenu implements Screen {
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.setFillParent(true);
 
-        // buttons
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up");
-        textButtonStyle.up = skin.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = black;
 
         // musicBox
         final CheckBox musicCheckbox = new CheckBox("MUSIC", skinForSlidersAndCheckBox);
@@ -166,7 +159,7 @@ public class PreferencesMenu implements Screen {
         });
 
         // return to main screen button
-        final TextButton backButton = new TextButton("BACK", textButtonStyle);
+        final TextButton backButton = new TextButton("BACK", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -175,11 +168,11 @@ public class PreferencesMenu implements Screen {
         });
         backButton.pad(15);
 
-        Label heading = new Label("PREFERENCES", new Label.LabelStyle(white, Color.WHITE));
-        Label volumeMusicLabel = new Label("music", new Label.LabelStyle(white, Color.WHITE));
-        Label volumeSoundLabel = new Label("sound", new Label.LabelStyle(white, Color.WHITE));
-        Label musicOnOffLabel = new Label("on/off", new Label.LabelStyle(white, Color.WHITE));
-        Label soundOnOffLabel = new Label("on/off", new Label.LabelStyle(white, Color.WHITE));
+        Label heading = new Label("PREFERENCES", skin);
+        Label volumeMusicLabel = new Label("music", skin);
+        Label volumeSoundLabel = new Label("sound", skin);
+        Label musicOnOffLabel = new Label("on/off", skin);
+        Label soundOnOffLabel = new Label("on/off", skin);
 
         heading.setFontScale(1f);
 
