@@ -1,17 +1,20 @@
 package com.multimage.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.util.Arrays;
 
 public class Levels implements Screen {
 
@@ -19,31 +22,55 @@ public class Levels implements Screen {
     private Table table;
     private TextureAtlas atlas;
     private Skin skin;
-    private List<String> stringList;
+    private TextureAtlas atlasForList;
+    private Skin skinForList;
+    private List<String> list;
     private ScrollPane scrollPane;
     private TextButton play, back;
 
     @Override
     public void show() {
         stage = new Stage();
-
         Gdx.input.setInputProcessor(stage);
 
-        atlas = new TextureAtlas("ui/atlas.pack");
+        atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
 
-        table = new Table(skin);
 
-        stringList = new List<String>(skin, "small");
-        stringList.setItems("a", "b", "c", "d");
-        scrollPane = new ScrollPane(stringList, skin);
+        atlasForList = new TextureAtlas("ui/skin.atlas");
+        skinForList = new Skin(atlasForList);
+        skinForList = new Skin(atlasForList);
+        skinForList.load(Gdx.files.internal("ui/skin.json"));
+
+        table = new Table(skin);
+        table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table.setFillParent(true);
+        // table.debug();
+
+        list = new List<String>(skinForList);
+        list.setItems("ONE", "TWO", "THREE", "FOUR", "FIVE");
+
+        scrollPane = new ScrollPane(list, skinForList);
 
         play = new TextButton("PLAY", skin);
         play.pad(15f);
-        back = new TextButton("BACK", skin);
+        back = new TextButton("BACK", skin, "small");
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+            }
+        });
         back.pad(10f);
 
-        table.add("LEVEL SELECTION");
+        table.add().width(table.getWidth() / 3);
+        table.add("LEVEL SELECTION").width(table.getWidth() / 3);
+        table.add().width(table.getWidth() / 3).row();
+        table.add(scrollPane).left().expandY();
+        table.add(play);
+        table.add(back).bottom().right();
+
+        stage.addActor(table);
     }
 
     @Override
@@ -80,5 +107,7 @@ public class Levels implements Screen {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
+        atlasForList.dispose();
+        skinForList.dispose();
     }
 }

@@ -86,7 +86,6 @@ public class PreferencesMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // font
-        BitmapFont white = new BitmapFont(Gdx.files.internal("font/white32.fnt"), false);
         BitmapFont black = new BitmapFont(Gdx.files.internal("font/black32.fnt"), false);
 
         atlas = new TextureAtlas("ui/button.pack");
@@ -103,38 +102,33 @@ public class PreferencesMenu implements Screen {
 
         // musicBox
         final CheckBox musicCheckbox = new CheckBox("MUSIC", skinForSlidersAndCheckBox);
-        musicCheckbox.setChecked(isMusicEnabled());
-        setMusicEnabled(isMusicEnabled());
+        musicCheckbox.setChecked(!isMusicEnabled());
         musicCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(event.getListenerActor() == musicCheckbox) {
-                    // set music
-                    setMusicEnabled(!musicCheckbox.isChecked());
-                    Gdx.app.log(MultiMageGame.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
+                boolean enabled = musicCheckbox.isChecked();
+                setMusicEnabled(!enabled);
+                Gdx.app.log(MultiMageGame.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
                 }
-            }
-        });
+            });
 
         // SoundBox
         final CheckBox soundCheckbox = new CheckBox("SOUND", skinForSlidersAndCheckBox);
-        soundCheckbox.setChecked(isSoundEffectsEnabled());
-        setSoundEffectsEnabled(isSoundEffectsEnabled());
+        soundCheckbox.setChecked(!isSoundEffectsEnabled());
         soundCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(event.getListenerActor() == soundCheckbox) {
-                    setSoundEffectsEnabled(!soundCheckbox.isChecked());
-                    Gdx.app.log(MultiMageGame.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
-                    // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
+                boolean enabled = soundCheckbox.isChecked();
+                setSoundEffectsEnabled(!enabled);
+                Gdx.app.log(MultiMageGame.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
+                // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
                 }
-            }
-        });
+            });
 
         // volumeMUSIC Slider
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
-        volumeMusicSlider.setValue(100f);
-        setMusicVolume(100f);
+        volumeMusicSlider.setValue(getMusicVolume());
+        setMusicVolume(getMusicVolume());
         volumeMusicSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -146,8 +140,8 @@ public class PreferencesMenu implements Screen {
 
         // volumeSOUND Slider
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
-        volumeSoundSlider.setValue(100f);
-        setSoundVolume(100f);
+        volumeSoundSlider.setValue(getSoundVolume());
+        setSoundVolume(getSoundVolume());
         volumeSoundSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -171,8 +165,8 @@ public class PreferencesMenu implements Screen {
         Label heading = new Label("PREFERENCES", skin);
         Label volumeMusicLabel = new Label("music", skin);
         Label volumeSoundLabel = new Label("sound", skin);
-        Label musicOnOffLabel = new Label("on/off", skin);
-        Label soundOnOffLabel = new Label("on/off", skin);
+        Label musicOnOffLabel = new Label("mute music", skin);
+        Label soundOnOffLabel = new Label("mute sfx", skin);
 
         heading.setFontScale(1f);
 
