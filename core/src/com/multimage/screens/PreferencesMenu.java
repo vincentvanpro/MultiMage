@@ -85,12 +85,11 @@ public class PreferencesMenu implements Screen {
 
         Gdx.input.setInputProcessor(stage);
 
-        // fonts
-        BitmapFont white = new BitmapFont(Gdx.files.internal("font/white32.fnt"), false);
+        // font
         BitmapFont black = new BitmapFont(Gdx.files.internal("font/black32.fnt"), false);
 
         atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(atlas);
+        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
         atlasUiAtlas = new TextureAtlas("ui/skin.atlas");
         skinForSlidersAndCheckBox = new Skin(atlasUiAtlas);
         skinForSlidersAndCheckBox.add("default-font", black);
@@ -100,48 +99,36 @@ public class PreferencesMenu implements Screen {
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.setFillParent(true);
 
-        // buttons
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up");
-        textButtonStyle.up = skin.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = black;
 
         // musicBox
         final CheckBox musicCheckbox = new CheckBox("MUSIC", skinForSlidersAndCheckBox);
-        musicCheckbox.setChecked(isMusicEnabled());
-        setMusicEnabled(isMusicEnabled());
+        musicCheckbox.setChecked(!isMusicEnabled());
         musicCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(event.getListenerActor() == musicCheckbox) {
-                    // set music
-                    setMusicEnabled(!musicCheckbox.isChecked());
-                    Gdx.app.log(MultiMageGame.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
+                boolean enabled = musicCheckbox.isChecked();
+                setMusicEnabled(!enabled);
+                Gdx.app.log(MultiMageGame.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
                 }
-            }
-        });
+            });
 
         // SoundBox
         final CheckBox soundCheckbox = new CheckBox("SOUND", skinForSlidersAndCheckBox);
-        soundCheckbox.setChecked(isSoundEffectsEnabled());
-        setSoundEffectsEnabled(isSoundEffectsEnabled());
+        soundCheckbox.setChecked(!isSoundEffectsEnabled());
         soundCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(event.getListenerActor() == soundCheckbox) {
-                    setSoundEffectsEnabled(!soundCheckbox.isChecked());
-                    Gdx.app.log(MultiMageGame.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
-                    // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
+                boolean enabled = soundCheckbox.isChecked();
+                setSoundEffectsEnabled(!enabled);
+                Gdx.app.log(MultiMageGame.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
+                // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
                 }
-            }
-        });
+            });
 
         // volumeMUSIC Slider
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
-        volumeMusicSlider.setValue(100f);
-        setMusicVolume(100f);
+        volumeMusicSlider.setValue(getMusicVolume());
+        setMusicVolume(getMusicVolume());
         volumeMusicSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -153,8 +140,8 @@ public class PreferencesMenu implements Screen {
 
         // volumeSOUND Slider
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
-        volumeSoundSlider.setValue(100f);
-        setSoundVolume(100f);
+        volumeSoundSlider.setValue(getSoundVolume());
+        setSoundVolume(getSoundVolume());
         volumeSoundSlider.addListener( new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -166,7 +153,7 @@ public class PreferencesMenu implements Screen {
         });
 
         // return to main screen button
-        final TextButton backButton = new TextButton("BACK", textButtonStyle);
+        final TextButton backButton = new TextButton("BACK", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -175,11 +162,11 @@ public class PreferencesMenu implements Screen {
         });
         backButton.pad(15);
 
-        Label heading = new Label("PREFERENCES", new Label.LabelStyle(white, Color.WHITE));
-        Label volumeMusicLabel = new Label("music", new Label.LabelStyle(white, Color.WHITE));
-        Label volumeSoundLabel = new Label("sound", new Label.LabelStyle(white, Color.WHITE));
-        Label musicOnOffLabel = new Label("on/off", new Label.LabelStyle(white, Color.WHITE));
-        Label soundOnOffLabel = new Label("on/off", new Label.LabelStyle(white, Color.WHITE));
+        Label heading = new Label("PREFERENCES", skin);
+        Label volumeMusicLabel = new Label("music", skin);
+        Label volumeSoundLabel = new Label("sound", skin);
+        Label musicOnOffLabel = new Label("mute music", skin);
+        Label soundOnOffLabel = new Label("mute sfx", skin);
 
         heading.setFontScale(1f);
 

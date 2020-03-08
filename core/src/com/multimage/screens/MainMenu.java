@@ -6,9 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -28,7 +26,6 @@ public class MainMenu implements Screen {
     private Skin skin;
     private Table table;
     private TextButton buttonPlay, buttonExit, buttonPreferences;
-    private BitmapFont white, black;
     private Label heading;
     private TweenManager tweenManager;
 
@@ -40,24 +37,12 @@ public class MainMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(atlas);
+        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
 
         table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // fonts
-        white = new BitmapFont(Gdx.files.internal("font/white32.fnt"), false);
-        black = new BitmapFont(Gdx.files.internal("font/black32.fnt"), false);
-
-        // buttons
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = skin.getDrawable("button.up");
-        textButtonStyle.up = skin.getDrawable("button.down");
-        textButtonStyle.pressedOffsetX = 1;
-        textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = black;
-
-        buttonExit = new TextButton("EXIT", textButtonStyle);
+        buttonExit = new TextButton("EXIT", skin);
         buttonExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -66,7 +51,7 @@ public class MainMenu implements Screen {
         });
         buttonExit.pad(15);
 
-        buttonPlay = new TextButton("PLAY", textButtonStyle);
+        buttonPlay = new TextButton("PLAY", skin);
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,7 +60,7 @@ public class MainMenu implements Screen {
         });
         buttonPlay.pad(15);
 
-        buttonPreferences = new TextButton("SETTINGS", textButtonStyle);
+        buttonPreferences = new TextButton("SETTINGS", skin);
         buttonPreferences.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -85,7 +70,7 @@ public class MainMenu implements Screen {
         buttonPreferences.pad(15);
 
         // heading
-        heading = new Label(MultiMageGame.TITLE, new Label.LabelStyle(white, Color.WHITE));
+        heading = new Label(MultiMageGame.TITLE, skin);
         heading.setFontScale(1f);
 
         // putting in a table
@@ -97,8 +82,10 @@ public class MainMenu implements Screen {
         table.row();
         table.add(buttonPreferences);
         table.getCell(heading).spaceBottom(15);
+        table.getCell(buttonPreferences).spaceTop(5);
         table.row();
         table.add(buttonExit);
+        table.getCell(buttonExit).spaceTop(5);
         // table.debug(); // adds an opportunity to see boxes // REMOVE LATER
         stage.addActor(table);
 
@@ -169,7 +156,5 @@ public class MainMenu implements Screen {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
-        white.dispose();
-        black.dispose();
     }
 }

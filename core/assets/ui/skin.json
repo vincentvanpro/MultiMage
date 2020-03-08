@@ -1,6 +1,10 @@
 {
   com.badlogic.gdx.graphics.g2d.BitmapFont: { 
-    default: { file: com/badlogic/gdx/utils/arial-15.fnt }
+    default: { file: com/badlogic/gdx/utils/arial-15.fnt },
+    black64: { file: font/black64.fnt },
+    white64: { file: font/white64.fnt },
+    black32: { file: font/black32.fnt },
+    white32: { file: font/white32.fnt }
   },
   com.badlogic.gdx.graphics.Color: {
     white: { r: 1, g: 1, b: 1, a: 1 },
@@ -105,7 +109,7 @@
     white: { font: default, fontColor: white }
   },
   com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
-    default: { fontColorUnselected: font, selection: selection, fontColorSelected: fontDown, font: default },
+    default: { fontColorUnselected: white, selection: selection, fontColorSelected: black, font: white32 },
     background: { background: list, fontColorUnselected: font, selection: selection, fontColorSelected: fontDown, font: default }
   },
   com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
