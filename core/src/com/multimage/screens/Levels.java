@@ -36,15 +36,12 @@ public class Levels implements Screen {
         atlas = new TextureAtlas("ui/button.pack");
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
 
-
         atlasForList = new TextureAtlas("ui/skin.atlas");
         skinForList = new Skin(atlasForList);
         skinForList = new Skin(atlasForList);
         skinForList.load(Gdx.files.internal("ui/skin.json"));
 
         table = new Table(skin);
-        table.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        table.setFillParent(true);
         // table.debug();
 
         list = new List<String>(skinForList);
@@ -63,14 +60,20 @@ public class Levels implements Screen {
         });
         back.pad(10f);
 
+
+        setUpTable();
+        stage.addActor(table);
+    }
+
+    private void setUpTable() {
+        table.clear();
+        table.setBounds(0,0, stage.getWidth(), stage.getHeight());
         table.add().width(table.getWidth() / 3);
         table.add("LEVEL SELECTION").width(table.getWidth() / 3);
         table.add().width(table.getWidth() / 3).row();
         table.add(scrollPane).left().expandY();
         table.add(play);
         table.add(back).bottom().right();
-
-        stage.addActor(table);
     }
 
     @Override
@@ -84,7 +87,9 @@ public class Levels implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, true);
+        table.setClip(true);
+        setUpTable();
     }
 
     @Override
@@ -99,7 +104,7 @@ public class Levels implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
