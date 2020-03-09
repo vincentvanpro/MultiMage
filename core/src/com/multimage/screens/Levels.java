@@ -8,11 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 
@@ -69,7 +65,7 @@ public class Levels implements Screen {
         table.clear();
         table.setBounds(0,0, stage.getWidth(), stage.getHeight());
         table.add().width(table.getWidth() / 3);
-        table.add("LEVEL SELECTION").width(table.getWidth() / 3);
+        table.add(new Label("SELECT LEVEL", skin, "big")).width(table.getWidth() / 3);
         table.add().width(table.getWidth() / 3).row();
         table.add(scrollPane).left().expandY();
         table.add(play);
