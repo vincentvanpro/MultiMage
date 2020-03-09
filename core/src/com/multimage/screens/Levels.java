@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,11 +15,9 @@ public class Levels implements Screen {
 
     private Stage stage;
     private Table table;
-    private TextureAtlas atlas;
     private Skin skin;
     private TextureAtlas atlasForList;
     private Skin skinForList;
-    private List<String> list;
     private ScrollPane scrollPane;
     private TextButton play, back;
 
@@ -29,18 +26,17 @@ public class Levels implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        atlas = new TextureAtlas("ui/button.pack");
-        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
+        skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), new TextureAtlas("ui/button.pack"));
 
         atlasForList = new TextureAtlas("ui/skin.atlas");
-        skinForList = new Skin(atlasForList);
         skinForList = new Skin(atlasForList);
         skinForList.load(Gdx.files.internal("ui/skin.json"));
 
         table = new Table(skin);
+        table.setFillParent(true);
         // table.debug();
 
-        list = new List<String>(skinForList);
+        List<String> list = new List<String>(skinForList);
         list.setItems("ONE", "TWO", "THREE", "FOUR", "FIVE");
 
         scrollPane = new ScrollPane(list, skinForList);
@@ -56,20 +52,16 @@ public class Levels implements Screen {
         });
         back.pad(10f);
 
-
-        setUpTable();
-        stage.addActor(table);
-    }
-
-    private void setUpTable() {
         table.clear();
         table.setBounds(0,0, stage.getWidth(), stage.getHeight());
         table.add().width(table.getWidth() / 3);
         table.add(new Label("SELECT LEVEL", skin, "big")).width(table.getWidth() / 3);
         table.add().width(table.getWidth() / 3).row();
         table.add(scrollPane).left().expandY();
-        table.add(play);
-        table.add(back).bottom().right();
+        table.add(play).uniformX();
+        table.add(back).uniformX().bottom().right();
+
+        stage.addActor(table);
     }
 
     @Override
@@ -84,8 +76,7 @@ public class Levels implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-        table.setClip(true);
-        setUpTable();
+        table.invalidateHierarchy();
     }
 
     @Override
@@ -106,7 +97,6 @@ public class Levels implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        atlas.dispose();
         skin.dispose();
         atlasForList.dispose();
         skinForList.dispose();

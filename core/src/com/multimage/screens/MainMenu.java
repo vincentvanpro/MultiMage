@@ -25,8 +25,6 @@ public class MainMenu implements Screen {
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
-    private TextButton buttonPlay, buttonExit, buttonPreferences;
-    private Label heading;
     private TweenManager tweenManager;
 
 
@@ -40,9 +38,10 @@ public class MainMenu implements Screen {
         skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
 
         table = new Table(skin);
+        table.setFillParent(true);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        buttonExit = new TextButton("EXIT", skin);
+        TextButton buttonExit = new TextButton("EXIT", skin);
         buttonExit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -51,7 +50,7 @@ public class MainMenu implements Screen {
         });
         buttonExit.pad(15);
 
-        buttonPlay = new TextButton("PLAY", skin);
+        TextButton buttonPlay = new TextButton("PLAY", skin);
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -59,8 +58,7 @@ public class MainMenu implements Screen {
             }
         });
         buttonPlay.pad(15);
-
-        buttonPreferences = new TextButton("SETTINGS", skin);
+        TextButton buttonPreferences = new TextButton("SETTINGS", skin);
         buttonPreferences.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,7 +68,7 @@ public class MainMenu implements Screen {
         buttonPreferences.pad(15);
 
         // heading
-        heading = new Label(MultiMageGame.TITLE, skin);
+        Label heading = new Label(MultiMageGame.TITLE, skin);
         heading.setFontScale(1f);
 
         // putting in a table
@@ -136,6 +134,7 @@ public class MainMenu implements Screen {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
+        table.invalidateHierarchy(); // table sizes recalculated
     }
 
     @Override
