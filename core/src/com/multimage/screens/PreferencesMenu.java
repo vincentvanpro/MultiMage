@@ -219,7 +219,7 @@ public class PreferencesMenu implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
