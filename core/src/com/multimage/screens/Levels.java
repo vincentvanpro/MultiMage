@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.multimage.MultiMageGame;
 
 
 public class Levels implements Screen {
@@ -20,6 +21,12 @@ public class Levels implements Screen {
     private Skin skinForList;
     private ScrollPane scrollPane;
     private TextButton play, back;
+
+    private MultiMageGame game;
+
+    public Levels(MultiMageGame game) {
+        this.game = game;
+    }
 
     @Override
     public void show() {
@@ -42,12 +49,20 @@ public class Levels implements Screen {
         scrollPane = new ScrollPane(list, skinForList);
 
         play = new TextButton("PLAY", skin);
+        play.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(game));
+            }
+
+        });
         play.pad(15f);
         back = new TextButton("BACK", skin, "small");
         back.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(game));
             }
         });
         back.pad(10f);

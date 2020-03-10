@@ -32,10 +32,15 @@ public class PreferencesMenu implements Screen {
     private Stage stage;
     private TextureAtlas atlas;
 
-
     private Skin skin;
     private Skin skinForSlidersAndCheckBox;
     private TextureAtlas atlasUiAtlas;
+
+    private MultiMageGame game;
+
+    public PreferencesMenu(MultiMageGame game){
+        this.game = game;
+    }
 
     protected Preferences getPrefs() {
         return Gdx.app.getPreferences(PREFS_NAME);
@@ -156,7 +161,7 @@ public class PreferencesMenu implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(game));
             }
         });
         backButton.pad(15);
