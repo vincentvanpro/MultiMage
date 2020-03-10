@@ -21,11 +21,16 @@ import com.multimage.tween.ActorAccessor;
 
 public class MainMenu implements Screen {
 
+    private final MultiMageGame game;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
     private TweenManager tweenManager;
+
+    public MainMenu(MultiMageGame game) {
+        this.game = game;
+    }
 
 
     @Override
@@ -54,7 +59,7 @@ public class MainMenu implements Screen {
         buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new Levels(game));
             }
         });
         buttonPlay.pad(15);
@@ -62,7 +67,7 @@ public class MainMenu implements Screen {
         buttonPreferences.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new PreferencesMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new PreferencesMenu(game));
             }
         });
         buttonPreferences.pad(15);

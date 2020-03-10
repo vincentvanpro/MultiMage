@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.multimage.MultiMageGame;
 import com.multimage.tween.SpriteAccessor;
 
 public class Splash implements Screen {
@@ -15,6 +16,11 @@ public class Splash implements Screen {
     private Sprite splash;
     private SpriteBatch batch;
     private TweenManager tweenManager;
+    private MultiMageGame game;
+
+    public Splash(MultiMageGame game) {
+        this.game = game;
+    }
 
 
     @Override
@@ -31,7 +37,7 @@ public class Splash implements Screen {
         Tween.to(splash, SpriteAccessor.ALPHA, 2).target(1).repeatYoyo(1, 0.5f).setCallback(new TweenCallback() {
             @Override
             public void onEvent(int i, BaseTween<?> baseTween) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(game));
             }
         }).start(tweenManager);
 
