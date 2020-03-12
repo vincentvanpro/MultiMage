@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -33,10 +32,15 @@ public class PreferencesMenu implements Screen {
     private Stage stage;
     private TextureAtlas atlas;
 
-
     private Skin skin;
     private Skin skinForSlidersAndCheckBox;
     private TextureAtlas atlasUiAtlas;
+
+    private MultiMageGame game;
+
+    public PreferencesMenu(MultiMageGame game){
+        this.game = game;
+    }
 
     protected Preferences getPrefs() {
         return Gdx.app.getPreferences(PREFS_NAME);
@@ -157,7 +161,7 @@ public class PreferencesMenu implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu());
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenu(game));
             }
         });
         backButton.pad(15);
