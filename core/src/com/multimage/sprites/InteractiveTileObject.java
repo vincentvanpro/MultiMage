@@ -4,7 +4,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 
 
 public abstract class InteractiveTileObject {
@@ -25,13 +25,13 @@ public abstract class InteractiveTileObject {
         PolygonShape shape = new PolygonShape();
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set((bounds.getX() + bounds.getWidth() / 2) / MultiMageGame.PPM,
-                (bounds.getY() + bounds.getHeight() / 2) / MultiMageGame.PPM);
+        bodyDef.position.set((bounds.getX() + bounds.getWidth() / 2) / MultiMage.PPM,
+                (bounds.getY() + bounds.getHeight() / 2) / MultiMage.PPM);
 
         body = world.createBody(bodyDef);
 
-        shape.setAsBox(bounds.getWidth() / 2 / MultiMageGame.PPM,
-                bounds.getHeight() / 2 / MultiMageGame.PPM);
+        shape.setAsBox(bounds.getWidth() / 2 / MultiMage.PPM,
+                bounds.getHeight() / 2 / MultiMage.PPM);
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
     }

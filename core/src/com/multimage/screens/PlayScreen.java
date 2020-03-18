@@ -5,24 +5,20 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldCreator;
 
 public class PlayScreen implements Screen {
-    private MultiMageGame game;
+    private MultiMage game;
     private Mage player;
 
     private OrthographicCamera gameCam;
@@ -38,20 +34,20 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
-    public PlayScreen(MultiMageGame game) {
+    public PlayScreen(MultiMage game) {
         this.game = game;
 
         // cam that follows you
         gameCam = new OrthographicCamera();
         // maintain virtual aspect ratio despite screen size
-        gamePort = new FitViewport(MultiMageGame.V_WIDTH / MultiMageGame.PPM, MultiMageGame.V_HEIGHT / MultiMageGame.PPM, gameCam);
+        gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
         // create hud
         hud = new Hud(game.batch);
 
         // load and setup map
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("levels/level1test.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMageGame.PPM);
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 import com.multimage.tween.SpriteAccessor;
 
 public class Splash implements Screen {
@@ -16,9 +16,9 @@ public class Splash implements Screen {
     private Sprite splash;
     private SpriteBatch batch;
     private TweenManager tweenManager;
-    private MultiMageGame game;
+    private MultiMage game;
 
-    public Splash(MultiMageGame game) {
+    public Splash(MultiMage game) {
         this.game = game;
     }
 
