@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 
 public class Hud implements Disposable {
     // PROTOTYPE
@@ -39,7 +39,7 @@ public class Hud implements Disposable {
         TextureAtlas atlas = new TextureAtlas("ui/button.pack");
         Skin skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
 
-        viewport = new FitViewport(MultiMageGame.V_WIDTH, MultiMageGame.V_HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(MultiMage.V_WIDTH, MultiMage.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         Table table = new Table();

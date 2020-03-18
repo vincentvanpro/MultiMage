@@ -16,19 +16,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 import com.multimage.tween.ActorAccessor;
 
 public class MainMenu implements Screen {
 
-    private final MultiMageGame game;
+    private final MultiMage game;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
     private TweenManager tweenManager;
 
-    public MainMenu(MultiMageGame game) {
+    public MainMenu(MultiMage game) {
         this.game = game;
     }
 
@@ -73,7 +73,7 @@ public class MainMenu implements Screen {
         buttonPreferences.pad(15);
 
         // heading
-        Label heading = new Label(MultiMageGame.TITLE, skin);
+        Label heading = new Label(MultiMage.TITLE, skin);
         heading.setFontScale(1f);
 
         // putting in a table

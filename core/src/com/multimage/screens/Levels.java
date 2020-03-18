@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 
 
 public class Levels implements Screen {
@@ -22,9 +22,9 @@ public class Levels implements Screen {
     private ScrollPane scrollPane;
     private TextButton play, back;
 
-    private MultiMageGame game;
+    private MultiMage game;
 
-    public Levels(MultiMageGame game) {
+    public Levels(MultiMage game) {
         this.game = game;
     }
 
