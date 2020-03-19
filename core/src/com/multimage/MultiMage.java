@@ -1,6 +1,8 @@
 package com.multimage;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.multimage.screens.PlayScreen;
 import com.multimage.screens.Splash;
@@ -14,10 +16,14 @@ public class MultiMage extends Game {
 
 	public SpriteBatch batch;
 
+	public static AssetManager manager;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		manager = new AssetManager();
+		manager.load("audio/music/main_menu_music.ogg", Music.class);
+		manager.finishLoading();
 		setScreen(new Splash(this));
 		// setScreen(new PlayScreen(this));
 	}

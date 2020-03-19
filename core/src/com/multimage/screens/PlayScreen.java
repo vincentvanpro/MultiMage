@@ -3,6 +3,7 @@ package com.multimage.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -19,6 +20,8 @@ import com.multimage.tools.WorldCreator;
 
 public class PlayScreen implements Screen {
     private MultiMage game;
+
+    private Music music;
 
     // sprites
     private Mage player;
@@ -62,6 +65,9 @@ public class PlayScreen implements Screen {
         new WorldCreator(world, map);
 
         player = new Mage(world);
+
+        music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
+        music.stop();
 
         // for further item creation //
         // items = new Array<Item>();

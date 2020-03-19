@@ -6,6 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +28,8 @@ public class MainMenu implements Screen {
     private Skin skin;
     private Table table;
     private TweenManager tweenManager;
+
+    private Music music;
 
     public MainMenu(MultiMage game) {
         this.game = game;
@@ -94,6 +97,11 @@ public class MainMenu implements Screen {
 
         // creating animations
         tweenManager = new TweenManager();
+
+        music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
+        music.setLooping(true);
+        music.play();
+
         Tween.registerAccessor(Actor.class, new ActorAccessor());
 
         // heading rgb animation
