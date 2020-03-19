@@ -20,10 +20,17 @@ public class WorldCreator {
         Body body;
 
         // create ground fixtures/bodies
-        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Ground(world, map, rectangle);
         }
+
+        // do same with other objects
+        // for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+        //     Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+//
+        //     new Chest(world, map, rectangle);
+        // }
     }
 }
