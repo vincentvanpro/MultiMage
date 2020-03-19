@@ -19,7 +19,12 @@ import com.multimage.tools.WorldCreator;
 
 public class PlayScreen implements Screen {
     private MultiMage game;
+
+    // sprites
     private Mage player;
+    // for further item creation //
+    // private Array<Item> items;
+    // private PriorityQueue<ItemDef> itemsToSpawn;
 
     private OrthographicCamera gameCam;
     private Viewport gamePort;
@@ -57,10 +62,31 @@ public class PlayScreen implements Screen {
         new WorldCreator(world, map);
 
         player = new Mage(world);
+
+        // for further item creation //
+        // items = new Array<Item>();
+        // itemsToSpawn = new PriorityQueue<ItemDef>();
     }
 
-   public void update(float delta) {
+    // for further item creation //
+    // public void spawnItem(ItemDef itemDef) {
+    //     itemsToSpawn.add(itemDef);
+    // }
+
+    // for further item creation //
+    // public void handleSpawningItems() {
+    //     if(!itemsToSpawn.isEmpty()) {
+    //         ItemDef itemDef = itemsToSpawn.poll();
+    //         if (itemDef.type == Ambrosia.class) {
+    //             items.add(new Ambrosia(this, itemDef.position.x, itemDef.position.y));
+    //         }
+    //     }
+    // }
+
+    public void update(float delta) {
        handleInput(delta);
+        // for further item creation //
+       // handleSpawningItems(); //
 
        world.step(1/60f, 6, 2);
 
@@ -71,7 +97,12 @@ public class PlayScreen implements Screen {
        gameCam.update();
        // render only what camera sees
        renderer.setView(gameCam);
-   }
+
+       // for further item creation
+       // for (Item item : items) {
+       //     item.update(delta);
+       // }
+    }
 
     private void handleInput(float delta) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
@@ -81,6 +112,10 @@ public class PlayScreen implements Screen {
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2) {
             player.body.applyLinearImpulse(new Vector2(-0.1f, 0), player.body.getWorldCenter(), true);
         }
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     @Override
@@ -103,6 +138,11 @@ public class PlayScreen implements Screen {
         // PROTOTYPE HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        // for further item creation
+        // for (Item item : items) {
+        //     item.draw(game.batch);
+        // }
 
     }
 
