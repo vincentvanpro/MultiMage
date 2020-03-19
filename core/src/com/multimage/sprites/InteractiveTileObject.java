@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.multimage.MultiMage;
+import com.multimage.screens.PlayScreen;
 
 
 public abstract class InteractiveTileObject {
@@ -14,6 +15,9 @@ public abstract class InteractiveTileObject {
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
+
+    // for further item creation //
+    // protected PlayScreen screen;
 
     public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
         this.world = world;
