@@ -112,6 +112,11 @@ public class PreferencesMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 boolean enabled = musicCheckbox.isChecked();
                 setMusicEnabled(!enabled);
+                if (!enabled) {
+                    game.music.play();
+                } else {
+                    game.music.stop();
+                }
                 Gdx.app.log(MultiMage.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
                 }
             });
@@ -137,6 +142,7 @@ public class PreferencesMenu implements Screen {
             @Override
             public boolean handle(Event event) {
                 setMusicVolume(volumeMusicSlider.getValue());
+                game.music.setVolume(volumeMusicSlider.getValue());
                 // Gdx.app.log(MultiMageGame.TITLE, "Sound " + (getMusicVolume()));
                 return false;
             }
