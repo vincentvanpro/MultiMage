@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.multimage.MultiMage;
@@ -19,6 +21,7 @@ import com.multimage.tools.WorldCreator;
 
 public class PlayScreen implements Screen {
     private MultiMage game;
+    private TextureAtlas atlas;
 
     // sprites
     private Mage player;
@@ -41,6 +44,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(MultiMage game) {
         this.game = game;
+        atlas = new TextureAtlas("MageTextures.pack");
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -61,11 +65,15 @@ public class PlayScreen implements Screen {
 
         new WorldCreator(world, map);
 
-        player = new Mage(world);
+        player = new Mage(world, this);
 
         // for further item creation //
         // items = new Array<Item>();
         // itemsToSpawn = new PriorityQueue<ItemDef>();
+    }
+
+    public TextureAtlas getAtlas(){
+        return atlas;
     }
 
     // for further item creation //
@@ -89,6 +97,8 @@ public class PlayScreen implements Screen {
        // handleSpawningItems(); //
 
        world.step(1/60f, 6, 2);
+
+       player.update(delta);
 
        gameCam.position.x = player.body.getPosition().x;
        gameCam.position.y = player.body.getPosition().y;
@@ -134,6 +144,11 @@ public class PlayScreen implements Screen {
 
         // render box2dDebugLines
         box2DDebugRenderer.render(world, gameCam.combined);
+
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
 
         // PROTOTYPE HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
