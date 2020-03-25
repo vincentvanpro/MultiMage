@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.multimage.screens.PlayScreen;
 import com.multimage.screens.Splash;
 
 public class MultiMage extends Game {
@@ -13,6 +14,12 @@ public class MultiMage extends Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	public static final float PPM = 100;  // PIXELS PER METER / SCALE
+
+	public static final short DEFAULT_BIT = 1;
+	public static final short MAGE_BIT = 2;
+	public static final short GROUND_BIT  = 4;
+	public static final short CHEST_BIT = 8;
+	public static final short DESTROYED_BIT = 16;
 
 	public SpriteBatch batch;
 	public Music music;
@@ -36,8 +43,8 @@ public class MultiMage extends Game {
 		} else {
 			music.stop();
 		}
-		setScreen(new Splash(this));
-		// setScreen(new PlayScreen(this));
+		// setScreen(new Splash(this));
+		setScreen(new PlayScreen(this));
 	}
 
 	@Override

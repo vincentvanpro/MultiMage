@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.multimage.MultiMage;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Mage;
+import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
 
 public class PlayScreen implements Screen {
@@ -66,12 +67,14 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-        new WorldCreator(world, map);
+        new WorldCreator(this);
 
-        player = new Mage(world, this);
+        player = new Mage(this);
 
         music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
         music.stop();
+
+        world.setContactListener(new WorldContactListener());
 
         // for further item creation //
         // items = new Array<Item>();
@@ -132,6 +135,10 @@ public class PlayScreen implements Screen {
 
     public World getWorld() {
         return world;
+    }
+
+    public TiledMap getMap() {
+        return map;
     }
 
     @Override
