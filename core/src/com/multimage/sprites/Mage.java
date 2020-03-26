@@ -50,12 +50,12 @@ public class Mage extends Sprite {
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
         defineMage();
-        setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
+        setBounds(0, 40, 48 / MultiMage.PPM, 40 / MultiMage.PPM);
         setRegion(mageStand);
     }
 
     public void update(float delta) {
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 14);
+        setPosition(body.getPosition().x - getWidth() / 3, body.getPosition().y - getHeight() / 3.10f);
         setRegion(getFrame(delta));
     }
 
@@ -111,7 +111,7 @@ public class Mage extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(5 / MultiMage.PPM);
+        shape.setRadius(12.5f / MultiMage.PPM);
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
