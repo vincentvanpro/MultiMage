@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.multimage.screens.Levels;
 import com.multimage.screens.PlayScreen;
-import com.multimage.sprites.Chest;
-import com.multimage.sprites.Ground;
+import com.multimage.sprites.*;
 
 public class WorldCreator {
 
@@ -30,39 +30,32 @@ public class WorldCreator {
             new Ground(screen, rectangle);
         }
 
-        // chest
-        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-
-            new Chest(screen, rectangle);
-        }
-
         // create chest
         for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new Chest(screen, rectangle);
         }
 
         // create bonus
         for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new Bonus(screen, rectangle);
         }
 
         // create openable door
         for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new OpenableDoor(screen, rectangle);
         }
 
         // create levers
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new Levers(screen, rectangle);
         }
     }
 }

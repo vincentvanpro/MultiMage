@@ -1,11 +1,15 @@
 package com.multimage.sprites;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
+import com.multimage.screens.PlayScreen;
 
 public class OpenableDoor extends InteractiveTileObject {
-    public OpenableDoor(World world, TiledMap map, Rectangle bounds) {
-        super(world, map, bounds);
+    public OpenableDoor(PlayScreen screen, Rectangle bounds) {
+        super(screen, bounds);
+    }
+
+    @Override
+    public void onBodyHit() {
+
     }
 }

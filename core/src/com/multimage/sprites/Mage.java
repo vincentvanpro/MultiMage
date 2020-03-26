@@ -118,16 +118,15 @@ public class Mage extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-<<<<<<< core/src/com/multimage/sprites/Mage.java
-        shape.setRadius(5 / MultiMage.PPM);
-        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
-        fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
-=======
+
         shape.setRadius(31f / MultiMage.PPM);
         fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
         fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
 
->>>>>>> core/src/com/multimage/sprites/Mage.java
+        shape.setRadius(31f / MultiMage.PPM);
+        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
+        fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
+
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
