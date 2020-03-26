@@ -9,12 +9,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.multimage.sprites.Chests;
+import com.multimage.screens.PlayScreen;
+import com.multimage.sprites.Chest;
 import com.multimage.sprites.Ground;
 
 public class WorldCreator {
 
-    public WorldCreator(World world, TiledMap map) {
+    public WorldCreator(PlayScreen screen) {
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
         BodyDef bodyDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
@@ -24,7 +27,14 @@ public class WorldCreator {
         for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Ground(world, map, rectangle);
+            new Ground(screen, rectangle);
+        }
+
+        // chest
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Chest(screen, rectangle);
         }
 
         // create chest
