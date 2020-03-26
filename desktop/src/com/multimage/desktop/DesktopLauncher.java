@@ -13,8 +13,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = MultiMage.TITLE + " v." + MultiMage.VERSION;
 		config.vSyncEnabled = true;
-		config.width = 1280;
-		config.height = 720;
+		config.width = 1600;
+		config.height = 900;
 
 		new LwjglApplication(new MultiMage(), config);
 	}
