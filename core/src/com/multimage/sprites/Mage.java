@@ -55,12 +55,12 @@ public class Mage extends Sprite {
     }
 
     public void update(float delta) {
+        setRegion(getFrame(delta));
         if (walkingRight) {setPosition(body.getPosition().x - getWidth() / 3,
                 body.getPosition().y - getHeight() / 3.10f);}
         else {
             setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
         }
-        setRegion(getFrame(delta));
     }
 
     public TextureRegion getFrame(float delta) {
