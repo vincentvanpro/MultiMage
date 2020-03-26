@@ -24,7 +24,7 @@ public class WorldCreator {
         Body body;
 
         // create ground fixtures/bodies
-        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Ground(screen, rectangle);
@@ -35,6 +35,34 @@ public class WorldCreator {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Chest(screen, rectangle);
+        }
+
+        // create chest
+        for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Chests(world, map, rectangle);
+        }
+
+        // create bonus
+        for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Chests(world, map, rectangle);
+        }
+
+        // create openable door
+        for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Chests(world, map, rectangle);
+        }
+
+        // create levers
+        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Chests(world, map, rectangle);
         }
     }
 }

@@ -53,13 +53,17 @@ public class Mage extends Sprite {
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
         defineMage();
-        setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
+        setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
     }
 
     public void update(float delta) {
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 14);
         setRegion(getFrame(delta));
+        if (walkingRight) {setPosition(body.getPosition().x - getWidth() / 3,
+                body.getPosition().y - getHeight() / 3.10f);}
+        else {
+            setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
+        }
     }
 
     public TextureRegion getFrame(float delta) {
@@ -107,16 +111,23 @@ public class Mage extends Sprite {
 
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(32 / MultiMage.PPM, 32 / MultiMage.PPM);
+        bodyDef.position.set(200 / MultiMage.PPM, 50 / MultiMage.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         body = world.createBody(bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
+<<<<<<< core/src/com/multimage/sprites/Mage.java
         shape.setRadius(5 / MultiMage.PPM);
         fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
         fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
+=======
+        shape.setRadius(31f / MultiMage.PPM);
+        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
+        fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
+
+>>>>>>> core/src/com/multimage/sprites/Mage.java
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
