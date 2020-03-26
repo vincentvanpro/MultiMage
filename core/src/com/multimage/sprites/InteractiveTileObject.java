@@ -2,9 +2,11 @@ package com.multimage.sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
+import com.multimage.screens.PlayScreen;
 
 
 public abstract class InteractiveTileObject {
@@ -15,9 +17,14 @@ public abstract class InteractiveTileObject {
     protected Rectangle bounds;
     protected Body body;
 
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
-        this.world = world;
-        this.map = map;
+    protected Fixture fixture;
+
+    // for further item creation //
+    // protected PlayScreen screen;
+
+    public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
+        this.world = screen.getWorld();
+        this.map = screen.getMap();
         this.bounds = bounds;
 
         BodyDef bodyDef = new BodyDef();
@@ -25,14 +32,29 @@ public abstract class InteractiveTileObject {
         PolygonShape shape = new PolygonShape();
 
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set((bounds.getX() + bounds.getWidth() / 2) / MultiMageGame.PPM,
-                (bounds.getY() + bounds.getHeight() / 2) / MultiMageGame.PPM);
+        bodyDef.position.set((bounds.getX() + bounds.getWidth() / 2) / MultiMage.PPM,
+                (bounds.getY() + bounds.getHeight() / 2) / MultiMage.PPM);
 
         body = world.createBody(bodyDef);
 
-        shape.setAsBox(bounds.getWidth() / 2 / MultiMageGame.PPM,
-                bounds.getHeight() / 2 / MultiMageGame.PPM);
+        shape.setAsBox(bounds.getWidth() / 2 / MultiMage.PPM,
+                bounds.getHeight() / 2 / MultiMage.PPM);
         fixtureDef.shape = shape;
-        body.createFixture(fixtureDef);
+        fixture = body.createFixture(fixtureDef);
     }
+
+    public abstract void onBodyHit();
+
+    public void setCategoryFilter(short filterBit) {
+        Filter filter = new Filter();
+        filter.categoryBits = filterBit;
+        fixture.setFilterData(filter);
+    }
+
+    public TiledMapTileLayer.Cell getCell() {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        return layer.getCell((int) (body.getPosition().x * MultiMage.PPM / 16),
+                (int) (body.getPosition().y * MultiMage.PPM / 16));
+    }
+
 }

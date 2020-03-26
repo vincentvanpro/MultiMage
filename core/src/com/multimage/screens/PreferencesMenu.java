@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 
 
 public class PreferencesMenu implements Screen {
@@ -36,9 +36,9 @@ public class PreferencesMenu implements Screen {
     private Skin skinForSlidersAndCheckBox;
     private TextureAtlas atlasUiAtlas;
 
-    private MultiMageGame game;
+    private MultiMage game;
 
-    public PreferencesMenu(MultiMageGame game){
+    public PreferencesMenu(MultiMage game){
         this.game = game;
     }
 
@@ -112,7 +112,12 @@ public class PreferencesMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 boolean enabled = musicCheckbox.isChecked();
                 setMusicEnabled(!enabled);
-                Gdx.app.log(MultiMageGame.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
+                if (!enabled) {
+                    game.music.play();
+                } else {
+                    game.music.stop();
+                }
+                Gdx.app.log(MultiMage.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
                 }
             });
 
@@ -124,7 +129,7 @@ public class PreferencesMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 boolean enabled = soundCheckbox.isChecked();
                 setSoundEffectsEnabled(!enabled);
-                Gdx.app.log(MultiMageGame.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
+                Gdx.app.log(MultiMage.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "paused"));
                 // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
                 }
             });
@@ -137,6 +142,7 @@ public class PreferencesMenu implements Screen {
             @Override
             public boolean handle(Event event) {
                 setMusicVolume(volumeMusicSlider.getValue());
+                game.music.setVolume(volumeMusicSlider.getValue());
                 // Gdx.app.log(MultiMageGame.TITLE, "Sound " + (getMusicVolume()));
                 return false;
             }

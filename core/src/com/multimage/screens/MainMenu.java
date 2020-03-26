@@ -16,19 +16,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.multimage.MultiMageGame;
+import com.multimage.MultiMage;
 import com.multimage.tween.ActorAccessor;
 
 public class MainMenu implements Screen {
 
-    private final MultiMageGame game;
+    private final MultiMage game;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
     private TweenManager tweenManager;
 
-    public MainMenu(MultiMageGame game) {
+    public MainMenu(MultiMage game) {
         this.game = game;
     }
 
@@ -46,15 +46,6 @@ public class MainMenu implements Screen {
         table.setFillParent(true);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        TextButton buttonExit = new TextButton("EXIT", skin);
-        buttonExit.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-        buttonExit.pad(15);
-
         TextButton buttonPlay = new TextButton("PLAY", skin);
         buttonPlay.addListener(new ClickListener() {
             @Override
@@ -63,6 +54,16 @@ public class MainMenu implements Screen {
             }
         });
         buttonPlay.pad(15);
+
+        TextButton buttonMultiPlayer = new TextButton("MULTIPLAYER", skin);
+        buttonMultiPlayer.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MultiPlayer(game));
+            }
+        });
+        buttonMultiPlayer.pad(15);
+
         TextButton buttonPreferences = new TextButton("SETTINGS", skin);
         buttonPreferences.addListener(new ClickListener() {
             @Override
@@ -72,8 +73,17 @@ public class MainMenu implements Screen {
         });
         buttonPreferences.pad(15);
 
+        TextButton buttonExit = new TextButton("EXIT", skin);
+        buttonExit.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+        buttonExit.pad(15);
+
         // heading
-        Label heading = new Label(MultiMageGame.TITLE, skin);
+        Label heading = new Label(MultiMage.TITLE, skin);
         heading.setFontScale(1f);
 
         // putting in a table
@@ -82,6 +92,10 @@ public class MainMenu implements Screen {
         table.row();
         table.add(buttonPlay);
         table.getCell(heading).spaceBottom(15);
+        table.row();
+        table.add(buttonMultiPlayer);
+        table.getCell(heading).spaceBottom(15);
+        table.getCell(buttonMultiPlayer).spaceTop(5);
         table.row();
         table.add(buttonPreferences);
         table.getCell(heading).spaceBottom(15);
@@ -94,6 +108,7 @@ public class MainMenu implements Screen {
 
         // creating animations
         tweenManager = new TweenManager();
+
         Tween.registerAccessor(Actor.class, new ActorAccessor());
 
         // heading rgb animation
@@ -110,10 +125,12 @@ public class MainMenu implements Screen {
         // heading and buttons fade-in
         Timeline.createSequence().beginSequence()
                 .push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
+                .push(Tween.set(buttonMultiPlayer, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonPreferences, ActorAccessor.ALPHA).target(0))
                 .push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0))
                 .push(Tween.from(heading, ActorAccessor.ALPHA, .5f).target(0))
                 .push(Tween.to(buttonPlay, ActorAccessor.ALPHA, .5f).target(1))
+                .push(Tween.to(buttonMultiPlayer, ActorAccessor.ALPHA, .5f).target(1))
                 .push(Tween.to(buttonPreferences, ActorAccessor.ALPHA, .5f).target(1))
                 .push(Tween.to(buttonExit, ActorAccessor.ALPHA, .5f).target(1))
                 .end().start(tweenManager);
