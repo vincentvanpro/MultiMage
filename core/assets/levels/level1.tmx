@@ -30,7 +30,7 @@
  </layer>
  <layer id="4" name="graphics" width="80" height="60">
   <data encoding="base64" compression="zlib">
-   eJztmstu3CAUhvFYbfxEXWeTpsokTSrlgbycVF206kuk6To3ZZFUqpSqq16eYjTu5BUKGpBPGGzDwZeDzS/9MmODwZ9gOCCyhLGMiP9ljC2zzRVa3HvS0sKFll5qVvdWFe811aPKFaB8Ybi3kmVEu6lItCckUeO3GgG/l+kwbRFaNvCzaVtbeWzyLYn1vyZ+1BT5+Sny8xM1fqHNH4rf91mzH2fdt0fEVufcF/Iq/IX7q0wPIV5vzuvPeTvyc+kLeXWJX372wO8p0P5no8hvW9T4rSM/L4W2flP8Zi24DWHnX32foCkOgnsMK7kngBG1+CW0+K8IjB+19W9o/KipD34/sueuU+RXLwy/JCk9hOrq73v+GFv/ozb/hiZffm+Bp6YF8+M3RWZCC+kzhudHqc+J71Df1JbEu96z56xU+oO0SK8R/CixW7Dtb/QRnGttjOVHRYob7BNYubITdh2/lNjJ/raruJ0xfB/EsMPw85W+FtENz0eYzmHoaeU1sKlsYcir54PnO/S69DrhWQ5bfl31vV+O+4qu+bFlbKTO7VTptof1wJj5KQmO19wPWZm+474C97CaAr8uNQV+dfuIvueNQuKnf2vsf35S/PqYJ6o0Bn5DKvLz0xT4vdox3zvdMT9z0dj4Xct4TvhGxneXMn0L4j9xvQf3bbXP8x5yH2csP+J+s/mdH9e844A/E/nm3CebsmzPsk5R7kiWeS3LY/QuZbu6KYxfKGwsVFVu3vG8SI1fmzroIaYYM78+ZOKHHUNVe1JjEsX1BwX9Tkq7KPIrlSBinMiv1B8Eh8iv1JT4wf+rKrvKh988tTMVffN8blITvxfJtl35UWE4BD9daVKu31z4NTHEjCnX8afz0eOyrvhVxX/wHJWLm+QaE9jmp9D/HtOS3yf++2OFP3u0zbVNtvm74PfXsa37s8hPCTv+Ij88u8jPj93U+fmymzK/Ntj1wc91TrPN78OvLXaQXzTe/wFr1JDb
+   eJztmstu1DAUhp2JoHki1t1AUYdSkHigLKeIBYiXKGVNL2IBSEhFrLg8xWjC9BXw0diK63ES+ziX49i/9CuexI6dT/b42HKRMVYQ8b+CsXWxu6qGe3daGlxp6bVmeW/T8F5TPbJcpZSvDPc2ogy0m4qgPSGJGr/NDPg9zKdpC2jdwc+mbX3lscm3Jtb/uvhRU+Lnp8TPT9T4hTZ/SH7fF92+XQzfHoitzrkvxBX8gfujSE8hXm/J6y95O8pz4QtxdYlffo7A7y7Q/mejxG9f1PhtEz8vhbZ+k/wWPbgPYedffZ+gKw5S9xg2Yk8AI2rxS2jxXxUYP2rr39D4UdMY/H4U992mxK9dGH5ZVnsKtdU/9vwxt/5Hbf4NTb78niuOTSvmxy9GZqCV8BnD86PU5+A75Df1JXjXa3aflUy/EYb0FsGPErsV2/9GH6lzrY2x/KhIclP7BFau7MCu45cSO9HfDiW3M4bvgxh2GH6+0tciutXzEaZzGHpaeqvYVLYy5NXzqec79Lr0OtWzHLb8hup7vxz3FV3zY8vYSJ7badLNCOuBOfOTAo5X3F+LOv2Z+1K5h1UM/IZUDPza9hF9zxuFxE//1tT//CT5jTFPNGkO/KZU4uenGPg9OjDfe3VgfuaiufG7EvEc+FrEd59E+kaJ/+D6RblvqyOe9xn3acHKE+6nu9/lacs7jvkzyLfkfrEryx5b1gnlTkSZJ6I8Ri9zdqibwvhVhY2FmsotB54XqfHrU8cjxBRz5jeGTPywY6hpT2pOorj+oKDfWW0XJX61MkSMk/jV+oPgkPjViomf+n/VZFf58Fvmdqaib57PTeri9yDbtys/Kgyn4Kcrz+r1mwu/LoaYMeU6/nQ+elw2FL+m+E89R+XiLrnGBLb5KfS/27zm947/ftvg9x5tc22Tbf4h+P11bOvRIvGTwo6/2PlhucXOz5dbrPz64hYbv765jcXPdU6zzW/LbyhuOr9kvP8DQR2VbQ==
   </data>
  </layer>
  <layer id="14" name="openable door" width="80" height="60">
@@ -52,11 +52,11 @@
   <object id="80" x="1056" y="1600" width="160" height="32"/>
   <object id="81" x="1440" y="1504" width="288" height="32"/>
   <object id="82" x="2080" y="1696" width="448" height="192"/>
-  <object id="83" x="2048" y="1728" width="32" height="160"/>
-  <object id="84" x="2016" y="1760" width="32" height="128"/>
-  <object id="85" x="1984" y="1792" width="32" height="96"/>
-  <object id="86" x="1952" y="1824" width="32" height="64"/>
-  <object id="87" x="1920" y="1856" width="32" height="32"/>
+  <object id="83" x="2016" y="1728" width="64" height="160"/>
+  <object id="84" x="1952" y="1760" width="64" height="128"/>
+  <object id="85" x="1888" y="1792" width="64" height="96"/>
+  <object id="86" x="1824" y="1824" width="64" height="64"/>
+  <object id="87" x="1760" y="1856" width="64" height="32"/>
   <object id="88" x="2368" y="1536" width="160" height="32"/>
   <object id="89" x="2080" y="1376" width="96" height="32"/>
   <object id="90" x="2368" y="1216" width="160" height="32"/>
