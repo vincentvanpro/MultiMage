@@ -58,7 +58,7 @@ public class PlayScreen implements Screen {
 
         // load and setup map
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("levels/level1test.tmx");
+        map = mapLoader.load("levels/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -121,7 +121,7 @@ public class PlayScreen implements Screen {
     }
 
     private void handleInput(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.getState() != Mage.State.JUMPING) {
             player.body.applyLinearImpulse(new Vector2(0, 4f), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2) {
             player.body.applyLinearImpulse(new Vector2(0.1f, 0), player.body.getWorldCenter(), true);
