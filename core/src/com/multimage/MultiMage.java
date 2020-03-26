@@ -34,7 +34,7 @@ public class MultiMage extends Game {
 				.getBoolean("music.enabled", true)) {
 			music.play();
 		} else {
-			music.stop();
+			music.pause();
 		}
 		setScreen(new Splash(this));
 		// setScreen(new PlayScreen(this));

@@ -129,7 +129,7 @@ public class PreferencesMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 boolean enabled = soundCheckbox.isChecked();
                 setSoundEffectsEnabled(!enabled);
-                Gdx.app.log(MultiMage.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
+                Gdx.app.log(MultiMage.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "paused"));
                 // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
                 }
             });
