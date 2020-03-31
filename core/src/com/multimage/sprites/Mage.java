@@ -15,6 +15,12 @@ import com.multimage.screens.PlayScreen;
 
 // ordinary Mage class
 public class Mage extends Sprite {
+
+    public int id = -1;
+    String name;
+    public float PosX;
+    public float PosY;
+
     public enum State { JUMPING, FALLING, WALKING, STANDING }
     public State currentState;
     public State previousState;
@@ -52,6 +58,12 @@ public class Mage extends Sprite {
         defineMage();
         setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
         setRegion(mageStand);
+    }
+
+    public Mage(int id, int x) {
+        this.id = id;
+        PosX = x;
+        PosY = 50;
     }
 
     public void update(float delta) {
@@ -115,5 +127,37 @@ public class Mage extends Sprite {
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getPosX() {
+        return PosX;
+    }
+
+    public void setPosX(float PostX) {
+        this.PosX = PostX;
+    }
+
+    public float getPosY() {
+        return PosY;
+    }
+
+    public void setPosY(float PostY) {
+        this.PosY = PostY;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public void setDirection(boolean walkingRight) {
+        this.walkingRight = walkingRight;
     }
 }
