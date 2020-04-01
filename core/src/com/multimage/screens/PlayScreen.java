@@ -144,8 +144,8 @@ public class PlayScreen implements Screen {
 
     }
 
-    private void handleInput(float delta) { // && player.getState() != Mage.State.JUMPING
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+    private void handleInput(float delta) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.getState() != Mage.State.JUMPING) {
             player.body.applyLinearImpulse(new Vector2(0, 4f), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2) {
             player.body.applyLinearImpulse(new Vector2(0.1f, 0), player.body.getWorldCenter(), true);

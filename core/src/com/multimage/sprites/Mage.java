@@ -135,8 +135,8 @@ public class Mage extends Sprite {
         body.createFixture(fixtureDef);
 
         EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-30 / MultiMage.PPM, -15 / MultiMage.PPM),
-                new Vector2(30 / MultiMage.PPM, -15 / MultiMage.PPM));
+        head.set(new Vector2(-30 / MultiMage.PPM, 0 / MultiMage.PPM),
+                new Vector2(30 / MultiMage.PPM, 0 / MultiMage.PPM));
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 
