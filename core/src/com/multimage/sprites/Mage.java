@@ -120,20 +120,23 @@ public class Mage extends Sprite {
         CircleShape shape = new CircleShape();
 
         shape.setRadius(31f / MultiMage.PPM);
-        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
-        fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
-
-        shape.setRadius(31f / MultiMage.PPM);
-        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;
-        fixtureDef.filter.maskBits = MultiMage.DEFAULT_BIT | MultiMage.CHEST_BIT | MultiMage.GROUND_BIT;
+        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;   // Define mage bit
+        fixtureDef.filter.maskBits =                // Mage can collide with these objects
+                MultiMage.DEFAULT_BIT |
+                MultiMage.CHEST_BIT |
+                MultiMage.GROUND_BIT |
+                MultiMage.LEVERS_BIT |
+                MultiMage.OPENABLE_DOOR_BIT |
+                MultiMage.BONUS_BIT|
+                MultiMage.ITEM_BIT;
 
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
 
         EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-6 / MultiMage.PPM, 2 / MultiMage.PPM),
-                new Vector2(6 / MultiMage.PPM, 2 / MultiMage.PPM));
+        head.set(new Vector2(-30 / MultiMage.PPM, -15 / MultiMage.PPM),
+                new Vector2(30 / MultiMage.PPM, -15 / MultiMage.PPM));
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 

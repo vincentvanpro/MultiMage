@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
 import com.multimage.screens.PlayScreen;
+import com.multimage.sprites.Mage;
 
 
 public class Book extends Item {
@@ -39,7 +40,7 @@ public class Book extends Item {
     }
 
     @Override
-    public void use() {
+    public void use(Mage mage) {
         destroy();
     }
 

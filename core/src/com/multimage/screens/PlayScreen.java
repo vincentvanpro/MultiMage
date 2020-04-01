@@ -13,25 +13,31 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.multimage.MultiMage;
+import com.multimage.item.Item;
+import com.multimage.item.ItemDef;
+import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 public class PlayScreen implements Screen {
     private MultiMage game;
     private TextureAtlas atlas;
+    private boolean areLeversActivated = false;
 
     private Music music;
 
     // sprites
     private Mage player;
-    // for further item creation //
-    // private Array<Item> items;
-    // private PriorityQueue<ItemDef> itemsToSpawn;
+    private Array<Item> items;
+    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
     private OrthographicCamera gameCam;
     private Viewport gamePort;
@@ -76,38 +82,57 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        // for further item creation //
-        // items = new Array<Item>();
-        // itemsToSpawn = new PriorityQueue<ItemDef>();
+        items = new Array<Item>();
+        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
     }
 
     public TextureAtlas getAtlas(){
         return atlas;
     }
 
-    // for further item creation //
-    // public void spawnItem(ItemDef itemDef) {
-    //     itemsToSpawn.add(itemDef);
-    // }
+    public void spawnItem(ItemDef itemDef) {
+        itemsToSpawn.add(itemDef);
+    }
 
-    // for further item creation //
-    // public void handleSpawningItems() {
-    //     if(!itemsToSpawn.isEmpty()) {
-    //         ItemDef itemDef = itemsToSpawn.poll();
-    //         if (itemDef.type == Ambrosia.class) {
-    //             items.add(new Ambrosia(this, itemDef.position.x, itemDef.position.y));
-    //         }
-    //     }
-    // }
+    public void handleSpawningItems() {
+        if(!itemsToSpawn.isEmpty()) {
+            ItemDef itemDef = itemsToSpawn.poll();
+            if (itemDef.type == Ambrosia.class) {
+                items.add(new Ambrosia(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Amulet.class) {
+                items.add(new Amulet(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Book.class) {
+                items.add(new Book(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Boots.class) {
+                items.add(new Boots(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Crown.class) {
+                items.add(new Crown(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Hat.class) {
+                items.add(new Hat(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Ring.class) {
+                items.add(new Ring(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Shield.class) {
+                items.add(new Shield(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Staff.class) {
+                items.add(new Staff(this, itemDef.position.x, itemDef.position.y));
+            } else if (itemDef.type == Sword.class) {
+                items.add(new Sword(this, itemDef.position.x, itemDef.position.y));
+            }
+        }
+    }
 
     public void update(float delta) {
        handleInput(delta);
-        // for further item creation //
-       // handleSpawningItems(); //
+       // item creation //
+       handleSpawningItems();
 
        world.step(1/60f, 6, 2);
 
        player.update(delta);
+
+       for (Item item : items) {
+            item.update(delta);
+       }
 
        gameCam.position.x = player.body.getPosition().x;
        gameCam.position.y = player.body.getPosition().y;
@@ -117,14 +142,10 @@ public class PlayScreen implements Screen {
        // render only what camera sees
        renderer.setView(gameCam);
 
-       // for further item creation
-       // for (Item item : items) {
-       //     item.update(delta);
-       // }
     }
 
-    private void handleInput(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.getState() != Mage.State.JUMPING) {
+    private void handleInput(float delta) { // && player.getState() != Mage.State.JUMPING
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             player.body.applyLinearImpulse(new Vector2(0, 4f), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2) {
             player.body.applyLinearImpulse(new Vector2(0.1f, 0), player.body.getWorldCenter(), true);
@@ -161,17 +182,24 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+
+        // item creation
+        for (Item item : items) {
+            item.draw(game.batch);
+        }
         game.batch.end();
 
         // PROTOTYPE HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
 
-        // for further item creation
-        // for (Item item : items) {
-        //     item.draw(game.batch);
-        // }
+    public void setDoorOpened() {
+        areLeversActivated = true;
+    }
 
+    public boolean isDoorOpened() {
+        return areLeversActivated;
     }
 
     @Override

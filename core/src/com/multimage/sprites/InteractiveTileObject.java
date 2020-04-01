@@ -16,13 +16,13 @@ public abstract class InteractiveTileObject {
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
+    protected PlayScreen screen;
 
     protected Fixture fixture;
 
-    // for further item creation //
-    // protected PlayScreen screen;
 
     public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
+        this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
         this.bounds = bounds;
@@ -51,10 +51,15 @@ public abstract class InteractiveTileObject {
         fixture.setFilterData(filter);
     }
 
-    public TiledMapTileLayer.Cell getCell() {
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-        return layer.getCell((int) (body.getPosition().x * MultiMage.PPM / 16),
-                (int) (body.getPosition().y * MultiMage.PPM / 16));
+    public TiledMapTileLayer.Cell getCell(int n) {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(n);
+        return layer.getCell((int) (body.getPosition().x * MultiMage.PPM / 32),
+                (int) (body.getPosition().y * MultiMage.PPM / 32));
+    }
+
+    public void setDoorNull() {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(6);
+        layer.setVisible(false);
     }
 
 }
