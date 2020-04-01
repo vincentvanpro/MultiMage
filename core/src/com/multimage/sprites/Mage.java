@@ -122,13 +122,13 @@ public class Mage extends Sprite {
         shape.setRadius(31f / MultiMage.PPM);
         fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;   // Define mage bit
         fixtureDef.filter.maskBits =                // Mage can collide with these objects
-                MultiMage.DEFAULT_BIT |
-                MultiMage.CHEST_BIT |
-                MultiMage.GROUND_BIT |
-                MultiMage.LEVERS_BIT |
-                MultiMage.OPENABLE_DOOR_BIT |
-                MultiMage.BONUS_BIT|
-                MultiMage.ITEM_BIT;
+                    MultiMage.DEFAULT_BIT |
+                    MultiMage.CHEST_BIT |
+                    MultiMage.GROUND_BIT |
+                    MultiMage.LEVERS_BIT |
+                    MultiMage.OPENABLE_DOOR_BIT |
+                    MultiMage.BONUS_BIT |
+                    MultiMage.ITEM_BIT;
 
 
         fixtureDef.shape = shape;

@@ -25,12 +25,16 @@ import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PlayScreen implements Screen {
+
     private MultiMage game;
     private TextureAtlas atlas;
-    private boolean areLeversActivated = false;
+    private List<Integer> levers;
+    private boolean isDoorOpened;
 
     private Music music;
 
@@ -84,6 +88,7 @@ public class PlayScreen implements Screen {
 
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
+        levers = new ArrayList<>();
     }
 
     public TextureAtlas getAtlas(){
@@ -194,12 +199,20 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
     }
 
-    public void setDoorOpened() {
-        areLeversActivated = true;
+    public int leversActivated() {
+        return levers.size();
+    }
+
+    public void leverPulled(int lever) {
+        levers.add(lever);
     }
 
     public boolean isDoorOpened() {
-        return areLeversActivated;
+        return isDoorOpened;
+    }
+
+    public void setDoorOpened() {
+        isDoorOpened = true;
     }
 
     @Override
