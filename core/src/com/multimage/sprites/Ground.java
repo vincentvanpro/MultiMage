@@ -1,6 +1,5 @@
 package com.multimage.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
@@ -13,7 +12,5 @@ public class Ground extends InteractiveTileObject {
     }
 
     @Override
-    public void onBodyHit() {
-        Gdx.app.log("Ground", "collision");
-    }
+    public void onBodyHit() { }
 }
