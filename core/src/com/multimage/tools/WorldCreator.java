@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.multimage.screens.Levels;
-import com.multimage.screens.PlayScreen;
-import com.multimage.sprites.*;
+import com.multimage.sprites.Chests;
+import com.multimage.sprites.Ground;
+import com.multimage.sprites.Platforms;
 
 public class WorldCreator {
 
@@ -28,6 +28,13 @@ public class WorldCreator {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Ground(screen, rectangle);
+        }
+
+        // create platforms
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Platforms(world, map, rectangle);
         }
 
         // create chest

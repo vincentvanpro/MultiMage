@@ -11,10 +11,8 @@ import com.multimage.screens.Splash;
 public class MultiMage extends Game {
 	public static final String TITLE = "MultiMage" , VERSION = "RAW";
 
-	// public static final int V_WIDTH = 400;
-	// public static final int V_HEIGHT = 208;
-	public static final int V_WIDTH = 500;
-	public static final int V_HEIGHT = 300;
+	public static final int V_WIDTH = 864;
+	public static final int V_HEIGHT = 485;
 	public static final float PPM = 100;  // PIXELS PER METER / SCALE
 
 	public static final short DEFAULT_BIT = 1;
