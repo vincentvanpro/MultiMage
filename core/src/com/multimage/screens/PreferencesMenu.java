@@ -115,7 +115,7 @@ public class PreferencesMenu implements Screen {
                 if (!enabled) {
                     game.music.play();
                 } else {
-                    game.music.stop();
+                    game.music.pause();
                 }
                 Gdx.app.log(MultiMage.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
                 }

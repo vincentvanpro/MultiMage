@@ -15,7 +15,9 @@ import com.multimage.sprites.Platforms;
 
 public class WorldCreator {
 
-    public WorldCreator(World world, TiledMap map) {
+    public WorldCreator(PlayScreen screen) {
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
         BodyDef bodyDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
@@ -25,7 +27,7 @@ public class WorldCreator {
         for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Ground(world, map, rectangle);
+            new Ground(screen, rectangle);
         }
 
         // create platforms
@@ -39,28 +41,28 @@ public class WorldCreator {
         for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new Chest(screen, rectangle);
         }
 
         // create bonus
         for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new Bonus(screen, rectangle);
         }
 
         // create openable door
         for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new OpenableDoor(screen, rectangle);
         }
 
         // create levers
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chests(world, map, rectangle);
+            new Levers(screen, rectangle);
         }
     }
 }

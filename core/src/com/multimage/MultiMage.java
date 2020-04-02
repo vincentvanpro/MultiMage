@@ -15,6 +15,16 @@ public class MultiMage extends Game {
 	public static final int V_HEIGHT = 485;
 	public static final float PPM = 100;  // PIXELS PER METER / SCALE
 
+	public static final short DEFAULT_BIT = 1;
+	public static final short MAGE_BIT = 2;
+	public static final short GROUND_BIT  = 4;
+	public static final short CHEST_BIT = 8;
+	public static final short BONUS_BIT = 16;
+	public static final short LEVERS_BIT = 32;
+	public static final short OPENABLE_DOOR_BIT = 64;
+	public static final short DESTROYED_BIT = 128;
+	public static final short ITEM_BIT = 256;
+
 	public SpriteBatch batch;
 	public Music music;
 
@@ -37,7 +47,7 @@ public class MultiMage extends Game {
 		} else {
 			music.pause();
 		}
-		//setScreen(new Splash(this));
+		// setScreen(new Splash(this));
 		setScreen(new PlayScreen(this));
 	}
 

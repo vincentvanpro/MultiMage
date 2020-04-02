@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Bonus extends InteractiveTileObject {
-    public Bonus(PlayScreen screen, Rectangle bounds) {
+public class Chest extends InteractiveTileObject {
+    public Chest(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);
         fixture.setUserData(this);
-        setCategoryFilter(MultiMage.BONUS_BIT);
+        setCategoryFilter(MultiMage.CHEST_BIT);
     }
 
     @Override
@@ -24,9 +24,9 @@ public class Bonus extends InteractiveTileObject {
         Random random = new Random();
         List<?> items = Arrays.asList(Ambrosia.class, Amulet.class, Book.class, Boots.class,
                 Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
-        Gdx.app.log("Bonus", "collision");
+        Gdx.app.log("Chest", "collision");
         setCategoryFilter(MultiMage.DESTROYED_BIT);
-        getCell(2).setTile(null);
+        getCell(3).setTile(null);
         screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y),
                 (Class<?>) items.get(random.nextInt(10))));
     }

@@ -3,9 +3,11 @@ package com.multimage.sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -15,6 +17,7 @@ import com.multimage.screens.PlayScreen;
 
 // ordinary Mage class
 public class Mage extends Sprite {
+
     public enum State { JUMPING, FALLING, WALKING, STANDING }
     public State currentState;
     public State previousState;
@@ -27,9 +30,9 @@ public class Mage extends Sprite {
     private boolean walkingRight;
 
 
-    public Mage(World world, PlayScreen screen) {
+    public Mage(PlayScreen screen) {
         super(screen.getAtlas().findRegion("standing"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -115,9 +118,28 @@ public class Mage extends Sprite {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
+
         shape.setRadius(31f / MultiMage.PPM);
+        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;   // Define mage bit
+        fixtureDef.filter.maskBits =                // Mage can collide with these objects
+                    MultiMage.DEFAULT_BIT |
+                    MultiMage.CHEST_BIT |
+                    MultiMage.GROUND_BIT |
+                    MultiMage.LEVERS_BIT |
+                    MultiMage.OPENABLE_DOOR_BIT |
+                    MultiMage.BONUS_BIT |
+                    MultiMage.ITEM_BIT;
+
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
+
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-30 / MultiMage.PPM, 0 / MultiMage.PPM),
+                new Vector2(30 / MultiMage.PPM, 0 / MultiMage.PPM));
+        fixtureDef.shape = head;
+        fixtureDef.isSensor = true;
+
+        body.createFixture(fixtureDef).setUserData("body");
     }
 }

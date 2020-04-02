@@ -1,11 +1,30 @@
 package com.multimage.sprites;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
+import com.multimage.MultiMage;
+import com.multimage.screens.PlayScreen;
 
 public class Levers extends InteractiveTileObject {
-    public Levers(World world, TiledMap map, Rectangle bounds) {
-        super(world, map, bounds);
+    private int leverCount = map.getLayers().get(12).getObjects().getCount();
+
+    public Levers(PlayScreen screen, Rectangle bounds) {
+        super(screen, bounds);
+        fixture.setUserData(this);
+        setCategoryFilter(MultiMage.LEVERS_BIT);
+    }
+
+    @Override
+    public void onBodyHit() {
+        System.out.println(leverCount);
+        Gdx.app.log("Levers", "collision");
+        setCategoryFilter(MultiMage.DESTROYED_BIT);
+        getCell(4).setTile(null);
+        screen.leverPulled(1);
+        System.out.println(screen.leversActivated());
+        if (screen.leversActivated() == leverCount) {
+            screen.setDoorOpened();
+        }
+
     }
 }
