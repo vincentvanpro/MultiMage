@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.multimage.sprites.Chests;
 import com.multimage.sprites.Ground;
+import com.multimage.sprites.Platforms;
 
 public class WorldCreator {
 
@@ -25,6 +26,13 @@ public class WorldCreator {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Ground(world, map, rectangle);
+        }
+
+        // create platforms
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            new Platforms(world, map, rectangle);
         }
 
         // create chest
