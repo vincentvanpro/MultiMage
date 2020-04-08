@@ -22,7 +22,6 @@ import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Enemy;
-import com.multimage.sprites.Ghost;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
@@ -162,8 +161,8 @@ public class PlayScreen implements Screen {
 
     }
 
-    private void handleInput(float delta) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.body.getLinearVelocity().y == 0.0f) {
+    private void handleInput(float delta) { // && player.body.getLinearVelocity().y == 0.0f
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             player.body.applyLinearImpulse(new Vector2(0, 5.75f), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
             player.body.applyLinearImpulse(new Vector2(0.15f, 0), player.body.getWorldCenter(), true);
@@ -214,6 +213,10 @@ public class PlayScreen implements Screen {
         // PROTOTYPE HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+    }
+
+    public Mage getPlayer() {
+        return player;
     }
 
     public int leversActivated() {

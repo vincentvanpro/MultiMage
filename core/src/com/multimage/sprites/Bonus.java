@@ -1,6 +1,7 @@
 package com.multimage.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.multimage.MultiMage;
@@ -13,8 +14,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Bonus extends InteractiveTileObject {
-    public Bonus(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public Bonus(PlayScreen screen, MapObject object) {
+        super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.BONUS_BIT);
     }
@@ -23,7 +24,7 @@ public class Bonus extends InteractiveTileObject {
     public void onBodyHit() {
         Random random = new Random();
         List<?> items = Arrays.asList(Ambrosia.class, Amulet.class, Book.class, Boots.class,
-                Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
+               Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
         Gdx.app.log("Bonus", "collision");
         setCategoryFilter(MultiMage.DESTROYED_BIT);
         getCell(2).setTile(null);

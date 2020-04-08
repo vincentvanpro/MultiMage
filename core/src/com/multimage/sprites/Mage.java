@@ -12,11 +12,49 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.item.Item;
 import com.multimage.screens.PlayScreen;
+import com.multimage.tools.Character;
+
+import java.util.HashMap;
 
 
 // ordinary Mage class
-public class Mage extends Sprite {
+public class Mage extends Sprite implements Character {
+
+    @Override
+    public int getArmour() {
+        return 0;
+    }
+
+    @Override
+    public int getLevel() {
+        return 0;
+    }
+
+    @Override
+    public float getHealth() {
+        return 0;
+    }
+
+    @Override
+    public void levelUp() { }
+
+    @Override
+    public void getBonusesFromItems() { }
+
+    @Override
+    public void getPassiveSkillEffect() { }
+
+    @Override
+    public void addItem(String item) {
+        if (items.containsKey(item)) {
+            items.put(item, items.get(item) + 1);
+        } else {
+            items.put(item, 1);
+        }
+        System.out.println(items);
+    }
 
     public enum State { JUMPING, FALLING, WALKING, STANDING }
     public State currentState;
@@ -28,6 +66,10 @@ public class Mage extends Sprite {
     private Animation<TextureRegion> mageJump;
     private float stateTimer;
     private boolean walkingRight;
+    private HashMap<String, Integer> items;
+    private float health;
+    private float armour;
+    private float xp;
 
 
     public Mage(PlayScreen screen) {
@@ -54,6 +96,9 @@ public class Mage extends Sprite {
         defineMage();
         setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
+
+
+        items = new HashMap<String, Integer>();
     }
 
     public void update(float delta) {
@@ -133,7 +178,7 @@ public class Mage extends Sprite {
 
 
         fixtureDef.shape = shape;
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
 
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-30 / MultiMage.PPM, -32 / MultiMage.PPM),

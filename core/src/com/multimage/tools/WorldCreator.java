@@ -32,44 +32,38 @@ public class WorldCreator {
 
         // create ground fixtures/bodies
         for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Ground(screen, rectangle);
+            new Ground(screen, object);
         }
 
         // create platforms
         for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Platforms(screen, rectangle);
+            new Platforms(screen, object);
         }
 
         // create chest
         for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Chest(screen, rectangle);
+            new Chest(screen, object);
         }
 
         // create bonus
         for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Bonus(screen, rectangle);
+            new Bonus(screen, object);
         }
 
         // create openable door
         for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new OpenableDoor(screen, rectangle);
+            new OpenableDoor(screen, object);
         }
 
         // create levers
         for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
-            new Levers(screen, rectangle);
+            new Levers(screen, object);
         }
 
         //create ghosts
