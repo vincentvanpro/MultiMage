@@ -21,6 +21,7 @@ import com.multimage.item.Item;
 import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
+import com.multimage.sprites.Ghost;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
@@ -33,6 +34,7 @@ public class PlayScreen implements Screen {
 
     private MultiMage game;
     private TextureAtlas atlas;
+    private TextureAtlas atlasEnemy;
     private List<Integer> levers;
     private boolean isDoorOpened;
 
@@ -47,6 +49,8 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private Hud hud;
 
+    private Ghost ghost;
+
     // tiled map
     private TmxMapLoader mapLoader;
     private TiledMap map;
@@ -56,9 +60,14 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
+    public TextureAtlas getAtlasEnemy() {
+        return atlasEnemy;
+    }
+
     public PlayScreen(MultiMage game) {
         this.game = game;
-        atlas = new TextureAtlas("MageTextures.pack");
+        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlasEnemy = new TextureAtlas("entity/enemies/ghost.pack");
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -89,6 +98,8 @@ public class PlayScreen implements Screen {
         items = new Array<Item>();
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
         levers = new ArrayList<>();
+
+        ghost = new Ghost(this, 200f, 32f);
     }
 
     public TextureAtlas getAtlas(){
@@ -134,6 +145,7 @@ public class PlayScreen implements Screen {
        world.step(1/60f, 6, 2);
 
        player.update(delta);
+       ghost.update(delta);
 
        for (Item item : items) {
             item.update(delta);
@@ -187,6 +199,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        ghost.draw(game.batch);
 
         // item creation
         for (Item item : items) {
