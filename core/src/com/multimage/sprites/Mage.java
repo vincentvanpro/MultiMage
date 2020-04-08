@@ -12,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
-import com.multimage.item.Item;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.Character;
 
@@ -98,7 +97,7 @@ public class Mage extends Sprite implements Character {
         setRegion(mageStand);
 
 
-        items = new HashMap<String, Integer>();
+        items = new HashMap<>();
     }
 
     public void update(float delta) {
