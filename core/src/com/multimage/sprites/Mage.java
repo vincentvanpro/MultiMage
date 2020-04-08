@@ -49,7 +49,6 @@ public class Mage extends Sprite {
         mageJump = new Animation<>(0.15f, frames);
         frames.clear();
 
-
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
         defineMage();
@@ -59,8 +58,8 @@ public class Mage extends Sprite {
 
     public void update(float delta) {
         setRegion(getFrame(delta));
-        if (walkingRight) {setPosition(body.getPosition().x - getWidth() / 3,
-                body.getPosition().y - getHeight() / 3.10f);}
+        if (walkingRight) {
+            setPosition(body.getPosition().x - getWidth() / 3, body.getPosition().y - getHeight() / 3.10f);}
         else {
             setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
         }
@@ -94,7 +93,6 @@ public class Mage extends Sprite {
         stateTimer = currentState == previousState ? stateTimer + delta : 0;
         previousState = currentState;
         return region;
-
     }
 
     public State getState() {
@@ -111,7 +109,7 @@ public class Mage extends Sprite {
 
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(200 / MultiMage.PPM, 50 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.position.set(400 / MultiMage.PPM, 50 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
@@ -122,21 +120,24 @@ public class Mage extends Sprite {
         shape.setRadius(31f / MultiMage.PPM);
         fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;   // Define mage bit
         fixtureDef.filter.maskBits =                // Mage can collide with these objects
-                    MultiMage.DEFAULT_BIT |
+                    MultiMage.OBJECT_BIT |
                     MultiMage.CHEST_BIT |
-                    MultiMage.GROUND_BIT |
+                    MultiMage.OBJECT_BIT |
                     MultiMage.LEVERS_BIT |
                     MultiMage.OPENABLE_DOOR_BIT |
                     MultiMage.BONUS_BIT |
-                    MultiMage.ITEM_BIT;
+                    MultiMage.ITEM_BIT |
+                    MultiMage.ENEMY_BIT |
+                    MultiMage.GROUND_BIT |
+                    MultiMage.ENEMY_BODY_BIT;
 
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
 
         EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-30 / MultiMage.PPM, 0 / MultiMage.PPM),
-                new Vector2(30 / MultiMage.PPM, 0 / MultiMage.PPM));
+        head.set(new Vector2(-30 / MultiMage.PPM, -32 / MultiMage.PPM),
+                new Vector2(30 / MultiMage.PPM, -32 / MultiMage.PPM));
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 

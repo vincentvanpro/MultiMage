@@ -36,7 +36,7 @@ public class Ambrosia extends Item {
         fixtureDef.filter.categoryBits = MultiMage.ITEM_BIT;
         fixtureDef.filter.maskBits =
                 MultiMage.MAGE_BIT |
-                MultiMage.GROUND_BIT |
+                MultiMage.OBJECT_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
                 MultiMage.BONUS_BIT |
                 MultiMage.LEVERS_BIT |

@@ -9,10 +9,18 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.*;
 
 public class WorldCreator {
+
+    private Array<Ghost> ghosts;
+
+    public Array<Ghost> getGhosts() {
+        return ghosts;
+    }
 
     public WorldCreator(PlayScreen screen) {
         World world = screen.getWorld();
@@ -62,6 +70,14 @@ public class WorldCreator {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             new Levers(screen, rectangle);
+        }
+
+        //create ghosts
+        ghosts = new Array<Ghost>();
+        for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            ghosts.add(new Ghost(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM));
         }
     }
 }
