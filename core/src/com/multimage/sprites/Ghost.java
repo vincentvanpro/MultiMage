@@ -1,10 +1,7 @@
 package com.multimage.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -20,6 +17,10 @@ public class Ghost extends Enemy {
     private boolean setToDestroy;
     private boolean destroyed;
     private boolean walkingRight;
+
+    private float healthPercent;
+    private float health;
+    private Texture healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
 
 
     public Ghost(PlayScreen screen, float x, float y) {
@@ -44,7 +45,8 @@ public class Ghost extends Enemy {
         frames.clear();
 
         stateTime = 0;
-        setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        healthPercent = 1f; // 1f -full, 0f - dead
     }
 
     public void update(float delta) {
@@ -56,30 +58,21 @@ public class Ghost extends Enemy {
             world.destroyBody(body);
         } else if (!destroyed) {
             body.setLinearVelocity(velocity);
-            TextureRegion region = walkAnimation.getKeyFrame(stateTime, true);
-            if ((body.getLinearVelocity().x > 0 || !walkingRight) && !region.isFlipX()) {
-                region.flip(true, false);
-                walkingRight = false;
-            } else if ((body.getLinearVelocity().x < 0 || walkingRight) && region.isFlipX()) {
-                region.flip(true, false);
-                walkingRight = true;
-            }
-            setRegion(region);
+            setRegion(getFrame(delta));
             if (walkingRight) {
-                setPosition(body.getPosition().x - getWidth() / 2.5f, body.getPosition().y / 3);
+                setPosition(body.getPosition().x - getWidth() / 2.5f, body.getPosition().y - 0.35f);
             } else {
-                setPosition(body.getPosition().x - getWidth() / 1.7f, body.getPosition().y / 3);
+                setPosition(body.getPosition().x - getWidth() / 1.7f, body.getPosition().y - 0.35f);
             }
         }
-
     }
 
     public TextureRegion getFrame(float delta) {
         TextureRegion region = walkAnimation.getKeyFrame(stateTime, true);
-        if ((body.getLinearVelocity().x < 0) && !region.isFlipX()) {
+        if ((body.getLinearVelocity().x > 0 || !walkingRight) && !region.isFlipX()) {
             region.flip(true, false);
             walkingRight = false;
-        } else if ((body.getLinearVelocity().x > 0) && region.isFlipX()) {
+        } else if ((body.getLinearVelocity().x < 0 || walkingRight) && region.isFlipX()) {
             region.flip(true, false);
             walkingRight = true;
         }
@@ -89,7 +82,7 @@ public class Ghost extends Enemy {
     @Override
     protected void defineEnemy() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(250 / MultiMage.PPM, 50 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.position.set(getX(), getY()); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
@@ -104,17 +97,18 @@ public class Ghost extends Enemy {
                 MultiMage.GROUND_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
                 MultiMage.ITEM_BIT |
-                MultiMage.ENEMY_BIT |
+                // MultiMage.ENEMY_BIT |
                 MultiMage.MAGE_BIT;
 
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData(this);
 
+        // HitBox
         PolygonShape bd = new PolygonShape();
         Vector2[] vector2s = new Vector2[4];
-        vector2s[0] = new Vector2(-18, 18).scl(1 / MultiMage.PPM);
-        vector2s[1] = new Vector2(18, 18).scl(1 / MultiMage.PPM);
+        vector2s[0] = new Vector2(-9, 36).scl(1 / MultiMage.PPM);
+        vector2s[1] = new Vector2(9, 36).scl(1 / MultiMage.PPM);
         vector2s[2] = new Vector2(-18, 0).scl(1 / MultiMage.PPM);
         vector2s[3] = new Vector2(18, 0).scl(1 / MultiMage.PPM);
         bd.set(vector2s);
@@ -123,6 +117,7 @@ public class Ghost extends Enemy {
         fixtureDef.restitution = 0.5f;
         fixtureDef.filter.categoryBits = MultiMage.ENEMY_BODY_BIT;
         body.createFixture(fixtureDef).setUserData(this);
+
     }
 
     @Override
@@ -133,6 +128,8 @@ public class Ghost extends Enemy {
     public void draw(Batch batch) {
         if (!destroyed || stateTime < 5) {
             super.draw(batch);
+            batch.draw(healthBar, body.getPosition().x - 0.15f, body.getPosition().y + 0.4f, (30f / MultiMage.PPM) * healthPercent, 3 / MultiMage.PPM); // healthBar
         }
     }
+
 }

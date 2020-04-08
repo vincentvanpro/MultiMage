@@ -21,6 +21,7 @@ import com.multimage.item.Item;
 import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
+import com.multimage.sprites.Enemy;
 import com.multimage.sprites.Ghost;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldContactListener;
@@ -49,8 +50,6 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private Hud hud;
 
-    private Ghost ghost;
-
     // tiled map
     private TmxMapLoader mapLoader;
     private TiledMap map;
@@ -59,6 +58,7 @@ public class PlayScreen implements Screen {
     //box 2d
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
+    private WorldCreator creator;
 
     public TextureAtlas getAtlasEnemy() {
         return atlasEnemy;
@@ -85,8 +85,7 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, -10), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
-
-        new WorldCreator(this);
+        creator = new WorldCreator(this);
 
         player = new Mage(this);
 
@@ -99,7 +98,6 @@ public class PlayScreen implements Screen {
         itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
         levers = new ArrayList<>();
 
-        ghost = new Ghost(this, 200f, 32f);
     }
 
     public TextureAtlas getAtlas(){
@@ -145,7 +143,10 @@ public class PlayScreen implements Screen {
        world.step(1/60f, 6, 2);
 
        player.update(delta);
-       ghost.update(delta);
+
+       for (Enemy enemy: creator.getGhosts()) {
+           enemy.update(delta);
+       }
 
        for (Item item : items) {
             item.update(delta);
@@ -199,7 +200,10 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
-        ghost.draw(game.batch);
+
+        for (Enemy enemy: creator.getGhosts()) {
+            enemy.draw(game.batch);
+        }
 
         // item creation
         for (Item item : items) {

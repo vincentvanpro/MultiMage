@@ -39,6 +39,8 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 }
+            } case (MultiMage.ENEMY_BIT | MultiMage.MAGE_BIT) : {
+                // logic to apply damage to wizard here
             }
         }
     }

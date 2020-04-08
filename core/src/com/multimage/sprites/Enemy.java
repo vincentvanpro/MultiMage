@@ -17,12 +17,14 @@ public abstract class Enemy extends Sprite {
         this.screen = screen;
         setPosition(x, y);
         defineEnemy();
-        velocity = new Vector2(-0.5f, 0);
+        velocity = new Vector2(-1f, -1);
     }
 
     protected abstract void defineEnemy();
 
     public abstract void hitOnHead();
+
+    public abstract void update(float delta);
 
     public void reverseVelocity(boolean x, boolean y) {
         if (x) {
