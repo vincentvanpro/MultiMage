@@ -93,8 +93,8 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        items = new Array<Item>();
-        itemsToSpawn = new LinkedBlockingQueue<ItemDef>();
+        items = new Array<>();
+        itemsToSpawn = new LinkedBlockingQueue<>();
         levers = new ArrayList<>();
 
     }
@@ -213,10 +213,6 @@ public class PlayScreen implements Screen {
         // PROTOTYPE HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-    }
-
-    public Mage getPlayer() {
-        return player;
     }
 
     public int leversActivated() {
