@@ -32,6 +32,15 @@ public class Staff extends Item {
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MultiMage.PPM);
+        fixtureDef.filter.categoryBits = MultiMage.ITEM_BIT;
+        fixtureDef.filter.maskBits =
+                MultiMage.MAGE_BIT |
+                        MultiMage.OBJECT_BIT |
+                        MultiMage.OPENABLE_DOOR_BIT |
+                        MultiMage.BONUS_BIT |
+                        MultiMage.LEVERS_BIT |
+                        MultiMage.CHEST_BIT |
+                        MultiMage.GROUND_BIT;
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData(this);
@@ -39,8 +48,10 @@ public class Staff extends Item {
 
     @Override
     public void use(Mage mage) {
+        mage.addItem("Staff");
         destroy();
     }
+
 
     @Override
     public void update(float delta) {

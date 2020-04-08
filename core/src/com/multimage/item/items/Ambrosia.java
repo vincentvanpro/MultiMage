@@ -9,7 +9,6 @@ import com.multimage.MultiMage;
 import com.multimage.item.Item;
 import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.Mage;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 
 public class Ambrosia extends Item {
 
@@ -48,6 +47,7 @@ public class Ambrosia extends Item {
 
     @Override
     public void use(Mage mage) {
+        mage.addItem("Ambrosia");
         destroy();
     }
 

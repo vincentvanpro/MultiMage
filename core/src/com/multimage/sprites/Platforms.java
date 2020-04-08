@@ -1,16 +1,13 @@
 package com.multimage.sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.maps.MapObject;
 import com.multimage.MultiMage;
-import com.multimage.item.ItemDef;
 import com.multimage.screens.PlayScreen;
 
 public class Platforms extends InteractiveTileObject {
-    public Platforms(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public Platforms(PlayScreen screen, MapObject object) {
+        super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.GROUND_BIT);
     }

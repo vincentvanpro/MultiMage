@@ -1,15 +1,15 @@
 package com.multimage.sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.maps.MapObject;
 import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
 
 public class Levers extends InteractiveTileObject {
     private int leverCount = map.getLayers().get(12).getObjects().getCount();
 
-    public Levers(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public Levers(PlayScreen screen, MapObject object) {
+        super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.LEVERS_BIT);
     }
