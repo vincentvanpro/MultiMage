@@ -52,6 +52,12 @@ public class Mage extends Sprite implements Character {
 
     public enum State { JUMPING, FALLING, WALKING, STANDING }
 
+    public int id = -1;
+    String name;
+    public float PosX;
+    public float PosY;
+    public float speed = 300;
+
     public State currentState;
     public State previousState;
     public World world;
