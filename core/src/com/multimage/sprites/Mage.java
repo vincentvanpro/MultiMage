@@ -4,12 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
@@ -56,6 +51,7 @@ public class Mage extends Sprite implements Character {
     }
 
     public enum State { JUMPING, FALLING, WALKING, STANDING }
+
     public State currentState;
     public State previousState;
     public World world;
@@ -153,7 +149,7 @@ public class Mage extends Sprite implements Character {
 
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(400 / MultiMage.PPM, 50 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.position.set(700 / MultiMage.PPM, 1500 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);

@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
-import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.Enemy;
 import com.multimage.sprites.InteractiveTileObject;
 import com.multimage.sprites.Mage;
@@ -57,23 +56,22 @@ public class WorldContactListener implements ContactListener {
                 } break;
             } case (MultiMage.PLATFORM_BIT | MultiMage.MAGE_BIT) : {
 
-                float pointCount = contact.getWorldManifold().getNumberOfContactPoints();
+                int pointCount = contact.getWorldManifold().getNumberOfContactPoints();
                 Vector2[] points = contact.getWorldManifold().getPoints();
 
                 for (int i = 0; i < pointCount; i++){
-                    points[i].scl(MultiMage.PPM);
+                    points[i].scl(1 / MultiMage.PPM);
                     Vector2 heroVel, platformVel;
                     if (fixA.getFilterData().categoryBits == MultiMage.MAGE_BIT) {
                         heroVel = fixA.getBody().getLinearVelocityFromWorldPoint(points[i]);
                         platformVel = fixB.getBody().getLinearVelocityFromWorldPoint(points[i]);
-                    }
-                    else {
+                    } else {
                         heroVel = fixB.getBody().getLinearVelocityFromWorldPoint(points[i]);
                         platformVel = fixA.getBody().getLinearVelocityFromWorldPoint(points[i]);
                     }
 
                     Vector2 relVel = new Vector2(heroVel.x - platformVel.x,heroVel.y - platformVel.y);
-                    if(relVel.y < 0)
+                    if (relVel.y < 0f)
                         return;
                 }
 
