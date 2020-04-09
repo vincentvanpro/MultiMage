@@ -5,19 +5,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.multimage.screens.PlayScreen;
 import com.multimage.screens.Splash;
 
 public class MultiMage extends Game {
 	public static final String TITLE = "MultiMage" , VERSION = "RAW";
 
-	public static final int V_WIDTH = 400;
-	public static final int V_HEIGHT = 208;
+	public static final int V_WIDTH = 864;
+	public static final int V_HEIGHT = 485;
 	public static final float PPM = 100;  // PIXELS PER METER / SCALE
 
+	public static final short OBJECT_BIT = 1;
+	public static final short MAGE_BIT = 2;
+	public static final short GROUND_BIT  = 4;
+	public static final short CHEST_BIT = 8;
+	public static final short BONUS_BIT = 16;
+	public static final short LEVERS_BIT = 32;
+	public static final short OPENABLE_DOOR_BIT = 64;
+	public static final short DESTROYED_BIT = 128;
+	public static final short ITEM_BIT = 256;
+	public static final short ENEMY_BIT = 512;
+	public static final short ENEMY_BODY_BIT = 1024;
+	public static final short PLATFORM_BIT = 2048;
+	public static final short MAGE_HAND_BIT = 4096;
+
 	public SpriteBatch batch;
-	public Music music;
 
 	public static AssetManager manager;
+	public Music music;
 
 	@Override
 	public void create() {
@@ -34,10 +49,10 @@ public class MultiMage extends Game {
 				.getBoolean("music.enabled", true)) {
 			music.play();
 		} else {
-			music.stop();
+			music.pause();
 		}
-		setScreen(new Splash(this));
-		// setScreen(new PlayScreen(this));
+		// setScreen(new Splash(this));
+		setScreen(new PlayScreen(this));
 	}
 
 	@Override

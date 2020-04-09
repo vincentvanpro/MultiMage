@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
+import com.multimage.sprites.Mage;
 
 
 public abstract class Item extends Sprite {
@@ -28,7 +29,8 @@ public abstract class Item extends Sprite {
     }
 
     public abstract void defineItem();
-    public abstract void use();
+
+    public abstract void use(Mage mage);
 
     public void update(float delta) {
         if (toDestroy && !destroyed) {
@@ -45,5 +47,13 @@ public abstract class Item extends Sprite {
 
     public void destroy() {
         toDestroy = true;
+    }
+
+    public void reverseVelocity(boolean x, boolean y) {
+        if (x) {
+            velocity.x = -velocity.x;
+        } if (y) {
+            velocity.y = -velocity.y;
+        }
     }
 }

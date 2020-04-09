@@ -3,26 +3,55 @@ package com.multimage.sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
+import com.multimage.tools.Character;
+
+import java.util.HashMap;
 
 
 // ordinary Mage class
-public class Mage extends Sprite {
+public class Mage extends Sprite implements Character {
 
-    public int id = -1;
-    String name;
-    public float PosX;
-    public float PosY;
-    public float speed = 300;
+    @Override
+    public int getArmour() {
+        return 0;
+    }
+
+    @Override
+    public int getLevel() {
+        return 0;
+    }
+
+    @Override
+    public float getHealth() {
+        return 0;
+    }
+
+    @Override
+    public void levelUp() { }
+
+    @Override
+    public void getBonusesFromItems() { }
+
+    @Override
+    public void getPassiveSkillEffect() { }
+
+    @Override
+    public void addItem(String item) {
+        if (items.containsKey(item)) {
+            items.put(item, items.get(item) + 1);
+        } else {
+            items.put(item, 1);
+        }
+        System.out.println(items);
+    }
 
     public enum State { JUMPING, FALLING, WALKING, STANDING }
+
     public State currentState;
     public State previousState;
     public World world;
@@ -32,11 +61,15 @@ public class Mage extends Sprite {
     private Animation<TextureRegion> mageJump;
     private float stateTimer;
     private boolean walkingRight;
+    private HashMap<String, Integer> items;
+    private float health;
+    private float armour;
+    private float xp;
 
 
-    public Mage(World world, PlayScreen screen) {
+    public Mage(PlayScreen screen) {
         super(screen.getAtlas().findRegion("standing"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -53,12 +86,14 @@ public class Mage extends Sprite {
         mageJump = new Animation<>(0.15f, frames);
         frames.clear();
 
-
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
         defineMage();
-        setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
+        setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
+
+
+        items = new HashMap<>();
     }
 
     public Mage(int id, int x) {
@@ -93,8 +128,12 @@ public class Mage extends Sprite {
     }
 
     public void update(float delta) {
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 14);
         setRegion(getFrame(delta));
+        if (walkingRight) {
+            setPosition(body.getPosition().x - getWidth() / 3, body.getPosition().y - getHeight() / 3.10f);}
+        else {
+            setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
+        }
     }
 
     public TextureRegion getFrame(float delta) {
@@ -125,7 +164,6 @@ public class Mage extends Sprite {
         stateTimer = currentState == previousState ? stateTimer + delta : 0;
         previousState = currentState;
         return region;
-
     }
 
     public State getState() {
@@ -142,17 +180,39 @@ public class Mage extends Sprite {
 
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(32 / MultiMage.PPM, 32 / MultiMage.PPM);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(700 / MultiMage.PPM, 1500 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(5 / MultiMage.PPM);
+
+        shape.setRadius(31f / MultiMage.PPM);
+        fixtureDef.filter.categoryBits = MultiMage.MAGE_BIT;   // Define mage bit
+        fixtureDef.filter.maskBits =                // Mage can collide with these objects
+                    MultiMage.OBJECT_BIT |
+                    MultiMage.CHEST_BIT |
+                    MultiMage.LEVERS_BIT |
+                    MultiMage.OPENABLE_DOOR_BIT |
+                    MultiMage.BONUS_BIT |
+                    MultiMage.ITEM_BIT |
+                    MultiMage.ENEMY_BIT |
+                    MultiMage.GROUND_BIT |
+                    MultiMage.ENEMY_BODY_BIT |
+                    MultiMage.PLATFORM_BIT;
+
 
         fixtureDef.shape = shape;
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
+
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-30 / MultiMage.PPM, 0 / MultiMage.PPM),
+                new Vector2(30 / MultiMage.PPM, 0 / MultiMage.PPM));
+        fixtureDef.shape = head;
+        fixtureDef.isSensor = true;
+
+        body.createFixture(fixtureDef).setUserData("body");
     }
 
     public String getName() {
