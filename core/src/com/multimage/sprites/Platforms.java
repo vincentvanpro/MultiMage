@@ -9,7 +9,7 @@ public class Platforms extends InteractiveTileObject {
     public Platforms(PlayScreen screen, MapObject object) {
         super(screen, object);
         fixture.setUserData(this);
-        setCategoryFilter(MultiMage.GROUND_BIT);
+        setCategoryFilter(MultiMage.PLATFORM_BIT);
     }
 
     @Override

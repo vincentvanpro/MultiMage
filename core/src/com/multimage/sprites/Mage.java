@@ -166,22 +166,22 @@ public class Mage extends Sprite implements Character {
         fixtureDef.filter.maskBits =                // Mage can collide with these objects
                     MultiMage.OBJECT_BIT |
                     MultiMage.CHEST_BIT |
-                    MultiMage.OBJECT_BIT |
                     MultiMage.LEVERS_BIT |
                     MultiMage.OPENABLE_DOOR_BIT |
                     MultiMage.BONUS_BIT |
                     MultiMage.ITEM_BIT |
                     MultiMage.ENEMY_BIT |
                     MultiMage.GROUND_BIT |
-                    MultiMage.ENEMY_BODY_BIT;
+                    MultiMage.ENEMY_BODY_BIT |
+                    MultiMage.PLATFORM_BIT;
 
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData(this);
 
         EdgeShape head = new EdgeShape();
-        head.set(new Vector2(-30 / MultiMage.PPM, -32 / MultiMage.PPM),
-                new Vector2(30 / MultiMage.PPM, -32 / MultiMage.PPM));
+        head.set(new Vector2(-30 / MultiMage.PPM, 0 / MultiMage.PPM),
+                new Vector2(30 / MultiMage.PPM, 0 / MultiMage.PPM));
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 

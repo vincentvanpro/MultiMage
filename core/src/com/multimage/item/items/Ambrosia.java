@@ -31,7 +31,7 @@ public class Ambrosia extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / MultiMage.PPM);
+        shape.setRadius(10 / MultiMage.PPM);
         fixtureDef.filter.categoryBits = MultiMage.ITEM_BIT;
         fixtureDef.filter.maskBits =
                 MultiMage.MAGE_BIT |
@@ -39,7 +39,8 @@ public class Ambrosia extends Item {
                 MultiMage.OPENABLE_DOOR_BIT |
                 MultiMage.BONUS_BIT |
                 MultiMage.LEVERS_BIT |
-                MultiMage.CHEST_BIT;
+                MultiMage.CHEST_BIT |
+                MultiMage.GROUND_BIT;
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData(this);

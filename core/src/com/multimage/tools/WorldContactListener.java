@@ -1,5 +1,6 @@
 package com.multimage.tools;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -13,6 +14,8 @@ import com.multimage.sprites.InteractiveTileObject;
 import com.multimage.sprites.Mage;
 
 public class WorldContactListener implements ContactListener {
+
+    private boolean movingOut;
 
     @Override
     public void beginContact(Contact contact) {
@@ -52,15 +55,45 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Item) fixB.getUserData()).use((Mage) fixA.getUserData());
                 } break;
+            } case (MultiMage.PLATFORM_BIT | MultiMage.MAGE_BIT) : {
+
+                float pointCount = contact.getWorldManifold().getNumberOfContactPoints();
+                Vector2[] points = contact.getWorldManifold().getPoints();
+
+                for (int i = 0; i < pointCount; i++){
+                    points[i].scl(MultiMage.PPM);
+                    Vector2 heroVel, platformVel;
+                    if (fixA.getFilterData().categoryBits == MultiMage.MAGE_BIT) {
+                        heroVel = fixA.getBody().getLinearVelocityFromWorldPoint(points[i]);
+                        platformVel = fixB.getBody().getLinearVelocityFromWorldPoint(points[i]);
+                    }
+                    else {
+                        heroVel = fixB.getBody().getLinearVelocityFromWorldPoint(points[i]);
+                        platformVel = fixA.getBody().getLinearVelocityFromWorldPoint(points[i]);
+                    }
+
+                    Vector2 relVel = new Vector2(heroVel.x - platformVel.x,heroVel.y - platformVel.y);
+                    if(relVel.y < 0)
+                        return;
+                }
+
+                movingOut = true;
+                break;
             }
         }
     }
 
     @Override
-    public void endContact(Contact contact) { }
+    public void endContact(Contact contact) {
+        movingOut = false;
+    }
 
     @Override
-    public void preSolve(Contact contact, Manifold oldManifold) { }
+    public void preSolve(Contact contact, Manifold oldManifold) {
+        if (movingOut) {
+            contact.setEnabled(false);
+        }
+    }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) { }

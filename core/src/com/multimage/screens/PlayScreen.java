@@ -165,9 +165,9 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.body.getLinearVelocity().y == 0.0f) {
             player.body.applyLinearImpulse(new Vector2(0, 5.75f), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
-            player.body.applyLinearImpulse(new Vector2(0.15f, 0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(0.25f, 0), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
-            player.body.applyLinearImpulse(new Vector2(-0.15f, 0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(-0.25f, 0), player.body.getWorldCenter(), true);
         }
     }
 

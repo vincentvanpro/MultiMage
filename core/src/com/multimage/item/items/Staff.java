@@ -31,7 +31,7 @@ public class Staff extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / MultiMage.PPM);
+        shape.setRadius(10 / MultiMage.PPM);
         fixtureDef.filter.categoryBits = MultiMage.ITEM_BIT;
         fixtureDef.filter.maskBits =
                 MultiMage.MAGE_BIT |

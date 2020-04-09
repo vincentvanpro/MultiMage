@@ -22,7 +22,7 @@ public abstract class Item extends Sprite {
         this.screen = screen;
         this.world = screen.getWorld();
         setPosition(x, y);
-        setBounds(getX(), getY() + 0.2f, 32 / MultiMage.PPM, 32 / MultiMage.PPM);
+        setBounds(getX(), getY(), 32 / MultiMage.PPM, 32 / MultiMage.PPM);
         defineItem();
         toDestroy = false;
         destroyed = false;
