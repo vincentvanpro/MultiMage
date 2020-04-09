@@ -29,10 +29,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MultiPlayer extends ApplicationAdapter implements InputProcessor {
+public class MultiPlayer extends ApplicationAdapter implements Screen, InputProcessor {
 
-    MultiMage game = new MultiMage();
-    SpriteBatch batch = game.batch;
+    MultiMage game;
+    SpriteBatch batch;
 
     Client GameClient= new Client();
     Kryo kryo = new Kryo();
@@ -40,7 +40,9 @@ public class MultiPlayer extends ApplicationAdapter implements InputProcessor {
     Mage[] otherPlayer = new Mage[20];
     int index = 0;
 
-    public MultiPlayer(){
+    public MultiPlayer(MultiMage game){
+        this.game = game;
+        batch = game.batch;
 
         kryo = GameClient.getKryo();
         kryo.register(FirstPacket.class);
@@ -171,6 +173,21 @@ public class MultiPlayer extends ApplicationAdapter implements InputProcessor {
         // batch.setColor(255, 100, 100, 5);
 
         batch.end();
+
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+
+    }
+
+    @Override
+    public void hide() {
 
     }
 
