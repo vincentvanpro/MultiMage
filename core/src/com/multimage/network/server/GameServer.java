@@ -105,8 +105,9 @@ public class GameServer {
     private void registerPackets() {
         Kryo kryo = server.getKryo();
 
+        kryo.register(FirstPacket.class);
         kryo.register(Request.class);
-        kryo.register(Request.class);
+        kryo.register(RequestAnswer.class);
         kryo.register(Disconnect.class);
         kryo.register(Moving.class);
         kryo.register(Position.class);

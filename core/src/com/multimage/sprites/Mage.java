@@ -20,6 +20,7 @@ public class Mage extends Sprite {
     String name;
     public float PosX;
     public float PosY;
+    public float speed = 300;
 
     public enum State { JUMPING, FALLING, WALKING, STANDING }
     public State currentState;
@@ -64,6 +65,31 @@ public class Mage extends Sprite {
         this.id = id;
         PosX = x;
         PosY = 50;
+    }
+
+    public Mage() {
+        currentState = State.STANDING;
+        previousState = State.STANDING;
+        stateTimer = 0;
+        walkingRight = true;
+
+        Array<TextureRegion> frames = new Array<>();
+        for (int i = 1; i < 6; i++)
+            frames.add(new TextureRegion(getTexture(), i * 78, 0, 78, 80));
+        mageWalk = new Animation<>(0.15f, frames);
+        frames.clear();
+
+        for (int i = 1; i < 8; i++)
+            frames.add(new TextureRegion(getTexture(), i * 78, 160, 78, 80));
+        mageJump = new Animation<>(0.15f, frames);
+        frames.clear();
+
+
+        mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
+
+        defineMage();
+        setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
+        setRegion(mageStand);
     }
 
     public void update(float delta) {

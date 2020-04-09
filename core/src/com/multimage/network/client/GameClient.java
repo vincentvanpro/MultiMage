@@ -73,7 +73,7 @@ public class GameClient {
 
         GameClient.start();
         try {
-            GameClient.connect(9999, serverIP, tcpPort, udpPort);
+            GameClient.connect(9999, "localhost", tcpPort, udpPort);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -83,7 +83,7 @@ public class GameClient {
         Kryo kryo = GameClient.getKryo();
 
         kryo.register(Request.class);
-        kryo.register(Request.class);
+        kryo.register(RequestAnswer.class);
         kryo.register(Disconnect.class);
         kryo.register(Moving.class);
         kryo.register(Position.class);
