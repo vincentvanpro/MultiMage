@@ -215,6 +215,13 @@ public class Mage extends Sprite implements Character {
         EdgeShape head = new EdgeShape();
         head.set(new Vector2(-30 / MultiMage.PPM, 0 / MultiMage.PPM),
                 new Vector2(30 / MultiMage.PPM, 0 / MultiMage.PPM));
+        fixtureDef.filter.categoryBits = MultiMage.MAGE_HAND_BIT;
+        fixtureDef.filter.maskBits =
+                MultiMage.CHEST_BIT |
+                MultiMage.LEVERS_BIT |
+                MultiMage.OPENABLE_DOOR_BIT |
+                MultiMage.BONUS_BIT |
+                MultiMage.ITEM_BIT;
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 
