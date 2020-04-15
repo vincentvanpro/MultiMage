@@ -53,8 +53,8 @@ public class MultiMage extends Game {
 			music.pause();
 		}
 		// setScreen(new Splash(this));
-		// setScreen(new PlayScreen(this));
-		setScreen(new MultiPlayer(this));
+		setScreen(new PlayScreen(this));
+		// setScreen(new MultiPlayer(this));
 	}
 
 	@Override
