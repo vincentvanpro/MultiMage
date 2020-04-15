@@ -65,7 +65,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(MultiMage game) {
         this.game = game;
-        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasEnemy = new TextureAtlas("entity/enemies/ghost.pack");
 
         // cam that follows you
@@ -162,11 +162,11 @@ public class PlayScreen implements Screen {
     }
 
     private void handleInput(float delta) { //
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.body.getLinearVelocity().y == 0.0f) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.W) && player.body.getLinearVelocity().y == 0.0f) {
             player.body.applyLinearImpulse(new Vector2(0, 5.75f), player.body.getWorldCenter(), true);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.D) && player.body.getLinearVelocity().x <= 2.4f) {
             player.body.applyLinearImpulse(new Vector2(0.25f, 0), player.body.getWorldCenter(), true);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.A) && player.body.getLinearVelocity().x >= -2.4f) {
             player.body.applyLinearImpulse(new Vector2(-0.25f, 0), player.body.getWorldCenter(), true);
         }
     }
@@ -186,6 +186,7 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

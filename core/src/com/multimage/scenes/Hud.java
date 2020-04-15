@@ -32,7 +32,7 @@ public class Hud implements Disposable {
     Label mageLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 300;
+        worldTimer = 500;
         timeCount = 0;
         score = 0;
 
@@ -62,6 +62,15 @@ public class Hud implements Disposable {
         table.add(countDownLabel).expandX();
 
         stage.addActor(table);
+    }
+
+    public void update(float delta) {
+        timeCount += delta;
+        if(timeCount >= 1) {
+            worldTimer--;
+            countDownLabel.setText(String.format("%03d", worldTimer));
+            timeCount = 0;
+        }
     }
 
     @Override
