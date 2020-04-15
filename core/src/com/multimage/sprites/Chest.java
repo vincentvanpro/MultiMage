@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.multimage.MultiMage;
 import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 
 import java.util.Arrays;
@@ -14,6 +15,12 @@ import java.util.Random;
 
 public class Chest extends InteractiveTileObject {
     public Chest(PlayScreen screen, MapObject object) {
+        super(screen, object);
+        fixture.setUserData(this);
+        setCategoryFilter(MultiMage.CHEST_BIT);
+    }
+
+    public Chest(MultiPlayer screen, MapObject object) {
         super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.CHEST_BIT);

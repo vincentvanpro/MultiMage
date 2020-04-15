@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.screens.Splash;
 
@@ -51,8 +52,9 @@ public class MultiMage extends Game {
 		} else {
 			music.pause();
 		}
-		//setScreen(new Splash(this));
-		setScreen(new PlayScreen(this));
+		// setScreen(new Splash(this));
+		// setScreen(new PlayScreen(this));
+		setScreen(new MultiPlayer(this));
 	}
 
 	@Override

@@ -19,9 +19,9 @@ public class GameServer {
     int udpPort = 5201;
     int ServerPort, ServerPort1, ServerPort2;
 
-    Mage[] playerArr = new Mage[3];
+    Mage[] playerArr = new Mage[4];
 
-    public int onlinePlayer = -1; // dumb
+    public int onlinePlayer = 0;
     public int PlayerID = 0;
 
     public GameServer() {
@@ -71,11 +71,11 @@ public class GameServer {
                     System.out.println("received");
                     answer.accepted = onlinePlayer <= 3;
                     connection.sendTCP(answer);
+                    onlinePlayer++;
                 } else if (object instanceof Moving) {
                     server.sendToAllExceptTCP(connection.getID(), (Moving) object);
                 } else if (object instanceof Position) {
                     server.sendToAllExceptTCP(connection.getID(), (Position) object);
-
                     playerArr[connection.getID()].setPosX(((Position) object).posX);
                     playerArr[connection.getID()].setPosY(((Position) object).posY);
                     for (int i = 0; i < PlayerID; i++) {
@@ -89,11 +89,12 @@ public class GameServer {
                     }
                 } else if (object instanceof FirstPacket) {
                     FirstPacket fp = (FirstPacket) object;
-                    System.out.println(onlinePlayer);
+                    System.out.println(onlinePlayer + " connected");
                     fp.id = connection.getID();
                     server.sendToTCP(connection.getID(), fp);
 
-                    playerArr[connection.getID()] = new Mage(fp.id, fp.x);
+                    playerArr[connection.getID()] = new Mage(fp.id, fp.x, fp.y);
+                    System.out.println(playerArr[connection.getID()].currentState);
                     PlayerID++;
                 }
             }

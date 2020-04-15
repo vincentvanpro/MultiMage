@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.Character;
 
@@ -53,10 +54,15 @@ public class Mage extends Sprite implements Character {
     public enum State { JUMPING, FALLING, WALKING, STANDING }
 
     public int id = -1;
-    String name;
+    public String name;
     public float PosX;
     public float PosY;
-    public float speed = 300;
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public float speed = 0.25f;
 
     public State currentState;
     public State previousState;
@@ -102,13 +108,15 @@ public class Mage extends Sprite implements Character {
         items = new HashMap<>();
     }
 
-    public Mage(int id, int x) {
+    public Mage(int id, int x, int y) {
         this.id = id;
         PosX = x;
-        PosY = 50;
+        PosY = y;
     }
 
-    public Mage() {
+    public Mage(MultiPlayer screen) {
+        super(screen.getAtlas().findRegion("standing"));
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -186,7 +194,7 @@ public class Mage extends Sprite implements Character {
 
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(700 / MultiMage.PPM, 1500 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.position.set(200 / MultiMage.PPM, 50 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
