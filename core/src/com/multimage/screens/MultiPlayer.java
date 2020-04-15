@@ -201,11 +201,12 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
         player.update(delta);
 
-        // if (index > 0){
-        //     for (int i = 0; i < index; i++) {
-        //         otherPlayer[i].update(delta);
-        //     }
-        // }
+        System.out.println(index);  // doesn't draw because index is always 0
+        if (index > 0) {
+            for (int i = 0; i < index; i++) {
+                otherPlayer[i].update(delta);
+            }
+        }
 
 
         //for (Enemy enemy: creator.getGhosts()) {
@@ -277,12 +278,12 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         // DRAW myPLAYER
         player.draw(game.batch);
 
-        //////////////////// DRAW OTHER PLAYER /////////////////////
-        //if (index > 0){
-        //    for (int i = 0; i < index; i++) {
-        //        otherPlayer[i].draw(game.batch);
-        //    }
-        //}
+        // DRAW OTHER PLAYER
+        if (index > 0){
+            for (int i = 0; i < index; i++) {
+                otherPlayer[i].draw(game.batch);
+            }
+        }
 
         //for (Enemy enemy: creator.getGhosts()) {
         //    enemy.draw(game.batch);
