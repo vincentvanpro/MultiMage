@@ -101,9 +101,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         for (int i = 0; i < 10; i++) {
             otherPlayer[i] = new Mage(this);
         }
+
         player = new Mage(this);
-        FirstPacket fp = new FirstPacket();
-        GameClient.sendTCP(fp); ////////////////////// NETWORK
 
         music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
         music.stop();
@@ -127,7 +126,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
             // @Override
             // public void connected(Connection connection) {
-            //     GameClient.sendTCP(new Request());
+            //     // GameClient.sendTCP(new Request());
+            //     index++;
             // }
 
             @Override
@@ -155,7 +155,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                     otherPlayer[index].PosX = ((Position) object).posX;
                     otherPlayer[index].PosY = ((Position) object).posY;
                     index++;
-                    System.out.println(index);
                 } else if (object instanceof Moving) {
                     for (int i = 0; i < index; i++) {
                         if (otherPlayer[i].id == ((Moving) object).post.playerID) {
@@ -173,12 +172,17 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                 }
             }
         });
+
         GameClient.start();
+
         try {
             GameClient.connect(5000, "localhost", 5200, 5201);
         } catch (IOException ex) {
             Logger.getLogger(MultiPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        FirstPacket fp = new FirstPacket();
+        GameClient.sendTCP(fp); ////////////////////// NETWORK
 
     }
 
@@ -201,7 +205,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
         player.update(delta);
 
-        System.out.println(index);  // doesn't draw because index is always 0
+        // doesn't draw because index is always 0
         if (index > 0) {
             for (int i = 0; i < index; i++) {
                 otherPlayer[i].update(delta);
