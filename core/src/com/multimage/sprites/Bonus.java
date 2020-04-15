@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.multimage.MultiMage;
 import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 
 import java.util.Arrays;
@@ -15,6 +16,12 @@ import java.util.Random;
 
 public class Bonus extends InteractiveTileObject {
     public Bonus(PlayScreen screen, MapObject object) {
+        super(screen, object);
+        fixture.setUserData(this);
+        setCategoryFilter(MultiMage.BONUS_BIT);
+    }
+
+    public Bonus(MultiPlayer screen, MapObject object) {
         super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.BONUS_BIT);

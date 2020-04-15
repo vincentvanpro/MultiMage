@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.*;
 
@@ -73,5 +74,56 @@ public class WorldCreator {
 
             ghosts.add(new Ghost(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM));
         }
+    }
+    public WorldCreator(MultiPlayer screen) {
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
+        BodyDef bodyDef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fixtureDef = new FixtureDef();
+        Body body;
+
+        // create ground fixtures/bodies
+        for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Ground(screen, object);
+        }
+
+        // create platforms
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Platforms(screen, object);
+        }
+
+        // create chest
+        for (MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Chest(screen, object);
+        }
+
+        // create bonus
+        for (MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Bonus(screen, object);
+        }
+
+        // create openable door
+        for (MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)) {
+
+            new OpenableDoor(screen, object);
+        }
+
+        // create levers
+        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Levers(screen, object);
+        }
+
+        //create ghosts
+        //ghosts = new Array<Ghost>();
+        //for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
+        //    Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+        //    ghosts.add(new Ghost(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM));
+        //}
     }
 }
