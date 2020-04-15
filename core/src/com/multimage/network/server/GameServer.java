@@ -19,7 +19,7 @@ public class GameServer {
     int udpPort = 5201;
     int ServerPort, ServerPort1, ServerPort2;
 
-    Mage[] playerArr = new Mage[3];
+    Mage[] playerArr = new Mage[4];
 
     public int onlinePlayer = 0;
     public int PlayerID = 0;
@@ -89,7 +89,7 @@ public class GameServer {
                     }
                 } else if (object instanceof FirstPacket) {
                     FirstPacket fp = (FirstPacket) object;
-                    System.out.println(onlinePlayer + "connected");
+                    System.out.println(onlinePlayer + " connected");
                     fp.id = connection.getID();
                     server.sendToTCP(connection.getID(), fp);
 
