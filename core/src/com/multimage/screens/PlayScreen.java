@@ -153,8 +153,9 @@ public class PlayScreen implements Screen {
 
        if (player.body.getPosition().x < 435 / MultiMage.PPM) {
            gameCam.position.x = gamePort.getWorldWidth() / 2;
+       } else if (player.body.getPosition().x > 3086 / MultiMage.PPM) {
+           gameCam.position.x = gamePort.getWorldWidth() + 22.24f;
        } else { gameCam.position.x = player.body.getPosition().x; }
-       //gameCam.position.x = player.body.getPosition().x;
 
        if (player.body.getPosition().y < 245 / MultiMage.PPM) {
            gameCam.position.y = gamePort.getWorldHeight() / 2;
