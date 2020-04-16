@@ -212,6 +212,12 @@ public class Mage extends Sprite implements Character {
         }
     }
 
+    public void hit() {
+        if (healthPercent >= 0.2f) {
+            healthPercent = healthPercent - 0.2f;
+        }
+    }
+
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(700 / MultiMage.PPM, 1500 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs

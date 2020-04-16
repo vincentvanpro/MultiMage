@@ -23,6 +23,8 @@ public class Hud implements Disposable {
     private Integer worldTimer;
     private float timeCount;
     private Integer score;
+    private Integer exp;
+    private Integer level;
 
     Label countDownLabel;
     Label scoreLabel;
@@ -30,11 +32,14 @@ public class Hud implements Disposable {
     Label levelLabel;
     Label worldLabel;
     Label mageLabel;
+    Label experienceLvlLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 500;
+        worldTimer = 0;
         timeCount = 0;
         score = 0;
+        exp = 0;
+        level = 1;
 
         TextureAtlas atlas = new TextureAtlas("ui/button.pack");
         Skin skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
@@ -52,6 +57,7 @@ public class Hud implements Disposable {
         levelLabel = new Label("1-1", skin, "small");
         worldLabel = new Label("WORLD", skin, "small");
         mageLabel = new Label("MAGE", skin, "small");
+        experienceLvlLabel = new Label("LVL " + level +"     EXP " + exp + "/100", skin, "small");
 
         table.add(mageLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
@@ -60,6 +66,10 @@ public class Hud implements Disposable {
         table.add(scoreLabel).expandX();
         table.add(levelLabel).expandX();
         table.add(countDownLabel).expandX();
+        table.row();
+        table.add().expandY();
+        table.row();
+        table.add(experienceLvlLabel).expandX();
 
         stage.addActor(table);
     }
@@ -67,7 +77,7 @@ public class Hud implements Disposable {
     public void update(float delta) {
         timeCount += delta;
         if(timeCount >= 1) {
-            worldTimer--;
+            worldTimer++;
             countDownLabel.setText(String.format("%03d", worldTimer));
             timeCount = 0;
         }
