@@ -77,7 +77,7 @@ public class PlayScreen implements Screen {
 
         // load and setup map
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("levels/level1.tmx");
+        map = mapLoader.load("levels/level2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -151,8 +151,19 @@ public class PlayScreen implements Screen {
             item.update(delta);
        }
 
-       gameCam.position.x = player.body.getPosition().x;
-       gameCam.position.y = player.body.getPosition().y;
+       if (player.body.getPosition().x < 435 / MultiMage.PPM) {
+           gameCam.position.x = gamePort.getWorldWidth() / 2;
+       } else if (player.body.getPosition().x > 3086 / MultiMage.PPM) {
+           gameCam.position.x = gamePort.getWorldWidth() + 22.24f;
+       } else { gameCam.position.x = player.body.getPosition().x; }
+
+       if (player.body.getPosition().y < 245 / MultiMage.PPM) {
+           gameCam.position.y = gamePort.getWorldHeight() / 2;
+       } else if (player.body.getPosition().y > 1035 / MultiMage.PPM) {
+           gameCam.position.y = gamePort.getWorldHeight() + 5.52f;
+       } else {
+           gameCam.position.y = player.body.getPosition().y;
+       }
 
        // update cam
        gameCam.update();
