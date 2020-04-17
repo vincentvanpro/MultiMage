@@ -3,6 +3,7 @@ package com.multimage.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,7 +23,9 @@ import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Enemy;
+import com.multimage.sprites.Ghost;
 import com.multimage.sprites.Mage;
+import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
 
@@ -59,6 +62,8 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private WorldCreator creator;
 
+    private SteeringBehaviourAI target;
+
     public TextureAtlas getAtlasEnemy() {
         return atlasEnemy;
     }
@@ -77,7 +82,7 @@ public class PlayScreen implements Screen {
 
         // load and setup map
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("levels/level2.tmx");
+        map = mapLoader.load("levels/level1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -97,6 +102,14 @@ public class PlayScreen implements Screen {
         itemsToSpawn = new LinkedBlockingQueue<>();
         levers = new ArrayList<>();
 
+        target = new SteeringBehaviourAI(player.body, 10);
+        for (Ghost g : creator.getGhosts()) {
+            Arrive<Vector2> arriveSB = new Arrive<Vector2>(g.entity, target)
+                    .setTimeToTarget(0.03f)
+                    .setArrivalTolerance(2f)
+                    .setDecelerationRadius(0);
+            g.entity.setBehaviour(arriveSB);
+        }
     }
 
     public TextureAtlas getAtlas(){
@@ -143,8 +156,9 @@ public class PlayScreen implements Screen {
 
        player.update(delta);
 
-       for (Enemy enemy: creator.getGhosts()) {
+       for (Ghost enemy: creator.getGhosts()) {
            enemy.update(delta);
+           enemy.entity.update(delta);
        }
 
        for (Item item : items) {
@@ -225,6 +239,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
     }
+
 
     public int leversActivated() {
         return levers.size();

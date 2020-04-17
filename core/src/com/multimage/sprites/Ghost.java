@@ -1,5 +1,7 @@
 package com.multimage.sprites;
 
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
 import com.multimage.screens.PlayScreen;
+import com.multimage.tools.SteeringBehaviourAI;
 
 public class Ghost extends Enemy {
 
@@ -22,6 +25,7 @@ public class Ghost extends Enemy {
     private float health;
     private Texture healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
 
+    public SteeringBehaviourAI entity;
 
     public Ghost(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -46,7 +50,7 @@ public class Ghost extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
-        healthPercent = 1f; // 1f -full, 0f - dead
+        healthPercent = 1f; // 1f - full, 0f - dead
     }
 
     public void update(float delta) {
@@ -57,7 +61,7 @@ public class Ghost extends Enemy {
             destroyed = true;
             world.destroyBody(body);
         } else if (!destroyed) {
-            body.setLinearVelocity(velocity);
+            // body.setLinearVelocity(velocity);
             setRegion(getFrame(delta));
             if (walkingRight) {
                 setPosition(body.getPosition().x - getWidth() / 2.5f, body.getPosition().y - 0.35f);
@@ -87,6 +91,8 @@ public class Ghost extends Enemy {
 
         body = world.createBody(bodyDef);
 
+        entity = new SteeringBehaviourAI(body, 10);
+
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
 
@@ -96,9 +102,7 @@ public class Ghost extends Enemy {
                 MultiMage.OBJECT_BIT |
                 MultiMage.GROUND_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
-                MultiMage.ITEM_BIT |
-                // MultiMage.ENEMY_BIT |
-                MultiMage.MAGE_BIT;
+                MultiMage.ITEM_BIT ;
 
 
         fixtureDef.shape = shape;
@@ -117,7 +121,6 @@ public class Ghost extends Enemy {
         fixtureDef.restitution = 0.5f;
         fixtureDef.filter.categoryBits = MultiMage.ENEMY_BODY_BIT;
         body.createFixture(fixtureDef).setUserData(this);
-
     }
 
     @Override
