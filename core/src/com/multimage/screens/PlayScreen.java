@@ -102,6 +102,7 @@ public class PlayScreen implements Screen {
         itemsToSpawn = new LinkedBlockingQueue<>();
         levers = new ArrayList<>();
 
+        // AI behaviour
         target = new SteeringBehaviourAI(player.body, 10);
         for (Ghost g : creator.getGhosts()) {
             Arrive<Vector2> arriveSB = new Arrive<Vector2>(g.entity, target)
