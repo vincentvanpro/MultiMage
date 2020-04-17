@@ -6,6 +6,7 @@ buildscript {
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         jcenter()
         google()
     }
@@ -47,7 +48,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        
+        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
     }
 }
 
@@ -61,5 +62,6 @@ project(":core") {
 
         compile fileTree(dir: '../libs', include: '*.jar')
         compile "com.esotericsoftware:kryonet:2.22.0-RC1"
+        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
     }
 }
