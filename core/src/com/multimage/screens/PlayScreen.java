@@ -37,7 +37,8 @@ public class PlayScreen implements Screen {
 
     private MultiMage game;
     private TextureAtlas atlas;
-    private TextureAtlas atlasEnemy;
+    private TextureAtlas atlasGhost;
+    private TextureAtlas atlasDemon;
     private List<Integer> levers;
     private boolean isDoorOpened;
 
@@ -64,14 +65,19 @@ public class PlayScreen implements Screen {
 
     private SteeringBehaviourAI target;
 
-    public TextureAtlas getAtlasEnemy() {
-        return atlasEnemy;
+    public TextureAtlas getAtlasGhost() {
+        return atlasGhost;
+    }
+
+    public TextureAtlas getAtlasDemon() {
+        return atlasDemon;
     }
 
     public PlayScreen(MultiMage game) {
         this.game = game;
         atlas = new TextureAtlas("entity/mage/MageTextures.pack");
-        atlasEnemy = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -111,6 +117,11 @@ public class PlayScreen implements Screen {
                     .setDecelerationRadius(0);
             g.entity.setBehaviour(arriveSB);
         }
+        Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
+                .setTimeToTarget(0.1f)
+                .setArrivalTolerance(1.5f)
+                .setDecelerationRadius(0);
+        creator.getDemon().entity.setBehaviour(arriveSB);
     }
 
     public TextureAtlas getAtlas(){
@@ -160,6 +171,11 @@ public class PlayScreen implements Screen {
        for (Ghost enemy: creator.getGhosts()) {
            enemy.update(delta);
            enemy.entity.update(delta);
+       }
+
+       if (isDoorOpened) {
+           creator.getDemon().update(delta);
+           creator.getDemon().entity.update(delta);
        }
 
        for (Item item : items) {
@@ -229,6 +245,8 @@ public class PlayScreen implements Screen {
         for (Enemy enemy: creator.getGhosts()) {
             enemy.draw(game.batch);
         }
+
+        creator.getDemon().draw(game.batch);
 
         // item creation
         for (Item item : items) {
