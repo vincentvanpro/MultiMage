@@ -173,10 +173,10 @@ public class PlayScreen implements Screen {
            enemy.entity.update(delta);
        }
 
-       if (isDoorOpened) {
-           creator.getDemon().update(delta);
-           creator.getDemon().entity.update(delta);
-       }
+       //if (isDoorOpened) {
+       creator.getDemon().update(delta);
+       creator.getDemon().entity.update(delta);
+
 
        for (Item item : items) {
             item.update(delta);
@@ -282,19 +282,13 @@ public class PlayScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() { }
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() { }
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() { }
 
     @Override
     public void dispose() {
