@@ -104,11 +104,10 @@ public class Mage extends Sprite implements Character {
         setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
 
-
         items = new HashMap<>();
     }
 
-    public Mage(int id, int x, int y) {
+    public Mage(int id, float x, float y) {
         this.id = id;
         PosX = x;
         PosY = y;
@@ -139,6 +138,8 @@ public class Mage extends Sprite implements Character {
         defineMage();
         setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
         setRegion(mageStand);
+
+        items = new HashMap<>();
     }
 
     public void update(float delta) {
@@ -148,6 +149,8 @@ public class Mage extends Sprite implements Character {
         else {
             setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
         }
+        PosX = body.getPosition().x;
+        PosY = body.getPosition().y;
     }
 
     public TextureRegion getFrame(float delta) {
@@ -194,7 +197,9 @@ public class Mage extends Sprite implements Character {
 
     public void defineMage() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(3000 / MultiMage.PPM, 50 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        PosX = 3000;
+        PosY = 50;
+        bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);

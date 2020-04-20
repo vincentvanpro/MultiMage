@@ -42,7 +42,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
     private MultiMage game;
     private TextureAtlas atlas;
-    private TextureAtlas atlasEnemy;
+    private TextureAtlas atlasGhost;
+    private TextureAtlas atlasDemon;
     private List<Integer> levers;
     private boolean isDoorOpened;
 
@@ -78,7 +79,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         this.game = game;
 
         atlas = new TextureAtlas("entity/mage/MageTextures.pack");
-        atlasEnemy = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -142,24 +144,26 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                     }
                 } else if (object instanceof FirstPacket) {
                     FirstPacket firstPacket = (FirstPacket) object;
-                    System.out.println(firstPacket.id);
-                    System.out.println(player);
                     player.id = firstPacket.id;
                     Position pos = new Position();
                     pos.playerID = firstPacket.id;
-                    pos.posX = (int) player.getPosX();
-                    pos.posY = (int) player.getPosY();
+                    pos.posX = (float) player.body.getPosition().x;
+                    pos.posY = (float) player.body.getPosition().y;
                     GameClient.sendTCP(pos);
                 } else if (object instanceof Position) {
                     otherPlayer[index].id = ((Position) object).playerID;
                     otherPlayer[index].PosX = ((Position) object).posX;
                     otherPlayer[index].PosY = ((Position) object).posY;
+                    otherPlayer[index].body.setTransform(new Vector2(otherPlayer[index].PosX, otherPlayer[index].PosY), 0);
                     index++;
                 } else if (object instanceof Moving) {
+                    System.out.println(index);
                     for (int i = 0; i < index; i++) {
+                        System.out.println("MOVING " + ((Moving) object).post.posX + " " + otherPlayer[i].id + otherPlayer[i].PosX);
                         if (otherPlayer[i].id == ((Moving) object).post.playerID) {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
                             otherPlayer[i].PosY = ((Moving) object).post.posY;
+                            otherPlayer[i].body.setTransform(new Vector2(otherPlayer[i].PosX, otherPlayer[i].PosY), 0);
                             otherPlayer[i].setCurrentState(((Moving) object).state);
                             otherPlayer[i].setDirection(((Moving) object).walkingRight);
                             break;
@@ -182,6 +186,9 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         }
 
         FirstPacket fp = new FirstPacket();
+        fp.x = player.body.getPosition().x;
+        System.out.println(player.body.getPosition().x);
+        fp.y = player.body.getPosition().y;
         GameClient.sendTCP(fp); ////////////////////// NETWORK
 
     }
@@ -192,9 +199,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     }
 
     @Override
-    public void show() {
-
-    }
+    public void show() { }
 
     public void update(float delta) {
         handleInput(delta);
@@ -237,28 +242,30 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             Moving mv = new Moving();
             mv.state = Mage.State.JUMPING;
             mv.post.playerID = player.id;
-            mv.post.posX = (int) player.getPosX();
-            mv.post.posY = (int) player.getPosY();
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
             GameClient.sendTCP(mv);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
             player.body.applyLinearImpulse(new Vector2(0.25f, 0), player.body.getWorldCenter(), true);
+            player.setCurrentState(Mage.State.WALKING);
             //player.setPosX(player.getPosX() - delta * player.getSpeed());
             Moving mv = new Moving();
             mv.walkingRight = true;
             mv.state = Mage.State.WALKING;
             mv.post.playerID = player.id;
-            mv.post.posX = (int) player.getPosX();
-            mv.post.posY = (int) player.getPosY();
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
             GameClient.sendTCP(mv);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
             player.body.applyLinearImpulse(new Vector2(-0.25f, 0), player.body.getWorldCenter(), true);
             //player.setPosX(player.getPosX() - delta * player.getSpeed());
+            player.setCurrentState(Mage.State.WALKING);
             Moving mv = new Moving();
             mv.walkingRight = false;
             mv.state = Mage.State.WALKING;
             mv.post.playerID = player.id;
-            mv.post.posX = (int) player.getPosX();
-            mv.post.posY = (int) player.getPosY();
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
             GameClient.sendTCP(mv);
         }
     }
@@ -305,9 +312,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     }
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() { }
 
     @Override
     public void dispose () {

@@ -1,9 +1,10 @@
-package com.multimage.network.server;
+package com.multimage.network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.multimage.MultiMage;
 import com.multimage.network.packets.*;
 import com.multimage.sprites.Mage;
 
@@ -73,6 +74,8 @@ public class GameServer {
                     connection.sendTCP(answer);
                     onlinePlayer++;
                 } else if (object instanceof Moving) {
+                    System.out.println(((Moving) object).post.posX);
+                    System.out.println(((Moving) object).post.posY);
                     server.sendToAllExceptTCP(connection.getID(), (Moving) object);
                 } else if (object instanceof Position) {
                     server.sendToAllExceptTCP(connection.getID(), (Position) object);
@@ -82,19 +85,19 @@ public class GameServer {
                         if (playerArr[i] != null && playerArr[i].id != ((Position) object).playerID) {
                             Position pos = new Position();
                             pos.playerID = playerArr[i].id;
-                            pos.posX = (int) playerArr[i].getPosX();
-                            pos.posY = (int) playerArr[i].getPosY();
+                            pos.posX = (float) playerArr[i].getPosX();
+                            pos.posY = (float) playerArr[i].getPosY();
                             server.sendToTCP(connection.getID(), pos);
                         }
                     }
                 } else if (object instanceof FirstPacket) {
                     FirstPacket fp = (FirstPacket) object;
-                    System.out.println(onlinePlayer + " connected");
+                    System.out.println(onlinePlayer + " connected [FIRST_PACKET]");
                     fp.id = connection.getID();
                     server.sendToTCP(connection.getID(), fp);
 
                     playerArr[connection.getID()] = new Mage(fp.id, fp.x, fp.y);
-                    System.out.println(playerArr[connection.getID()].currentState);
+                    System.out.println(playerArr[connection.getID()].id + " " + playerArr[connection.getID()].PosX + " " + playerArr[connection.getID()].PosY);
                     PlayerID++;
                 }
             }
