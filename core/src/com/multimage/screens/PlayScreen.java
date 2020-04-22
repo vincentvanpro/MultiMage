@@ -41,7 +41,7 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlasGhost;
     private TextureAtlas atlasDemon;
     private List<Integer> levers;
-    private boolean isDoorOpened;
+    public static boolean isDoorOpened;
 
     // sprites
     private Mage player;
@@ -78,7 +78,7 @@ public class PlayScreen implements Screen {
     private float yMaxCamCord = 5.52f;
 
     public PlayScreen(MultiMage game) {
-        String levelPath = "levels/level2.tmx";  //change 1 to 2 to change level
+        String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
 
         MultiMage.music.stop();
         if (levelPath.equals("levels/level1.tmx")) {
@@ -90,6 +90,13 @@ public class PlayScreen implements Screen {
         }
         else if (levelPath.equals("levels/level2.tmx")) {
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        }
+        else if (levelPath.equals("levels/level3.tmx")) {
+            MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
             xMaxCord = 3086;
             yMaxCord = 1035;
             xMaxCamCord = 22.24f;
