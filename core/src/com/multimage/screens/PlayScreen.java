@@ -164,11 +164,18 @@ public class PlayScreen implements Screen {
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    public PlayScreen(MultiMage game, Mage mage, int level) {
+    public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
 
         // HERE LOAD LEVEL and all further thing
         player = mage; // MAGE ALREADY EXISTS, BUT MAYBE NEEDS TO BE REDEFINED BECAUSE OF IT'S PHYSICAL BODY
         // MAYBE CREATE NEW MAGE AND PASS HIM ITEMS, LEVEL ETC
+        mapLoader = new TmxMapLoader();
+        if (whatLevelToSet == 1) {
+            map = mapLoader.load("levels/level1.tmx");
+        } else if (whatLevelToSet == 2) {
+            map = mapLoader.load("levels/level2.tmx");
+        }
+        // i tak dalee
 
     }
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
