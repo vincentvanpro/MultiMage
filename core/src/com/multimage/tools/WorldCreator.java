@@ -18,10 +18,12 @@ import com.multimage.sprites.*;
 public class WorldCreator {
 
     private Array<Ghost> ghosts;
+    private Demon demon;
 
     public Array<Ghost> getGhosts() {
         return ghosts;
     }
+    public Demon getDemon() { return demon; }
 
     public WorldCreator(PlayScreen screen) {
         World world = screen.getWorld();
@@ -74,6 +76,14 @@ public class WorldCreator {
 
             ghosts.add(new Ghost(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM));
         }
+
+        //create level1 boss
+        for (MapObject object : map.getLayers().get(15).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            demon = new Demon(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM);
+        }
+
     }
     public WorldCreator(MultiPlayer screen) {
         World world = screen.getWorld();

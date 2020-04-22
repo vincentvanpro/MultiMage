@@ -1,0 +1,40 @@
+
+demon.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+demon-attack
+  rotate: false
+  xy: 0, 416
+  size: 2640, 192
+  orig: 2640, 192
+  offset: 0, 0
+  index: -1
+demon-attack-no-breath
+  rotate: false
+  xy: 0, 240
+  size: 1536, 176
+  orig: 1536, 176
+  offset: 0, 0
+  index: -1
+demon-idle
+  rotate: false
+  xy: 0, 96
+  size: 960, 144
+  orig: 960, 144
+  offset: 0, 0
+  index: -1
+breath-fire
+  rotate: false
+  xy: 1536, 320
+  size: 800, 96
+  orig: 800, 96
+  offset: 0, 0
+  index: -1
+breath
+  rotate: false
+  xy: 0, 0
+  size: 800, 96
+  orig: 800, 96
+  offset: 0, 0
+  index: -1
