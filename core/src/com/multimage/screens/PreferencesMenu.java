@@ -24,10 +24,12 @@ import com.multimage.MultiMage;
 public class PreferencesMenu implements Screen {
 
     private static final String PREF_MUSIC_VOLUME = "volume";
-    private static final String PREF_MUSIC_ENABLED = "music.enabled";
+    public static final String PREF_MUSIC_ENABLED = "music.enabled";
     private static final String PREF_SOUND_ENABLED = "sound.enabled";
     private static final String PREF_SOUND_VOL = "sound";
     private static final String PREFS_NAME = "com.multimage.settings";
+
+    private String muteMusicString;
 
     private Stage stage;
     private TextureAtlas atlas;
@@ -99,7 +101,7 @@ public class PreferencesMenu implements Screen {
         skinForSlidersAndCheckBox.add("default-font", black);
         skinForSlidersAndCheckBox.load(Gdx.files.internal("ui/skin.json"));
 
-        Table table = new Table(skin);
+        final Table table = new Table(skin);
         table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.setFillParent(true);
 
@@ -117,7 +119,9 @@ public class PreferencesMenu implements Screen {
                 } else {
                     game.music.pause();
                 }
-                Gdx.app.log(MultiMage.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "disabled"));
+                Gdx.app.log(MultiMage.TITLE, "Music " + (isMusicEnabled() ? "enabled" : "paused"));
+                muteMusicString = isMusicEnabled() ? "mute music" : "unmute music";
+                //table.
                 }
             });
 
@@ -129,7 +133,7 @@ public class PreferencesMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 boolean enabled = soundCheckbox.isChecked();
                 setSoundEffectsEnabled(!enabled);
-                Gdx.app.log(MultiMage.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "paused"));
+                Gdx.app.log(MultiMage.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
                 // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
                 }
             });
@@ -175,7 +179,8 @@ public class PreferencesMenu implements Screen {
         Label heading = new Label("PREFERENCES", skin);
         Label volumeMusicLabel = new Label("music", skin);
         Label volumeSoundLabel = new Label("sound", skin);
-        Label musicOnOffLabel = new Label("mute music", skin);
+        muteMusicString = isMusicEnabled() ? "mute music" : "unmute music";
+        Label musicOnOffLabel = new Label(muteMusicString, skin);
         Label soundOnOffLabel = new Label("mute sfx", skin);
 
         heading.setFontScale(1f);

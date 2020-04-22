@@ -28,6 +28,7 @@ import com.multimage.sprites.Mage;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
+import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,6 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlasDemon;
     private List<Integer> levers;
     private boolean isDoorOpened;
-
-    private Music music;
 
     // sprites
     private Mage player;
@@ -79,19 +78,35 @@ public class PlayScreen implements Screen {
     private float yMaxCamCord = 5.52f;
 
     public PlayScreen(MultiMage game) {
-        this.game = game;
-        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
-        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
-        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+        String levelPath = "levels/level2.tmx";  //change 1 to 2 to change level
 
-        String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
-
+        MultiMage.music.stop();
         if (levelPath.equals("levels/level1.tmx")) {
+            MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
             xMaxCord = 4690;
             yMaxCord = 1675;
             xMaxCamCord = 38.239f;
             yMaxCamCord = 11.923f;
         }
+        else if (levelPath.equals("levels/level2.tmx")) {
+            MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        }
+        MultiMage.music.setVolume(Gdx.app.getPreferences("com.multimage.settings")
+                .getFloat("volume", 0.5f));
+        MultiMage.music.setLooping(true);
+        if (Gdx.app.getPreferences("com.multimage.settings")
+                .getBoolean("music.enabled", true)) {
+            MultiMage.music.play();
+        }
+
+        this.game = game;
+        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -112,9 +127,6 @@ public class PlayScreen implements Screen {
         creator = new WorldCreator(this);
 
         player = new Mage(this);
-
-        music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
-        music.stop();
 
         world.setContactListener(new WorldContactListener());
 
