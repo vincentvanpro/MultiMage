@@ -73,11 +73,25 @@ public class PlayScreen implements Screen {
         return atlasDemon;
     }
 
+    private int xMaxCord = 3086;
+    private int yMaxCord = 1035;
+    private float xMaxCamCord = 22.24f;
+    private float yMaxCamCord = 5.52f;
+
     public PlayScreen(MultiMage game) {
         this.game = game;
         atlas = new TextureAtlas("entity/mage/MageTextures.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+
+        String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
+
+        if (levelPath.equals("levels/level1.tmx")) {
+            xMaxCord = 4690;
+            yMaxCord = 1675;
+            xMaxCamCord = 38.239f;
+            yMaxCamCord = 11.923f;
+        }
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -88,7 +102,7 @@ public class PlayScreen implements Screen {
 
         // load and setup map
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("levels/level1.tmx");
+        map = mapLoader.load(levelPath);
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
@@ -184,14 +198,14 @@ public class PlayScreen implements Screen {
 
        if (player.body.getPosition().x < 435 / MultiMage.PPM) {
            gameCam.position.x = gamePort.getWorldWidth() / 2;
-       } else if (player.body.getPosition().x > 3086 / MultiMage.PPM) {
-           gameCam.position.x = gamePort.getWorldWidth() + 22.24f;
+       } else if (player.body.getPosition().x > xMaxCord / MultiMage.PPM) {
+           gameCam.position.x = gamePort.getWorldWidth() + xMaxCamCord;
        } else { gameCam.position.x = player.body.getPosition().x; }
 
        if (player.body.getPosition().y < 245 / MultiMage.PPM) {
            gameCam.position.y = gamePort.getWorldHeight() / 2;
-       } else if (player.body.getPosition().y > 1035 / MultiMage.PPM) {
-           gameCam.position.y = gamePort.getWorldHeight() + 5.52f;
+       } else if (player.body.getPosition().y > yMaxCord / MultiMage.PPM) {
+           gameCam.position.y = gamePort.getWorldHeight() + yMaxCamCord;
        } else {
            gameCam.position.y = player.body.getPosition().y;
        }
