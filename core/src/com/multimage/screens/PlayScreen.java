@@ -78,7 +78,7 @@ public class PlayScreen implements Screen {
     private float yMaxCamCord = 5.52f;
 
     public PlayScreen(MultiMage game) {
-        String levelPath = "levels/level2.tmx";  //change 1 to 2 to change level
+        String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
 
         MultiMage.music.stop();
         if (levelPath.equals("levels/level1.tmx")) {
@@ -231,11 +231,11 @@ public class PlayScreen implements Screen {
 
     private void handleInput(float delta) { //
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.body.getLinearVelocity().y == 0.0f) {
-            player.body.applyLinearImpulse(new Vector2(0, 5.75f), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(0, player.jump()), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
-            player.body.applyLinearImpulse(new Vector2(0.25f, 0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(player.speed, 0), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
-            player.body.applyLinearImpulse(new Vector2(-0.25f, 0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(-player.speed, 0), player.body.getWorldCenter(), true);
         }
     }
 
@@ -323,5 +323,9 @@ public class PlayScreen implements Screen {
         world.dispose();
         box2DDebugRenderer.dispose();
         hud.dispose();
+    }
+
+    public Mage getPlayer() {
+        return player;
     }
 }

@@ -31,7 +31,6 @@ public class Chest extends InteractiveTileObject {
         Random random = new Random();
         List<?> items = Arrays.asList(Ambrosia.class, Amulet.class, Book.class, Boots.class,
                 Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
-        Gdx.app.log("Chest", "collision");
         setCategoryFilter(MultiMage.DESTROYED_BIT);
         getCell(3).setTile(null);
         screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y),
