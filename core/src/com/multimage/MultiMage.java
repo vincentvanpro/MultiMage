@@ -27,6 +27,7 @@ public class MultiMage extends Game {
 	public static final short ENEMY_BODY_BIT = 1024;
 	public static final short PLATFORM_BIT = 2048;
 	public static final short MAGE_HAND_BIT = 4096;
+	public static final short PORTAL_BIT = 8192;
 
 	public SpriteBatch batch;
 

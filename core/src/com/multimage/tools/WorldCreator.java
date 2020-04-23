@@ -33,6 +33,12 @@ public class WorldCreator {
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
+        // create chest
+        for (MapObject object : map.getLayers().get(17).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Portal(screen, object);
+        }
+
         // create ground fixtures/bodies
         for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
 
@@ -92,6 +98,12 @@ public class WorldCreator {
         PolygonShape shape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
+
+        // create portal between levels
+        for (MapObject object : map.getLayers().get(17).getObjects().getByType(RectangleMapObject.class)) {
+
+            new Portal(screen, object);
+        }
 
         // create ground fixtures/bodies
         for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {

@@ -28,6 +28,8 @@ public class PreferencesMenu implements Screen {
     private static final String PREF_SOUND_ENABLED = "sound.enabled";
     private static final String PREF_SOUND_VOL = "sound";
     private static final String PREFS_NAME = "com.multimage.settings";
+    private static final String FULLSCREEN_ENABLED = "fullscreen.enabled";
+    private static final String VSYNC_ENABLED = "vsync.enabled";
 
     private String muteMusicString;
 
@@ -46,6 +48,14 @@ public class PreferencesMenu implements Screen {
 
     protected Preferences getPrefs() {
         return Gdx.app.getPreferences(PREFS_NAME);
+    }
+
+    public boolean isFullScreenEnabled() {
+        return getPrefs().getBoolean(FULLSCREEN_ENABLED, true);
+    }
+
+    public boolean isVSyncEnabled() {
+        return getPrefs().getBoolean(VSYNC_ENABLED, true);
     }
 
     public boolean isSoundEffectsEnabled() {

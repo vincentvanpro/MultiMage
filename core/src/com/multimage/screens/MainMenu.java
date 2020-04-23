@@ -32,6 +32,10 @@ public class MainMenu implements Screen {
         this.game = game;
     }
 
+    public MultiMage getGame() {
+        return game;
+    }
+
 
     @Override
     public void show() {

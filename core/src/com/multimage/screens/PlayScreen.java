@@ -28,7 +28,7 @@ import com.multimage.sprites.Mage;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlasGhost;
     private TextureAtlas atlasDemon;
     private List<Integer> levers;
-    private boolean isDoorOpened;
+    public static boolean isDoorOpened;
 
     // sprites
     private Mage player;
@@ -72,10 +72,10 @@ public class PlayScreen implements Screen {
         return atlasDemon;
     }
 
-    private int xMaxCord = 3086;
-    private int yMaxCord = 1035;
-    private float xMaxCamCord = 22.24f;
-    private float yMaxCamCord = 5.52f;
+    private int xMaxCord;
+    private int yMaxCord;
+    private float xMaxCamCord;
+    private float yMaxCamCord;
 
     public PlayScreen(MultiMage game) {
         String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
@@ -90,6 +90,13 @@ public class PlayScreen implements Screen {
         }
         else if (levelPath.equals("levels/level2.tmx")) {
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        }
+        else if (levelPath.equals("levels/level3.tmx")) {
+            MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
             xMaxCord = 3086;
             yMaxCord = 1035;
             xMaxCamCord = 22.24f;
@@ -149,6 +156,99 @@ public class PlayScreen implements Screen {
                 .setDecelerationRadius(0);
         creator.getDemon().entity.setBehaviour(arriveSB);
     }
+
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
+        MultiMage.music.stop();
+        mapLoader = new TmxMapLoader();
+        // HERE LOAD LEVEL and all further thing
+        player = mage; // MAGE ALREADY EXISTS, BUT MAYBE NEEDS TO BE REDEFINED BECAUSE OF IT'S PHYSICAL BODY
+        // MAYBE CREATE NEW MAGE AND PASS HIM ITEMS, LEVEL ETC
+
+        mapLoader = new TmxMapLoader();
+        if (whatLevelToSet == 1) {
+            map = mapLoader.load("levels/level1.tmx");
+            MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
+            xMaxCord = 4690;
+            yMaxCord = 1675;
+            xMaxCamCord = 38.239f;
+            yMaxCamCord = 11.923f;
+        } else if (whatLevelToSet == 2) {
+            map = mapLoader.load("levels/level2.tmx");
+            MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        } else if (whatLevelToSet == 3) {
+            map = mapLoader.load("levels/level3.tmx");
+            MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        }
+        MultiMage.music.setVolume(Gdx.app.getPreferences("com.multimage.settings")
+                .getFloat("volume", 0.5f));
+        MultiMage.music.setLooping(true);
+        if (Gdx.app.getPreferences("com.multimage.settings")
+                .getBoolean("music.enabled", true)) {
+            MultiMage.music.play();
+        }
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
+
+        this.game = game;
+        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+
+        // cam that follows you
+        gameCam = new OrthographicCamera();
+        // maintain virtual aspect ratio despite screen size
+        gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
+        // create hud
+        hud = new Hud(game.batch);
+
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        world = new World(new Vector2(0, -10), true);
+        box2DDebugRenderer = new Box2DDebugRenderer();
+        creator = new WorldCreator(this);
+
+        player = new Mage(this);
+
+        world.setContactListener(new WorldContactListener());
+
+        items = new Array<>();
+        itemsToSpawn = new LinkedBlockingQueue<>();
+        levers = new ArrayList<>();
+
+        // AI behaviour
+        target = new SteeringBehaviourAI(player.body, 10);
+        for (Ghost g : creator.getGhosts()) {
+            Arrive<Vector2> arriveSB = new Arrive<Vector2>(g.entity, target)
+                    .setTimeToTarget(0.03f)
+                    .setArrivalTolerance(2f)
+                    .setDecelerationRadius(0);
+            g.entity.setBehaviour(arriveSB);
+        }
+        Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
+                .setTimeToTarget(0.1f)
+                .setArrivalTolerance(1.5f)
+                .setDecelerationRadius(0);
+        creator.getDemon().entity.setBehaviour(arriveSB);
+    }
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
 
     public TextureAtlas getAtlas(){
         return atlas;
@@ -325,7 +425,13 @@ public class PlayScreen implements Screen {
         hud.dispose();
     }
 
+    public MultiMage getGame() {
+        return game;
+    }
+
     public Mage getPlayer() {
         return player;
     }
+
+
 }

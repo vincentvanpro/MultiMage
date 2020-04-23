@@ -169,9 +169,11 @@ public class Mage extends Sprite implements Character {
         }
     }
 
+    BodyDef bodyDef = new BodyDef();
+
     public void defineMage() {
-        BodyDef bodyDef = new BodyDef();
-        PosX = 200;
+
+        PosX = 500;
         PosY = 50;
         bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
@@ -193,7 +195,8 @@ public class Mage extends Sprite implements Character {
                     MultiMage.ENEMY_BIT |
                     MultiMage.GROUND_BIT |
                     MultiMage.ENEMY_BODY_BIT |
-                    MultiMage.PLATFORM_BIT;
+                    MultiMage.PLATFORM_BIT |
+                    MultiMage.PORTAL_BIT;
 
 
         fixtureDef.shape = shape;
@@ -208,7 +211,8 @@ public class Mage extends Sprite implements Character {
                 MultiMage.LEVERS_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
                 MultiMage.BONUS_BIT |
-                MultiMage.ITEM_BIT;
+                MultiMage.ITEM_BIT |
+                MultiMage.PORTAL_BIT;
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 
