@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="282">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="308">
  <tileset firstgid="1" name="tileset2" tilewidth="32" tileheight="32" tilecount="5184" columns="64">
   <image source="tileset2.png" width="2048" height="2592"/>
  </tileset>
  <layer id="2" name="background" width="150" height="40">
   <data encoding="base64" compression="zlib">
-   eJztw7EJAAAIA7CCp7t6tE+4CAlkkoyqqqqqqqqqqqqqqqqqqqqqqqqqqqqqPtul9xeoTc5x
+   eJzt2DEKwkAURdEPNpZZT6osTbBTsqf0imvSaDIMyUi+4ONn4BYHgqR4xWVG7Ruz3qE92gnw8jRFV/gVXUGBrqBwbazziN6JulxeZ5FH9E7Uha6gQFdQoCso0BUU6AoKdAUFuoICXUGBrqBAV1CgKyjcX814RO9EXegKCls9PZrPO9E7URfOKyjQFRTGZm7Ndl/RO1EXziso5N/N6Qr/4jmrxu6id6Iu3INQoCso0BUU6AoKdAUFuoLCt46W/8FH70RdOK+gkHVj02f582yI3okVK4jelCy66rKNXWZXm/FmBdGbksU9103m52GPm/FmBdGbEsc9OLTcg3tkBdGbEsc9OL43RO/EihVEb0q8vwfPB8DvCdGBjBI=
   </data>
  </layer>
  <layer id="3" name="between" width="150" height="40">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+   eJztzjENACAQBMELCpCMOgpUIeDpPyEz5VabVGdkPTIAAAAAAAAAAHxtz+4DAAAAAAAAAAAAAAAAAAC6Xb4sAiM=
   </data>
  </layer>
  <layer id="4" name="coins" width="150" height="40">
@@ -30,21 +30,28 @@
  </layer>
  <layer id="7" name="graphics" width="150" height="40">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+   eJzt2kFuglAUheGblFqLHZQwbBfjyE3ogA3pGrqJzllauZGXvl4fbQcSziHnT240aAzELy+IHBqzQ5hS5215u1qmzyezjeFONCVXHDG62ja2r4MvucKKzVXqrf15HHKFFaurk1xBx+rqvbV9fhxyhRWrq5hcYcXkaqqqsU6usFqDK0+usJIrNUdypeaIydVO5+00sbjy4rXQPLnCislVvBaaJ1dYMbhKyRVPcqXmCN1V3pQrv7dBrrBagys/n5crrNbg6iRXcN3bVd69P+8oVzSxuPL/lsf7RLt4DEe5govFlXvyGXz1g69+fO7bPmrdzwAX0/lVavTUba5rWC9XeDG68tzSw7BW7UZjcoUVq6uYXGHF7uryen2UK6xYXaXX5QozRlel98kVVkyufnufXGG1Ble1yRVarK4eh6nse62SK6zcVfpe0ixtqeRq6vV8vxVOTK6qbPuz3e63wonFVdzH0iicWFwprtxVbGlLf7l6aW9HYcXoSuGH7qpkS+sVfgyutHbxxeLqP78HNTiD/nvwC4EtzjM=
   </data>
  </layer>
  <layer id="8" name="openable door" width="150" height="40">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+   eJzt0sEJAEAIBDHB/nu+DvwtHpJUMI+pAgAAAAAAAAAAAAAAAAAAAAAAAAAm3dsFXOQrEnxFgq9I8BXwswd1mAAf
   </data>
  </layer>
  <layer id="9" name="shadows" width="150" height="40" opacity="0.46">
   <data encoding="base64" compression="zlib">
-   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+   eJzt1DENADAMA8GoBMqfZwGUgLcMGXInvczAVQAAAAAAAAAAAAAAAAAAAAAAAAAATDkh6Ho3L3T4KwC2+Df6Ax4=
   </data>
  </layer>
  <objectgroup id="10" name="ground">
-  <object id="280" x="0" y="1248" width="4800" height="32"/>
+  <object id="280" x="0" y="1248" width="3520" height="32"/>
+  <object id="282" x="3520" y="0" width="640" height="672"/>
+  <object id="283" x="4160" y="0" width="640" height="576"/>
+  <object id="284" x="4256" y="576" width="544" height="704"/>
+  <object id="285" x="3520" y="672" width="736" height="608"/>
+  <object id="287" x="96" y="1088" width="32" height="160"/>
+  <object id="288" x="64" y="1056" width="256" height="32"/>
+  <object id="307" x="320" y="0" width="32" height="1088"/>
  </objectgroup>
  <objectgroup id="11" name="chests"/>
  <objectgroup id="12" name="bonus"/>
@@ -53,7 +60,7 @@
  <objectgroup id="15" name="platforms"/>
  <objectgroup id="16" name="ghosts"/>
  <objectgroup id="17" name="demon">
-  <object id="281" x="768" y="800" width="32" height="32"/>
+  <object id="281" x="4192" y="608" width="32" height="32"/>
  </objectgroup>
  <layer id="18" name="portal" width="150" height="40">
   <data encoding="base64" compression="zlib">
