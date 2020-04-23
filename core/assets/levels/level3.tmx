@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="313">
+ <tileset firstgid="1" name="tileset2" tilewidth="32" tileheight="32" tilecount="5184" columns="64">
+  <image source="tileset2.png" width="2048" height="2592"/>
+ </tileset>
+ <layer id="2" name="background" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt2DEKwkAURdEPNpZZT6osTbBTsqf0imvSaDIMyUi+4ONn4BYHgqR4xWVG7Ruz3qE92gnw8jRFV/gVXUGBrqBwbazziN6JulxeZ5FH9E7Uha6gQFdQoCso0BUU6AoKdAUFuoICXUGBrqBAV1CgKyjcX814RO9EXegKCls9PZrPO9E7URfOKyjQFRTGZm7Ndl/RO1EXziso5N/N6Qr/4jmrxu6id6Iu3INQoCso0BUU6AoKdAUFuoLCt46W/8FH70RdOK+gkHVj02f582yI3okVK4jelCy66rKNXWZXm/FmBdGbksU9103m52GPm/FmBdGbEsc9OLTcg3tkBdGbEsc9OL43RO/EihVEb0q8vwfPB8DvCdGBjBI=
+  </data>
+ </layer>
+ <layer id="3" name="between" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzjENACAQBMELCpCMOgpUIeDpPyEz5VabVGdkPTIAAAAAAAAAAHxtz+4DAAAAAAAAAAAAAAAAAAC6Xb4sAiM=
+  </data>
+ </layer>
+ <layer id="4" name="coins" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+  </data>
+ </layer>
+ <layer id="5" name="chests" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+  </data>
+ </layer>
+ <layer id="6" name="levers" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+  </data>
+ </layer>
+ <layer id="7" name="graphics" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt2kFOwkAYhuFJQMTiQsJSD8OKS8CCC+kZvIR7jmYndtJxOnRqpO3/kfdN/sQUYujkyaSUHrbOHZLJ9b7OH6d5+np0buXsTmoKVxopulpv3b5KfOHKVmquQq+73+eBK1upujrhynSqrt52bh+fB65speoqDVe2UnJ1reXWnXFlq3tw5cOVrXBFY4QrGiMlVxuu22VSceVL74XG4cpWSq7Se6FxuLKVgqsQrnTCFY2RdVdx11z5ZxtwZat7cOWv53Flq3twdcKVuW7tKu7W/++IK5lUXPnflpvnRM/pORxxZS4VV96Tn9rXpfZ1af72xz4rnmcwl9L1VajxdF797GEXXNlL0ZXPW1rUe9WmMYYrW6m6SsNVOb9GU426q4+Xds2ov6nWSNlVeB1Xw8NVv6vc+3BVDld5V33vw1U5XP3NVeVwNSRclV091LN07V6Fq3JTu0q/I85tKefq2uvx56b+cJV3tYyOP7nu56b+cNV1NeReHLXNuUZKrnyLxQiLQDcvuEqb21LJ1fOuO2QnVVdkOwVXsS32K41UXIVhv9JIydWUz3gw/x/r3we/AViK7lQ=
+  </data>
+ </layer>
+ <layer id="8" name="openable door" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt0sEJAEAIBDHB/nu+JlwPJKlgHlMFAAAAAAAAAAAAAAAAAAAAAAAAADCj+3cBF/mKBF+R4CsSfAX7HlJwAB8=
+  </data>
+ </layer>
+ <layer id="9" name="shadows" width="150" height="40" opacity="0.46">
+  <data encoding="base64" compression="zlib">
+   eJzt1DENADAMA8GoBMqfZwGUgLcMGXInvczAVQAAAAAAAAAAAAAAAAAAAAAAAAAATDkh6Ho3L3T4KwC2+Df6Ax4=
+  </data>
+ </layer>
+ <objectgroup id="10" name="ground">
+  <object id="280" x="0" y="1248" width="3520" height="32"/>
+  <object id="282" x="3520" y="0" width="640" height="672"/>
+  <object id="283" x="4160" y="0" width="640" height="576"/>
+  <object id="284" x="4256" y="576" width="544" height="704"/>
+  <object id="285" x="3520" y="672" width="736" height="608"/>
+  <object id="287" x="96" y="1088" width="32" height="160"/>
+  <object id="288" x="64" y="1056" width="256" height="32"/>
+  <object id="307" x="320" y="0" width="32" height="1088"/>
+  <object id="309" x="2496" y="1056" width="192" height="32"/>
+  <object id="310" x="2656" y="768" width="32" height="288"/>
+  <object id="311" x="2688" y="768" width="832" height="32"/>
+  <object id="312" x="3488" y="800" width="32" height="448"/>
+ </objectgroup>
+ <objectgroup id="11" name="chests"/>
+ <objectgroup id="12" name="bonus"/>
+ <objectgroup id="13" name="openable door">
+  <object id="308" x="2496" y="1088" width="32" height="160"/>
+ </objectgroup>
+ <objectgroup id="14" name="levers"/>
+ <objectgroup id="15" name="platforms"/>
+ <objectgroup id="16" name="ghosts"/>
+ <objectgroup id="17" name="demon">
+  <object id="281" x="4192" y="608" width="32" height="32"/>
+ </objectgroup>
+ <layer id="18" name="portal" width="150" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T+3sARQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADddwAAB
+  </data>
+ </layer>
+ <objectgroup id="19" name="portal"/>
+</map>

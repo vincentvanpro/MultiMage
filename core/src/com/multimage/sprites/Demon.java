@@ -58,6 +58,7 @@ public class Demon extends Enemy {
     }
 
     public void update(float delta) {
+        body.setActive(PlayScreen.isDoorOpened);
         stateTime += delta;
         if (setToDestroy && !destroyed) {
             setRegion(deathAnimation.getKeyFrame(stateTime, true));
