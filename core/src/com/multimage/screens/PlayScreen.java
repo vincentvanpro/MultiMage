@@ -165,10 +165,12 @@ public class PlayScreen implements Screen {
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
     public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
+        MultiMage.music.stop();
         mapLoader = new TmxMapLoader();
         // HERE LOAD LEVEL and all further thing
         player = mage; // MAGE ALREADY EXISTS, BUT MAYBE NEEDS TO BE REDEFINED BECAUSE OF IT'S PHYSICAL BODY
         // MAYBE CREATE NEW MAGE AND PASS HIM ITEMS, LEVEL ETC
+
         mapLoader = new TmxMapLoader();
         if (whatLevelToSet == 1) {
             map = mapLoader.load("levels/level1.tmx");
@@ -180,10 +182,10 @@ public class PlayScreen implements Screen {
         } else if (whatLevelToSet == 2) {
             map = mapLoader.load("levels/level2.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
-            xMaxCord = 308600;
-            yMaxCord = 103500;
-            xMaxCamCord = 2200.24f;
-            yMaxCamCord = 500.52f;
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
         } else if (whatLevelToSet == 3) {
             map = mapLoader.load("levels/level3.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
