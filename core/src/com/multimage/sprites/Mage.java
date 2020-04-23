@@ -17,40 +17,6 @@ import java.util.HashMap;
 // ordinary Mage class
 public class Mage extends Sprite implements Character {
 
-    @Override
-    public int getArmour() {
-        return 0;
-    }
-
-    @Override
-    public int getLevel() {
-        return 0;
-    }
-
-    @Override
-    public float getHealth() {
-        return 0;
-    }
-
-    @Override
-    public void levelUp() { }
-
-    @Override
-    public void getBonusesFromItems() { }
-
-    @Override
-    public void getPassiveSkillEffect() { }
-
-    @Override
-    public void addItem(String item) {
-        if (items.containsKey(item)) {
-            items.put(item, items.get(item) + 1);
-        } else {
-            items.put(item, 1);
-        }
-        System.out.println(items);
-    }
-
     public enum State { JUMPING, FALLING, WALKING, STANDING }
 
     public int id = -1;
@@ -73,10 +39,18 @@ public class Mage extends Sprite implements Character {
     private Animation<TextureRegion> mageJump;
     private float stateTimer;
     private boolean walkingRight;
+
+
     private HashMap<String, Integer> items;
     private float health;
     private float armour;
+    private int level;
     private float xp;
+    private float xpBoostPercent;
+
+    private float damage;
+    private float jumpPlus = 5.75f;
+    private float chanceToInstantKill;
 
 
     public Mage(PlayScreen screen) {
@@ -244,6 +218,85 @@ public class Mage extends Sprite implements Character {
 
         body.createFixture(fixtureDef).setUserData("body");
     }
+
+    // Item Realisation
+
+    @Override
+    public float getArmour() {
+        return armour;
+    }
+
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    @Override
+    public void levelUp() { }
+
+    @Override
+    public void getBonusesFromItems(String item) {
+        if (item.equalsIgnoreCase("Ambrosia")) {
+            health = (float) (health + (health * (items.get(item) * 0.02)));
+        } else if (item.equalsIgnoreCase("Amulet")) {
+            //TODO
+        } else if (item.equalsIgnoreCase("Book")) {
+            xpBoostPercent += 0.15f * items.get(item);
+        } else if (item.equalsIgnoreCase("Boots")) {
+            if (items.get(item) > 1) {
+                speed += speed * (0.05 * (items.get(item) - 1));
+            } else {
+                speed += speed * 0.1;
+            }
+        } else if (item.equalsIgnoreCase("Crown")) {
+            health += health * (items.get(item) * 0.05);
+            armour += armour * (items.get(item) * 0.05);
+        } else if (item.equalsIgnoreCase("Hat")) {
+            damage += damage * (items.get(item) * 0.1);
+        } else if (item.equalsIgnoreCase("Ring")) {
+            jumpPlus += 0.25f;
+        } else if (item.equalsIgnoreCase("Shield")) {
+            if (items.get(item) > 1) {
+                armour += 5 * (items.get(item) - 1);
+            } else {
+                armour += 10;
+            }
+        } else if (item.equalsIgnoreCase("Sword")) {
+            if (items.get(item) < 7) {
+                chanceToInstantKill += 0.5f;
+            }
+        }
+    }
+
+    @Override
+    public void getPassiveSkillEffect() { }
+
+    @Override
+    public void addItem(String item) {
+        if (items.containsKey(item)) {
+            items.put(item, items.get(item) + 1);
+        } else {
+            items.put(item, 1);
+        }
+        getBonusesFromItems(item);
+        System.out.println(items);
+        System.out.println(speed);
+        System.out.println(jumpPlus);
+    }
+
+    public float jump() {
+        return jumpPlus;
+    }
+
+    public HashMap<String, Integer> getItems() {
+        return items;
+    }
+
 
     public String getName() {
         return name;

@@ -12,7 +12,7 @@ import com.multimage.sprites.Mage;
 
 public class Hat extends Item {
 
-    /*The amount of this item in inventory will increase the magic damage by 20%.
+    /*The amount of this item in inventory will increase the magic damage by 10%.
     Stacks +10%.
      */
     public Hat(PlayScreen screen, float x, float y) {

@@ -6,12 +6,12 @@ import java.util.HashMap;
 
 public interface Character {
 
-    int getArmour();
+    float getArmour();
     int getLevel();
     float getHealth();
 
     void levelUp();
-    void getBonusesFromItems();
+    void getBonusesFromItems(String item);
 
     void getPassiveSkillEffect();
 
