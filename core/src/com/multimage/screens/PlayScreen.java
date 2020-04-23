@@ -22,6 +22,7 @@ import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Enemy;
+import com.multimage.sprites.Fireball;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
@@ -59,6 +60,9 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private WorldCreator creator;
 
+    // fireballs
+    ArrayList<Fireball> fireballs;
+
     public TextureAtlas getAtlasEnemy() {
         return atlasEnemy;
     }
@@ -67,6 +71,9 @@ public class PlayScreen implements Screen {
         this.game = game;
         atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasEnemy = new TextureAtlas("entity/enemies/ghost.pack");
+
+        //fireballs list
+        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -142,6 +149,7 @@ public class PlayScreen implements Screen {
        world.step(1/60f, 6, 2);
 
        player.update(delta);
+       hud.update(delta);
 
        for (Enemy enemy: creator.getGhosts()) {
            enemy.update(delta);
@@ -203,6 +211,26 @@ public class PlayScreen implements Screen {
 
         for (Enemy enemy: creator.getGhosts()) {
             enemy.draw(game.batch);
+        }
+
+        // Fireball shoot
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            fireballs.add(new Fireball(player.body.getPosition().x, player.body.getPosition().y));
+        }
+
+        //Update fireball
+        ArrayList<Fireball> fireballsToRemove = new ArrayList<>();
+        for (Fireball fireball : fireballs) {
+            fireball.update(delta);
+            if (fireball.remove) {
+                fireballsToRemove.add(fireball);
+            }
+        }
+        fireballs.removeAll(fireballsToRemove);
+
+        //render fireball
+        for (Fireball fireball : fireballs) {
+            fireball.render(game.batch);
         }
 
         // item creation

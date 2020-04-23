@@ -59,7 +59,7 @@ public class Mage extends Sprite implements Character {
     public float PosY;
     public float speed = 300;
 
-    public State currentState;
+    public static State currentState;
     public State previousState;
     public World world;
     public Body body;

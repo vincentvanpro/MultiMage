@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -20,7 +21,8 @@ public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
-    private Integer worldTimer;
+    private Integer worldTimerMin;
+    private Integer worldTimerSek;
     private float timeCount;
     private Integer score;
     private Integer exp;
@@ -35,7 +37,8 @@ public class Hud implements Disposable {
     Label experienceLvlLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 0;
+        worldTimerMin = 0;
+        worldTimerSek = 0;
         timeCount = 0;
         score = 0;
         exp = 0;
@@ -51,13 +54,13 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true); // table is size of a stage
 
-        countDownLabel = new Label(String.format("%03d", worldTimer), skin, "small");
+        countDownLabel = new Label(worldTimerMin + " m " + worldTimerSek + " s", skin, "small");
         scoreLabel = new Label(String.format("%03d", score), skin, "small");
         timeLabel = new Label("TIME", skin, "small");
         levelLabel = new Label("1-1", skin, "small");
         worldLabel = new Label("WORLD", skin, "small");
         mageLabel = new Label("MAGE", skin, "small");
-        experienceLvlLabel = new Label("LVL " + level +"     EXP " + exp + "/100", skin, "small");
+        experienceLvlLabel = new Label("LVL " + level +"    EXP " + exp + "/100", skin, "small");
 
         table.add(mageLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
@@ -66,10 +69,10 @@ public class Hud implements Disposable {
         table.add(scoreLabel).expandX();
         table.add(levelLabel).expandX();
         table.add(countDownLabel).expandX();
-        table.row();
-        table.add().expandY();
-        table.row();
-        table.add(experienceLvlLabel).expandX();
+
+        experienceLvlLabel.setPosition(35,65);
+        experienceLvlLabel.setAlignment(Align.bottomLeft);
+        stage.addActor(experienceLvlLabel);
 
         stage.addActor(table);
     }
@@ -77,8 +80,12 @@ public class Hud implements Disposable {
     public void update(float delta) {
         timeCount += delta;
         if(timeCount >= 1) {
-            worldTimer++;
-            countDownLabel.setText(String.format("%03d", worldTimer));
+            worldTimerSek++;
+            if (worldTimerSek == 60) {
+                worldTimerMin++;
+                worldTimerSek = 0;
+            }
+            countDownLabel.setText(worldTimerMin + "m " + worldTimerSek + "s");
             timeCount = 0;
         }
     }
