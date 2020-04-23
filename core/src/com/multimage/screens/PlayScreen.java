@@ -423,4 +423,14 @@ public class PlayScreen implements Screen {
         box2DDebugRenderer.dispose();
         hud.dispose();
     }
+
+    public MultiMage getGame() {
+        return game;
+    }
+
+    public Mage getPlayer() {
+        return player;
+    }
+
+
 }

@@ -30,6 +30,6 @@ public class Portal extends InteractiveTileObject {
     @Override
     public void onBodyHit() {
         Gdx.app.log("Portal", "collision");
-        ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.game, mage, 2));
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame(), screen.getPlayer(), 2));
     }
 }
