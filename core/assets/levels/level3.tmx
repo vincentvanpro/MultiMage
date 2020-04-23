@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="308">
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="150" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="20" nextobjectid="313">
  <tileset firstgid="1" name="tileset2" tilewidth="32" tileheight="32" tilecount="5184" columns="64">
   <image source="tileset2.png" width="2048" height="2592"/>
  </tileset>
@@ -30,12 +30,12 @@
  </layer>
  <layer id="7" name="graphics" width="150" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt2kFuglAUheGblFqLHZQwbBfjyE3ogA3pGrqJzllauZGXvl4fbQcSziHnT240aAzELy+IHBqzQ5hS5215u1qmzyezjeFONCVXHDG62ja2r4MvucKKzVXqrf15HHKFFaurk1xBx+rqvbV9fhxyhRWrq5hcYcXkaqqqsU6usFqDK0+usJIrNUdypeaIydVO5+00sbjy4rXQPLnCislVvBaaJ1dYMbhKyRVPcqXmCN1V3pQrv7dBrrBagys/n5crrNbg6iRXcN3bVd69P+8oVzSxuPL/lsf7RLt4DEe5govFlXvyGXz1g69+fO7bPmrdzwAX0/lVavTUba5rWC9XeDG68tzSw7BW7UZjcoUVq6uYXGHF7uryen2UK6xYXaXX5QozRlel98kVVkyufnufXGG1Ble1yRVarK4eh6nse62SK6zcVfpe0ixtqeRq6vV8vxVOTK6qbPuz3e63wonFVdzH0iicWFwprtxVbGlLf7l6aW9HYcXoSuGH7qpkS+sVfgyutHbxxeLqP78HNTiD/nvwC4EtzjM=
+   eJzt2kFOwkAYhuFJQMTiQsJSD8OKS8CCC+kZvIR7jmYndtJxOnRqpO3/kfdN/sQUYujkyaSUHrbOHZLJ9b7OH6d5+np0buXsTmoKVxopulpv3b5KfOHKVmquQq+73+eBK1upujrhynSqrt52bh+fB65speoqDVe2UnJ1reXWnXFlq3tw5cOVrXBFY4QrGiMlVxuu22VSceVL74XG4cpWSq7Se6FxuLKVgqsQrnTCFY2RdVdx11z5ZxtwZat7cOWv53Flq3twdcKVuW7tKu7W/++IK5lUXPnflpvnRM/pORxxZS4VV96Tn9rXpfZ1af72xz4rnmcwl9L1VajxdF797GEXXNlL0ZXPW1rUe9WmMYYrW6m6SsNVOb9GU426q4+Xds2ov6nWSNlVeB1Xw8NVv6vc+3BVDld5V33vw1U5XP3NVeVwNSRclV091LN07V6Fq3JTu0q/I85tKefq2uvx56b+cJV3tYyOP7nu56b+cNV1NeReHLXNuUZKrnyLxQiLQDcvuEqb21LJ1fOuO2QnVVdkOwVXsS32K41UXIVhv9JIydWUz3gw/x/r3we/AViK7lQ=
   </data>
  </layer>
  <layer id="8" name="openable door" width="150" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt0sEJAEAIBDHB/nu+DvwtHpJUMI+pAgAAAAAAAAAAAAAAAAAAAAAAAAAm3dsFXOQrEnxFgq9I8BXwswd1mAAf
+   eJzt0sEJAEAIBDHB/nu+JlwPJKlgHlMFAAAAAAAAAAAAAAAAAAAAAAAAADCj+3cBF/mKBF+R4CsSfAX7HlJwAB8=
   </data>
  </layer>
  <layer id="9" name="shadows" width="150" height="40" opacity="0.46">
@@ -52,10 +52,16 @@
   <object id="287" x="96" y="1088" width="32" height="160"/>
   <object id="288" x="64" y="1056" width="256" height="32"/>
   <object id="307" x="320" y="0" width="32" height="1088"/>
+  <object id="309" x="2496" y="1056" width="192" height="32"/>
+  <object id="310" x="2656" y="768" width="32" height="288"/>
+  <object id="311" x="2688" y="768" width="832" height="32"/>
+  <object id="312" x="3488" y="800" width="32" height="448"/>
  </objectgroup>
  <objectgroup id="11" name="chests"/>
  <objectgroup id="12" name="bonus"/>
- <objectgroup id="13" name="openable door"/>
+ <objectgroup id="13" name="openable door">
+  <object id="308" x="2496" y="1088" width="32" height="160"/>
+ </objectgroup>
  <objectgroup id="14" name="levers"/>
  <objectgroup id="15" name="platforms"/>
  <objectgroup id="16" name="ghosts"/>

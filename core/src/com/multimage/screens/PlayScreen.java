@@ -78,7 +78,7 @@ public class PlayScreen implements Screen {
     private float yMaxCamCord;
 
     public PlayScreen(MultiMage game) {
-        String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
+        String levelPath = "levels/level3.tmx";  //change 1 to 2 to change level
 
         MultiMage.music.stop();
         if (levelPath.equals("levels/level1.tmx")) {
@@ -169,6 +169,7 @@ public class PlayScreen implements Screen {
         // HERE LOAD LEVEL and all further thing
         player = mage; // MAGE ALREADY EXISTS, BUT MAYBE NEEDS TO BE REDEFINED BECAUSE OF IT'S PHYSICAL BODY
         // MAYBE CREATE NEW MAGE AND PASS HIM ITEMS, LEVEL ETC
+        player.setPosition(500, 50);
         mapLoader = new TmxMapLoader();
         if (whatLevelToSet == 1) {
             map = mapLoader.load("levels/level1.tmx");

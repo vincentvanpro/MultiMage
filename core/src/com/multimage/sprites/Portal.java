@@ -1,5 +1,6 @@
 package com.multimage.sprites;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
@@ -29,5 +30,6 @@ public class Portal extends InteractiveTileObject {
     @Override
     public void onBodyHit() {
         Gdx.app.log("Portal", "collision");
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.game, mage, 2));
     }
 }
