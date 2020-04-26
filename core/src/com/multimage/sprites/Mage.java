@@ -1,5 +1,7 @@
 package com.multimage.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -60,7 +62,6 @@ public class Mage extends Sprite implements Character {
     private Texture healthForeground= new Texture("entity/mage/healthForeground.png");
     private Texture healthBorder = new Texture("entity/mage/healthBorder.png");
     private float healthPercent;
-
 
 
     public Mage(PlayScreen screen) {

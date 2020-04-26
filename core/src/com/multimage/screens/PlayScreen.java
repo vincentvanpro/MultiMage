@@ -22,9 +22,7 @@ import com.multimage.item.Item;
 import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
-import com.multimage.sprites.Enemy;
-import com.multimage.sprites.Fireball;
-import com.multimage.sprites.Mage;
+import com.multimage.sprites.*;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
@@ -66,7 +64,7 @@ public class PlayScreen implements Screen {
     private SteeringBehaviourAI target;
 
     // fireballs
-    ArrayList<Fireball> fireballs;
+    private ArrayList<Fireball> fireballs;
 
 
     public TextureAtlas getAtlasGhost() {
@@ -116,7 +114,7 @@ public class PlayScreen implements Screen {
         }
 
         this.game = game;
-        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
@@ -335,7 +333,6 @@ public class PlayScreen implements Screen {
        gameCam.update();
        // render only what camera sees
        renderer.setView(gameCam);
-
     }
 
     private void handleInput(float delta) { //
@@ -363,7 +360,6 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
-
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
