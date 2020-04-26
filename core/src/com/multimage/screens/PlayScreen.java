@@ -23,7 +23,7 @@ import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Enemy;
-import com.multimage.sprites.Ghost;
+import com.multimage.sprites.Fireball;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
@@ -119,6 +119,9 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas("entity/mage/MageTextures.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+
+        //fireballs list
+        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -298,6 +301,7 @@ public class PlayScreen implements Screen {
        world.step(1/60f, 6, 2);
 
        player.update(delta);
+       hud.update(delta);
 
        for (Ghost enemy: creator.getGhosts()) {
            enemy.update(delta);
@@ -359,6 +363,7 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
         update(delta);
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

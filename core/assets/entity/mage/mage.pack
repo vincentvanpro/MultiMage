@@ -1,20 +1,20 @@
 
-MageTextures.png
+mage.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-jump
+attack
   rotate: false
-  xy: 1, 161
-  size: 702, 78
-  orig: 702, 78
+  xy: 1, 163
+  size: 810, 78
+  orig: 810, 78
   offset: 0, 0
   index: -1
-standing
+jump
   rotate: false
-  xy: 1, 81
-  size: 546, 78
-  orig: 546, 78
+  xy: 1, 82
+  size: 702, 78
+  orig: 702, 78
   offset: 0, 0
   index: -1
 walk

@@ -38,7 +38,8 @@ public class WorldContactListener implements ContactListener {
                     ((Enemy) fixA.getUserData()).hitOnHead();
                 } else if (fixB.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
                     ((Enemy) fixB.getUserData()).hitOnHead();
-                } break;
+                }
+                break;
             } case (MultiMage.ENEMY_BODY_BIT | MultiMage.GROUND_BIT) : {
                 if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
                     ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
@@ -47,6 +48,11 @@ public class WorldContactListener implements ContactListener {
                 } break;
             } case (MultiMage.ENEMY_BIT | MultiMage.MAGE_BIT) : {
                 // logic to apply damage to wizard here
+                if (fixA.getFilterData().categoryBits == MultiMage.MAGE_BIT) {
+                    ((Mage) fixA.getUserData()).hit();
+                } else {
+                    ((Mage) fixB.getUserData()).hit();
+                }
                 break;
             } case (MultiMage.ITEM_BIT | MultiMage.MAGE_BIT) : {
                 if (fixA.getFilterData().categoryBits == MultiMage.ITEM_BIT) {

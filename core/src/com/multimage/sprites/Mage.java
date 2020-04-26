@@ -32,13 +32,15 @@ public class Mage extends Sprite implements Character {
 
     public float speed = 0.25f;
 
-    public State currentState;
+    public static State currentState;
     public State previousState;
     public World world;
     public Body body;
+
     private TextureRegion mageStand;
     private Animation<TextureRegion> mageWalk;
     private Animation<TextureRegion> mageJump;
+    private Animation<TextureRegion> mageAttack;
     private float stateTimer;
     private boolean walkingRight;
 
@@ -62,7 +64,7 @@ public class Mage extends Sprite implements Character {
 
 
     public Mage(PlayScreen screen) {
-        super(screen.getAtlas().findRegion("standing"));
+        super(screen.getAtlas().findRegion("walk"));
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
@@ -75,9 +77,14 @@ public class Mage extends Sprite implements Character {
         mageWalk = new Animation<>(0.15f, frames);
         frames.clear();
 
-        for (int i = 1; i < 8; i++)
-            frames.add(new TextureRegion(getTexture(), i * 78, 160, 78, 80));
+        for (int i = 1; i < 9; i++)
+            frames.add(new TextureRegion(getTexture(), i * 78, 80, 78, 80));
         mageJump = new Animation<>(0.15f, frames);
+        frames.clear();
+
+        for (int i = 1; i < 9; i++)
+            frames.add(new TextureRegion(getTexture(), i * 90, 160, 78, 80));
+        mageAttack = new Animation<>(0.15f, frames);
         frames.clear();
 
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
@@ -109,11 +116,15 @@ public class Mage extends Sprite implements Character {
         mageWalk = new Animation<>(0.15f, frames);
         frames.clear();
 
-        for (int i = 1; i < 8; i++)
-            frames.add(new TextureRegion(getTexture(), i * 78, 160, 78, 80));
+        for (int i = 1; i < 9; i++)
+            frames.add(new TextureRegion(getTexture(), i * 78, 80, 78, 80));
         mageJump = new Animation<>(0.15f, frames);
         frames.clear();
 
+        for (int i = 1; i < 9; i++)
+            frames.add(new TextureRegion(getTexture(), i * 90, 160, 78, 80));
+        mageAttack = new Animation<>(0.15f, frames);
+        frames.clear();
 
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
@@ -156,6 +167,9 @@ public class Mage extends Sprite implements Character {
             case WALKING:
                 region = mageWalk.getKeyFrame(stateTimer, true);
                 break;
+            case ATTACK:
+                region = mageAttack.getKeyFrame(stateTimer);
+                break;
             case FALLING:
             case STANDING:
             default:
@@ -182,6 +196,8 @@ public class Mage extends Sprite implements Character {
             return State.FALLING;
         } else if (body.getLinearVelocity().x != 0) {
             return State.WALKING;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            return State.ATTACK;
         } else {
             return State.STANDING;
         }
