@@ -1,6 +1,8 @@
 package com.multimage.sprites;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -17,7 +19,7 @@ import java.util.HashMap;
 // ordinary Mage class
 public class Mage extends Sprite implements Character {
 
-    public enum State { JUMPING, FALLING, WALKING, STANDING }
+    public enum State { JUMPING, FALLING, WALKING, STANDING, ATTACK }
 
     public int id = -1;
     public String name;
@@ -51,6 +53,12 @@ public class Mage extends Sprite implements Character {
     private float damage;
     private float jumpPlus = 5.75f;
     private float chanceToInstantKill;
+
+    private Texture healthBackground = new Texture("entity/mage/healthBackground.png");
+    private Texture healthForeground= new Texture("entity/mage/healthForeground.png");
+    private Texture healthBorder = new Texture("entity/mage/healthBorder.png");
+    private float healthPercent;
+
 
 
     public Mage(PlayScreen screen) {
@@ -113,6 +121,8 @@ public class Mage extends Sprite implements Character {
         setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
         setRegion(mageStand);
 
+        healthPercent = 1f;
+
         items = new HashMap<>();
     }
 
@@ -126,6 +136,14 @@ public class Mage extends Sprite implements Character {
         PosX = body.getPosition().x;
         PosY = body.getPosition().y;
     }
+
+    public void draw(Batch batch) {
+        super.draw(batch);
+        batch.draw(healthBorder, body.getPosition().x - 4.05f, body.getPosition().y - 2.05f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+        batch.draw(healthBackground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+        batch.draw(healthForeground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+    }
+
 
     public TextureRegion getFrame(float delta) {
         currentState = getState();
@@ -272,6 +290,13 @@ public class Mage extends Sprite implements Character {
             }
         }
     }
+
+    public void hit() {
+        if (healthPercent >= 0.2f) {
+            healthPercent = healthPercent - 0.2f;
+        }
+    }
+
 
     @Override
     public void getPassiveSkillEffect() { }

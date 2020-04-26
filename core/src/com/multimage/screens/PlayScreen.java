@@ -28,6 +28,7 @@ import com.multimage.sprites.Mage;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
+import com.multimage.sprites.Fireball;
 
 
 import java.util.ArrayList;
@@ -63,6 +64,10 @@ public class PlayScreen implements Screen {
     private WorldCreator creator;
 
     private SteeringBehaviourAI target;
+
+    // fireballs
+    ArrayList<Fireball> fireballs;
+
 
     public TextureAtlas getAtlasGhost() {
         return atlasGhost;
@@ -370,6 +375,26 @@ public class PlayScreen implements Screen {
 
         for (Enemy enemy: creator.getGhosts()) {
             enemy.draw(game.batch);
+        }
+
+        // Fireball shoot
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            fireballs.add(new Fireball(player.body.getPosition().x, player.body.getPosition().y));
+        }
+
+        //Update fireball
+        ArrayList<Fireball> fireballsToRemove = new ArrayList<>();
+        for (Fireball fireball : fireballs) {
+            fireball.update(delta);
+            if (fireball.remove) {
+                fireballsToRemove.add(fireball);
+            }
+        }
+        fireballs.removeAll(fireballsToRemove);
+
+        //render fireball
+        for (Fireball fireball : fireballs) {
+            fireball.render(game.batch);
         }
 
         creator.getDemon().draw(game.batch);
