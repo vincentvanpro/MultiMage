@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.kryo.Kryo;
@@ -20,29 +21,99 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.multimage.MultiMage;
+import com.multimage.item.Item;
+import com.multimage.item.ItemDef;
+import com.multimage.item.items.*;
 import com.multimage.network.packets.*;
 import com.multimage.scenes.Hud;
+import com.multimage.sprites.Enemy;
 import com.multimage.sprites.Mage;
+import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class MultiPlayer extends ApplicationAdapter implements Screen, InputProcessor {
+public class MultiPlayer extends ApplicationAdapter implements Screen {
 
-    MultiMage game;
-    SpriteBatch batch;
+    private MultiMage game;
+    private TextureAtlas atlas;
+    private TextureAtlas atlasGhost;
+    private TextureAtlas atlasDemon;
+    private List<Integer> levers;
+    private boolean isDoorOpened;
+
+    private Music music;
+
+    // sprites
+    private Mage player;
+    private Array<Item> items;
+    private LinkedBlockingQueue<ItemDef> itemsToSpawn;
+
+    private OrthographicCamera gameCam;
+    private Viewport gamePort;
+    private Hud hud;
+
+    // tiled map
+    private TmxMapLoader mapLoader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
+
+    //box 2d
+    private World world;
+    private Box2DDebugRenderer box2DDebugRenderer;
+    private WorldCreator creator;
 
     Client GameClient= new Client();
     Kryo kryo = new Kryo();
+    private boolean serverAnswer;
 
     Mage[] otherPlayer = new Mage[20];
     int index = 0;
 
-    public MultiPlayer(MultiMage game){
+    public MultiPlayer(MultiMage game) {
         this.game = game;
-        batch = game.batch;
+
+        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+
+        // cam that follows you
+        gameCam = new OrthographicCamera();
+        // maintain virtual aspect ratio despite screen size
+        gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
+        // create hud
+        hud = new Hud(game.batch);
+
+        // load and setup map
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("levels/level1.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
+
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        world = new World(new Vector2(0, -10), true);
+        box2DDebugRenderer = new Box2DDebugRenderer();
+        creator = new WorldCreator(this);
+
+        for (int i = 0; i < 10; i++) {
+            otherPlayer[i] = new Mage(this);
+        }
+
+        player = new Mage(this);
+
+        music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
+        music.stop();
+
+        world.setContactListener(new WorldContactListener());
+
+        items = new Array<>();
+        itemsToSpawn = new LinkedBlockingQueue<>();
+        levers = new ArrayList<>();
 
         kryo = GameClient.getKryo();
         kryo.register(FirstPacket.class);
@@ -55,15 +126,16 @@ public class MultiPlayer extends ApplicationAdapter implements Screen, InputProc
 
         GameClient.addListener(new Listener() {
 
-            @Override
-            public void connected(Connection connection) {
-                GameClient.sendTCP(new Request());
-            }
+            // @Override
+            // public void connected(Connection connection) {
+            //     // GameClient.sendTCP(new Request());
+            //     index++;
+            // }
 
             @Override
             public void received(Connection connection, Object object) {
                 if (object instanceof RequestAnswer) {
-                    boolean serverAnswer = ((RequestAnswer) object).accepted;
+                    serverAnswer = ((RequestAnswer) object).accepted;
                     if (serverAnswer) {
                         GameClient.sendTCP(new FirstPacket());
                         System.out.println("Joined server");
@@ -75,19 +147,23 @@ public class MultiPlayer extends ApplicationAdapter implements Screen, InputProc
                     player.id = firstPacket.id;
                     Position pos = new Position();
                     pos.playerID = firstPacket.id;
-                    pos.posX = (int) player.getPosX();
-                    pos.posY = (int) player.getPosY();
+                    pos.posX = (float) player.body.getPosition().x;
+                    pos.posY = (float) player.body.getPosition().y;
                     GameClient.sendTCP(pos);
                 } else if (object instanceof Position) {
                     otherPlayer[index].id = ((Position) object).playerID;
                     otherPlayer[index].PosX = ((Position) object).posX;
                     otherPlayer[index].PosY = ((Position) object).posY;
+                    otherPlayer[index].body.setTransform(new Vector2(otherPlayer[index].PosX, otherPlayer[index].PosY), 0);
                     index++;
                 } else if (object instanceof Moving) {
+                    System.out.println(index);
                     for (int i = 0; i < index; i++) {
+                        System.out.println("MOVING " + ((Moving) object).post.posX + " " + otherPlayer[i].id + otherPlayer[i].PosX);
                         if (otherPlayer[i].id == ((Moving) object).post.playerID) {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
                             otherPlayer[i].PosY = ((Moving) object).post.posY;
+                            otherPlayer[i].body.setTransform(new Vector2(otherPlayer[i].PosX, otherPlayer[i].PosY), 0);
                             otherPlayer[i].setCurrentState(((Moving) object).state);
                             otherPlayer[i].setDirection(((Moving) object).walkingRight);
                             break;
@@ -96,209 +172,182 @@ public class MultiPlayer extends ApplicationAdapter implements Screen, InputProc
                 } else if (object instanceof Disconnect) {
                     otherPlayer[((Disconnect) object).playerID] = null;
                     index--;
+                    System.out.println(index + "DISCONNECTED");
                 }
             }
         });
+
         GameClient.start();
+
         try {
-            GameClient.connect(5000, "localhost", 54555);
+            GameClient.connect(5000, "localhost", 5200, 5201);
         } catch (IOException ex) {
             Logger.getLogger(MultiPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    Mage player;
-    float timePassed = 0;
-
-    @Override
-    public void create () {
-        Gdx.graphics.setResizable(false);
-        Gdx.graphics.setVSync(true);
-        Gdx.graphics.setWindowedMode(800, 600);
-        Gdx.input.setInputProcessor(this);
-        for (int i = 0; i < 10; i++) {
-            otherPlayer[i] = new Mage();
-        }
-        // bg.setColor(Color.ORANGE);
-        batch = new SpriteBatch();
-        player = new Mage();
         FirstPacket fp = new FirstPacket();
+        fp.x = player.body.getPosition().x;
+        System.out.println(player.body.getPosition().x);
+        fp.y = player.body.getPosition().y;
         GameClient.sendTCP(fp); ////////////////////// NETWORK
-//        shooterAtlas = new TextureAtlas(Gdx.files.internal("shooter.atlas"));
-//        animation = new Animation(1/8f, shooterAtlas.getRegions());
+
     }
+
     @Override
-    public void render () {
+    public void resize(int width, int height) {
+        gamePort.update(width, height);
+    }
 
-        timePassed += Gdx.graphics.getDeltaTime();
-        Gdx.gl.glClearColor(0, 1, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    @Override
+    public void show() { }
 
-        batch.begin();
-        // batch.draw(bg.getTexture(), 0, 0);
-        // batch.setColor(Color.BROWN);
+    public void update(float delta) {
+        handleInput(delta);
+        // item creation //
+        // handleSpawningItems();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if (player.getPosX() >= -64)
-                player.setPosX(player.getPosX() - Gdx.graphics.getDeltaTime() * player.speed);
-            Moving mv = new Moving();
-            mv.walkingRight = false;
-            mv.state = Mage.State.WALKING;
-            mv.post.playerID = player.id;
-            mv.post.posX = (int) player.getPosX();
-            mv.post.posY = (int) player.getPosY();
-            GameClient.sendTCP(mv);
+        world.step(1/60f, 6, 2);
+
+        player.update(delta);
+
+        // doesn't draw because index is always 0
+        if (index > 0) {
+            for (int i = 0; i < index; i++) {
+                otherPlayer[i].update(delta);
+            }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if (player.getPosX() <= 600)
-                player.setPosX(player.getPosX() + Gdx.graphics.getDeltaTime() * player.speed);
+
+
+        //for (Enemy enemy: creator.getGhosts()) {
+        //    enemy.update(delta);
+        //}
+
+        //for (Item item : items) {
+        //    item.update(delta);
+        //}
+
+        gameCam.position.x = player.body.getPosition().x;
+        gameCam.position.y = player.body.getPosition().y;
+
+        // update cam
+        gameCam.update();
+        // render only what camera sees
+        renderer.setView(gameCam);
+    }
+
+    private void handleInput(float delta) { //
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.body.getLinearVelocity().y == 0.0f) {
+            player.body.applyLinearImpulse(new Vector2(0, 5.75f), player.body.getWorldCenter(), true);
+            player.setCurrentState(Mage.State.JUMPING);
+            Moving mv = new Moving();
+            mv.state = Mage.State.JUMPING;
+            mv.post.playerID = player.id;
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
+            GameClient.sendTCP(mv);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
+            player.body.applyLinearImpulse(new Vector2(0.25f, 0), player.body.getWorldCenter(), true);
+            player.setCurrentState(Mage.State.WALKING);
+            //player.setPosX(player.getPosX() - delta * player.getSpeed());
             Moving mv = new Moving();
             mv.walkingRight = true;
             mv.state = Mage.State.WALKING;
             mv.post.playerID = player.id;
-            mv.post.posX = (int) player.getPosX();
-            mv.post.posY = (int) player.getPosY();
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
+            GameClient.sendTCP(mv);
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
+            player.body.applyLinearImpulse(new Vector2(-0.25f, 0), player.body.getWorldCenter(), true);
+            //player.setPosX(player.getPosX() - delta * player.getSpeed());
+            player.setCurrentState(Mage.State.WALKING);
+            Moving mv = new Moving();
+            mv.walkingRight = false;
+            mv.state = Mage.State.WALKING;
+            mv.post.playerID = player.id;
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
             GameClient.sendTCP(mv);
         }
-
-        //////////////////// DRAW OTHER PLAYER /////////////////////
-        if (index > 0){
-            for (int i = 0; i < index; i++) {
-                batch.draw(otherPlayer[i].getFrame(timePassed), otherPlayer[i].getPosX(), otherPlayer[i].getPosY(), 256, 256);
-            }
-        }
-        // DRAW myPLAYER
-        batch.draw(player.getFrame(timePassed), player.getPosX(), player.getPosY(), 256, 256);
-        // batch.setColor(255, 100, 100, 5);
-
-        batch.end();
-
-    }
-
-    @Override
-    public void show() {
-
     }
 
     @Override
     public void render(float delta) {
+        update(delta);
 
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // render game map
+        renderer.render();
+
+        // render box2dDebugLines
+        box2DDebugRenderer.render(world, gameCam.combined);
+
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+
+        // DRAW myPLAYER
+        player.draw(game.batch);
+
+        // DRAW OTHER PLAYER
+        if (index > 0){
+            for (int i = 0; i < index; i++) {
+                otherPlayer[i].draw(game.batch);
+            }
+        }
+
+        //for (Enemy enemy: creator.getGhosts()) {
+        //    enemy.draw(game.batch);
+        //}
+
+        // item creation
+        //for (Item item : items) {
+        //    item.draw(game.batch);
+        //}
+        game.batch.end();
+
+        // PROTOTYPE HUD
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
     }
 
     @Override
-    public void hide() {
-
-    }
+    public void hide() { }
 
     @Override
     public void dispose () {
-        batch.dispose();
-        // player.AtlasDispose();
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        box2DDebugRenderer.dispose();
+        hud.dispose();
     }
 
-    @Override
-    public boolean keyUp(int i) {
-        if(!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.S)){
-//            if (Gdx.input.isKeyPressed(Keys.LEFT)) {// && player.isAttacking()
-//                player.setCurrentState(Character.CharacterState.WALKING);
-//                player.setDirection(Character.CharacterDirection.LEFT);
-//            } else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-//                player.setCurrentState(Character.CharacterState.WALKING);
-//                player.setDirection(Character.CharacterDirection.RIGHT);
-//            } else {
-//                player.setCurrentState(Character.CharacterState.IDLE);
-//            }
-            player.setCurrentState(Mage.State.STANDING);
-            // player.setAttacking(false);
-            // player.setSpeed(300);
-            Moving mv = new Moving();
-            mv.state = Mage.State.STANDING;
-            mv.post.playerID = player.id;
-            mv.post.posX = (int) player.getPosX();
-            mv.post.posY = (int) player.getPosY();
-            GameClient.sendTCP(mv);
-            return true;
-        }
-        // player.setSpeed(0);
-        //if (!player.isAttacking() && !(Gdx.input.isKeyPressed(Input.Keys.LEFT)||Gdx.input.isKeyPressed(Keys.RIGHT))){
-        //    player.setCurrentState(Mage.State.STANDING);
-        //    Moving mv = new Moving();
-        //    mv.state = Mage.State.STANDING;
-        //    mv.post.playerID = player.id;
-        //    mv.post.posX = (int) player.getPosX();
-        //    mv.post.posY = (int) player.getPosY();
-        //    GameClient.sendTCP(mv);
-        //}
-        return true;
+    public World getWorld() {
+        return world;
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        // System.out.println("keyDown");
-        //if (!player.isAttacking()){
-        //    if (keycode == Input.Keys.RIGHT){
-        //        player.setCurrentState(Mage.State.WALKING);
-        //        //player.setDirection(Character.CharacterDirection.RIGHT);
-        //        //player.setSpeed(300);
-        //    } else if (keycode == Input.Keys.LEFT) {
-        //        player.setCurrentState(Mage.State.WALKING);
-        //        //player.setDirection(Character.CharacterDirection.LEFT);
-        //        //player.setSpeed(300);
-        //    } else if (keycode == Input.Keys.D) {
-        //        player.setCurrentState(Character.CharacterState.ATTACKING);
-        //        player.setSpeed(0);
-        //        player.setAttacking(true);
-        //        Moving mv = new Moving();
-        //        mv.state = CharacterState.ATTACKING;
-        //        mv.walkingRight = player.getDirection();
-        //        mv.post.playerID = player.id;
-        //        mv.post.posX = (int) player.getPosX();
-        //        mv.post.posY = (int) player.getPosY();
-        //        GameClient.sendTCP(mv);
-        //    } else if (keycode == Input.Keys.S) {
-        //        player.setCurrentState(Character.CharacterState.SHOOTING);
-        //        player.setSpeed(0);
-        //        player.setAttacking(true);
-        //        Moving mv = new Moving();
-        //        mv.state = CharacterState.SHOOTING;
-        //        mv.walkingRight = player.getDirection();
-        //        mv.post.playerID = player.id;
-        //        mv.post.posX = (int) player.getPosX();
-        //        mv.post.posY = (int) player.getPosY();
-        //        GameClient.sendTCP(mv);
-        //    }
-        //}
-        return true;
+    public TiledMap getMap() {
+        return map;
     }
 
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
+    public int leversActivated() {
+        return levers.size();
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+    public void leverPulled(int lever) {
+        levers.add(lever);
     }
 
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+    public boolean isDoorOpened() {
+        return isDoorOpened;
     }
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+    public void setDoorOpened() {
+        isDoorOpened = true;
     }
 
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
+    public TextureAtlas getAtlas(){
+        return atlas;
     }
 }

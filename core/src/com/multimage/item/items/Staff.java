@@ -12,8 +12,8 @@ import com.multimage.sprites.Mage;
 
 public class Staff extends Item {
 
-    /*Debuff enemies armour by 15%.
-    Stacks +10%.
+    /* Great to have another stuff,
+    but I'll never get rid of my old ones.
     */
     public Staff(PlayScreen screen, float x, float y) {
         super(screen, x, y);

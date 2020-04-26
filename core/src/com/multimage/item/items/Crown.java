@@ -12,7 +12,7 @@ import com.multimage.sprites.Mage;
 
 public class Crown extends Item {
 
-    /*This item gives a 5% bonus to all the stats.
+    /*This item gives a 5% bonus to all the stats (Armour, Health).
     Stacks +5%.
     */
     public Crown(PlayScreen screen, float x, float y) {

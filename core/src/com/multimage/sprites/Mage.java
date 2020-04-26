@@ -1,13 +1,15 @@
 package com.multimage.sprites;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.Character;
 
@@ -17,47 +19,18 @@ import java.util.HashMap;
 // ordinary Mage class
 public class Mage extends Sprite implements Character {
 
-    @Override
-    public int getArmour() {
-        return 0;
-    }
-
-    @Override
-    public int getLevel() {
-        return 0;
-    }
-
-    @Override
-    public float getHealth() {
-        return 0;
-    }
-
-    @Override
-    public void levelUp() { }
-
-    @Override
-    public void getBonusesFromItems() { }
-
-    @Override
-    public void getPassiveSkillEffect() { }
-
-    @Override
-    public void addItem(String item) {
-        if (items.containsKey(item)) {
-            items.put(item, items.get(item) + 1);
-        } else {
-            items.put(item, 1);
-        }
-        System.out.println(items);
-    }
-
     public enum State { JUMPING, FALLING, WALKING, STANDING, ATTACK }
 
     public int id = -1;
-    String name;
+    public String name;
     public float PosX;
     public float PosY;
-    public float speed = 300;
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public float speed = 0.25f;
 
     public static State currentState;
     public State previousState;
@@ -70,14 +43,25 @@ public class Mage extends Sprite implements Character {
     private Animation<TextureRegion> mageAttack;
     private float stateTimer;
     private boolean walkingRight;
+
+
     private HashMap<String, Integer> items;
     private float health;
     private float armour;
+    private int level;
     private float xp;
+    private float xpBoostPercent;
+
+    private float damage;
+    private float jumpPlus = 5.75f;
+    private float chanceToInstantKill;
+
     private Texture healthBackground = new Texture("entity/mage/healthBackground.png");
     private Texture healthForeground= new Texture("entity/mage/healthForeground.png");
     private Texture healthBorder = new Texture("entity/mage/healthBorder.png");
     private float healthPercent;
+
+
 
     public Mage(PlayScreen screen) {
         super(screen.getAtlas().findRegion("walk"));
@@ -109,25 +93,18 @@ public class Mage extends Sprite implements Character {
         setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
 
-        healthPercent = 1f;
-
         items = new HashMap<>();
     }
 
-    public void draw(Batch batch) {
-        super.draw(batch);
-        batch.draw(healthBorder, body.getPosition().x - 4.05f, body.getPosition().y - 2.05f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
-        batch.draw(healthBackground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
-        batch.draw(healthForeground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
-    }
-
-    public Mage(int id, int x) {
+    public Mage(int id, float x, float y) {
         this.id = id;
         PosX = x;
-        PosY = 50;
+        PosY = y;
     }
 
-    public Mage() {
+    public Mage(MultiPlayer screen) {
+        super(screen.getAtlas().findRegion("standing"));
+        this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -154,6 +131,10 @@ public class Mage extends Sprite implements Character {
         defineMage();
         setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
         setRegion(mageStand);
+
+        healthPercent = 1f;
+
+        items = new HashMap<>();
     }
 
     public void update(float delta) {
@@ -163,7 +144,17 @@ public class Mage extends Sprite implements Character {
         else {
             setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
         }
+        PosX = body.getPosition().x;
+        PosY = body.getPosition().y;
     }
+
+    public void draw(Batch batch) {
+        super.draw(batch);
+        batch.draw(healthBorder, body.getPosition().x - 4.05f, body.getPosition().y - 2.05f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+        batch.draw(healthBackground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+        batch.draw(healthForeground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+    }
+
 
     public TextureRegion getFrame(float delta) {
         currentState = getState();
@@ -212,15 +203,13 @@ public class Mage extends Sprite implements Character {
         }
     }
 
-    public void hit() {
-        if (healthPercent >= 0.2f) {
-            healthPercent = healthPercent - 0.2f;
-        }
-    }
+    BodyDef bodyDef = new BodyDef();
 
     public void defineMage() {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(700 / MultiMage.PPM, 1500 / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+
+        PosX = 500;
+        PosY = 50;
+        bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
@@ -240,7 +229,8 @@ public class Mage extends Sprite implements Character {
                     MultiMage.ENEMY_BIT |
                     MultiMage.GROUND_BIT |
                     MultiMage.ENEMY_BODY_BIT |
-                    MultiMage.PLATFORM_BIT;
+                    MultiMage.PLATFORM_BIT |
+                    MultiMage.PORTAL_BIT;
 
 
         fixtureDef.shape = shape;
@@ -255,12 +245,99 @@ public class Mage extends Sprite implements Character {
                 MultiMage.LEVERS_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
                 MultiMage.BONUS_BIT |
-                MultiMage.ITEM_BIT;
+                MultiMage.ITEM_BIT |
+                MultiMage.PORTAL_BIT;
         fixtureDef.shape = head;
         fixtureDef.isSensor = true;
 
         body.createFixture(fixtureDef).setUserData("body");
     }
+
+    // Item Realisation
+
+    @Override
+    public float getArmour() {
+        return armour;
+    }
+
+    @Override
+    public int getLevel() {
+        return level;
+    }
+
+    @Override
+    public float getHealth() {
+        return health;
+    }
+
+    @Override
+    public void levelUp() { }
+
+    @Override
+    public void getBonusesFromItems(String item) {
+        if (item.equalsIgnoreCase("Ambrosia")) {
+            health = (float) (health + (health * (items.get(item) * 0.02)));
+        } else if (item.equalsIgnoreCase("Amulet")) {
+            //TODO
+        } else if (item.equalsIgnoreCase("Book")) {
+            xpBoostPercent += 0.15f * items.get(item);
+        } else if (item.equalsIgnoreCase("Boots")) {
+            if (items.get(item) > 1) {
+                speed += speed * (0.05 * (items.get(item) - 1));
+            } else {
+                speed += speed * 0.1;
+            }
+        } else if (item.equalsIgnoreCase("Crown")) {
+            health += health * (items.get(item) * 0.05);
+            armour += armour * (items.get(item) * 0.05);
+        } else if (item.equalsIgnoreCase("Hat")) {
+            damage += damage * (items.get(item) * 0.1);
+        } else if (item.equalsIgnoreCase("Ring")) {
+            jumpPlus += 0.25f;
+        } else if (item.equalsIgnoreCase("Shield")) {
+            if (items.get(item) > 1) {
+                armour += 5 * (items.get(item) - 1);
+            } else {
+                armour += 10;
+            }
+        } else if (item.equalsIgnoreCase("Sword")) {
+            if (items.get(item) < 7) {
+                chanceToInstantKill += 0.5f;
+            }
+        }
+    }
+
+    public void hit() {
+        if (healthPercent >= 0.2f) {
+            healthPercent = healthPercent - 0.2f;
+        }
+    }
+
+
+    @Override
+    public void getPassiveSkillEffect() { }
+
+    @Override
+    public void addItem(String item) {
+        if (items.containsKey(item)) {
+            items.put(item, items.get(item) + 1);
+        } else {
+            items.put(item, 1);
+        }
+        getBonusesFromItems(item);
+        System.out.println(items);
+        System.out.println(speed);
+        System.out.println(jumpPlus);
+    }
+
+    public float jump() {
+        return jumpPlus;
+    }
+
+    public HashMap<String, Integer> getItems() {
+        return items;
+    }
+
 
     public String getName() {
         return name;

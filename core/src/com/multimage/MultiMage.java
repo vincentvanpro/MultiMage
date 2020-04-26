@@ -5,8 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.multimage.screens.PlayScreen;
-import com.multimage.screens.Splash;
+import com.multimage.screens.*;
 
 public class MultiMage extends Game {
 	public static final String TITLE = "MultiMage" , VERSION = "RAW";
@@ -28,17 +27,21 @@ public class MultiMage extends Game {
 	public static final short ENEMY_BODY_BIT = 1024;
 	public static final short PLATFORM_BIT = 2048;
 	public static final short MAGE_HAND_BIT = 4096;
+	public static final short PORTAL_BIT = 8192;
 
 	public SpriteBatch batch;
 
 	public static AssetManager manager;
-	public Music music;
+	public static Music music;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("audio/music/main_menu_music.ogg", Music.class);
+		manager.load("audio/music/first_level_music.ogg", Music.class);
+		manager.load("audio/music/second_level_music.ogg", Music.class);
+		manager.load("audio/music/third_level_music.ogg", Music.class);
 		manager.finishLoading();
 		music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
 		music.setLooping(true);
@@ -52,7 +55,10 @@ public class MultiMage extends Game {
 			music.pause();
 		}
 		//setScreen(new Splash(this));
+		// setScreen(new MainMenu(this));
 		setScreen(new PlayScreen(this));
+		//setScreen(new PreferencesMenu(this));
+		//setScreen(new MultiPlayer(this));
 	}
 
 	@Override

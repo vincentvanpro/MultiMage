@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 
 
@@ -18,6 +19,7 @@ public abstract class InteractiveTileObject {
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
+    protected MultiPlayer multiPlayerScreen;
     protected PlayScreen screen;
     protected MapObject object;
 
@@ -26,6 +28,29 @@ public abstract class InteractiveTileObject {
 
     public InteractiveTileObject(PlayScreen screen, MapObject object) {
         this.screen = screen;
+        this.world = screen.getWorld();
+        this.map = screen.getMap();
+        this.object = object;
+        this.bounds = ((RectangleMapObject) object).getRectangle();
+
+        BodyDef bodyDef = new BodyDef();
+        FixtureDef fixtureDef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set((bounds.getX() + bounds.getWidth() / 2) / MultiMage.PPM,
+                (bounds.getY() + bounds.getHeight() / 2) / MultiMage.PPM);
+
+        body = world.createBody(bodyDef);
+
+        shape.setAsBox(bounds.getWidth() / 2 / MultiMage.PPM,
+                bounds.getHeight() / 2 / MultiMage.PPM);
+        fixtureDef.shape = shape;
+        fixture = body.createFixture(fixtureDef);
+    }
+
+    public InteractiveTileObject(MultiPlayer screen, MapObject object) {
+        this.multiPlayerScreen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
         this.object = object;
