@@ -1,6 +1,5 @@
+apply plugin: 'java'
 buildscript {
-    
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -11,8 +10,7 @@ buildscript {
         google()
     }
     dependencies {
-        
-
+        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4")
     }
 }
 
@@ -64,4 +62,9 @@ project(":core") {
         compile "com.esotericsoftware:kryonet:2.22.0-RC1"
         compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
     }
+}
+
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'org.junit.jupiter:junit-jupiter'
 }
