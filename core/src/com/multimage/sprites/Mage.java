@@ -8,7 +8,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
 import com.multimage.screens.MultiPlayer;
@@ -56,11 +61,12 @@ public class Mage extends Sprite implements Character {
 
     private float damage;
     private float jumpPlus = 5.75f;
+
     private float chanceToInstantKill;
 
-    private Texture healthBackground = new Texture("entity/mage/healthBackground.png");
-    private Texture healthForeground= new Texture("entity/mage/healthForeground.png");
-    private Texture healthBorder = new Texture("entity/mage/healthBorder.png");
+    private Texture healthBackground;
+    private Texture healthForeground;
+    private Texture healthBorder;
     private float healthPercent;
 
 
@@ -95,7 +101,22 @@ public class Mage extends Sprite implements Character {
         setRegion(mageStand);
 
         items = new HashMap<>();
+        health = 100f;
+        armour = 5f;
+        damage = 10f;
+        chanceToInstantKill = 0;
     }
+
+    /*Class for tests because they wouldn't run -> to run test go to
+      Settings > Build, Execution, Deployment > Build Tools > Gradle
+      and change Run tests using && Build and Run: from Gradle (Default) to IntelliJ IDEA.*/
+    public Mage() {
+        items = new HashMap<>();
+        health = 100f;
+        armour = 5f;
+        damage = 10f;
+        chanceToInstantKill = 0f;
+    };
 
     public Mage(int id, float x, float y) {
         this.id = id;
@@ -207,6 +228,9 @@ public class Mage extends Sprite implements Character {
     BodyDef bodyDef = new BodyDef();
 
     public void defineMage() {
+        healthBackground = new Texture("entity/mage/healthBackground.png");
+        healthForeground = new Texture("entity/mage/healthForeground.png");
+        healthBorder = new Texture("entity/mage/healthBorder.png");
 
         PosX = 500;
         PosY = 50;
@@ -271,6 +295,18 @@ public class Mage extends Sprite implements Character {
         return health;
     }
 
+    public float getXpBoostPercent() {
+        return xpBoostPercent;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public float getChanceToInstantKill() {
+        return chanceToInstantKill;
+    }
+
     @Override
     public void levelUp() { }
 
@@ -279,9 +315,9 @@ public class Mage extends Sprite implements Character {
         if (item.equalsIgnoreCase("Ambrosia")) {
             health = (float) (health + (health * (items.get(item) * 0.02)));
         } else if (item.equalsIgnoreCase("Amulet")) {
-            //TODO
+            //TODO this item is hard to make work -> does nothing in game
         } else if (item.equalsIgnoreCase("Book")) {
-            xpBoostPercent += 0.15f * items.get(item);
+            xpBoostPercent += 0.15f;
         } else if (item.equalsIgnoreCase("Boots")) {
             if (items.get(item) > 1) {
                 speed += speed * (0.05 * (items.get(item) - 1));
@@ -331,6 +367,7 @@ public class Mage extends Sprite implements Character {
         System.out.println(jumpPlus);
     }
 
+    // Return bonus velocity to add for jump
     public float jump() {
         return jumpPlus;
     }
@@ -338,7 +375,6 @@ public class Mage extends Sprite implements Character {
     public HashMap<String, Integer> getItems() {
         return items;
     }
-
 
     public String getName() {
         return name;

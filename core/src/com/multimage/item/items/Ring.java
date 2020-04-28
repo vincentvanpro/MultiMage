@@ -12,9 +12,7 @@ import com.multimage.sprites.Mage;
 
 public class Ring extends Item {
 
-    /*Gives the ability to double jump.
-    No stacking.
-    */
+    /*Increases jumping velocity aka force*/
     public Ring(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         TextureAtlas atlas = new TextureAtlas("ui/items.pack");
