@@ -20,6 +20,7 @@ public abstract class InteractiveTileObject {
     protected Rectangle bounds;
     protected Body body;
     protected MultiPlayer multiPlayerScreen;
+    protected boolean isMultiplayerOn;
     protected PlayScreen screen;
     protected MapObject object;
 
@@ -27,6 +28,7 @@ public abstract class InteractiveTileObject {
 
 
     public InteractiveTileObject(PlayScreen screen, MapObject object) {
+        isMultiplayerOn = false;
         this.screen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();
@@ -50,6 +52,7 @@ public abstract class InteractiveTileObject {
     }
 
     public InteractiveTileObject(MultiPlayer screen, MapObject object) {
+        isMultiplayerOn = true;
         this.multiPlayerScreen = screen;
         this.world = screen.getWorld();
         this.map = screen.getMap();

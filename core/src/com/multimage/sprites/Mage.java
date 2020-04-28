@@ -125,7 +125,7 @@ public class Mage extends Sprite implements Character {
     }
 
     public Mage(MultiPlayer screen) {
-        super(screen.getAtlas().findRegion("standing"));
+        super(screen.getAtlas().findRegion("walk"));
         this.world = screen.getWorld();
         currentState = State.STANDING;
         previousState = State.STANDING;

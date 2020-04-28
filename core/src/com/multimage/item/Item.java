@@ -6,12 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.Mage;
 
 
 public abstract class Item extends Sprite {
     protected PlayScreen screen;
+    protected MultiPlayer screen2;
     protected World world;
     protected Vector2 velocity;
     protected boolean toDestroy;
@@ -20,6 +22,16 @@ public abstract class Item extends Sprite {
 
     public Item(PlayScreen screen, float x, float y) {
         this.screen = screen;
+        this.world = screen.getWorld();
+        setPosition(x, y);
+        setBounds(getX(), getY(), 32 / MultiMage.PPM, 32 / MultiMage.PPM);
+        defineItem();
+        toDestroy = false;
+        destroyed = false;
+    }
+
+    public Item(MultiPlayer screen, float x, float y) {
+        this.screen2 = screen;
         this.world = screen.getWorld();
         setPosition(x, y);
         setBounds(getX(), getY(), 32 / MultiMage.PPM, 32 / MultiMage.PPM);

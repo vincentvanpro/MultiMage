@@ -20,7 +20,7 @@ public class GameServer {
     int udpPort = 5201;
     int ServerPort, ServerPort1, ServerPort2;
 
-    Mage[] playerArr = new Mage[4];
+    Mage[] playerArr = new Mage[150];
 
     public int onlinePlayer = 0;
     public int PlayerID = 0;
@@ -33,7 +33,6 @@ public class GameServer {
         } catch (UnknownHostException e){
             e.printStackTrace();
         }
-        System.out.println("Creating Server...         Server IP: "+ serverIP);
 
         server = new Server();
 
@@ -43,7 +42,6 @@ public class GameServer {
             e.printStackTrace();
         }
 
-        System.out.println("Starting Server...");
         registerPackets();
         server.start();
         System.out.println("Server started");
@@ -74,8 +72,6 @@ public class GameServer {
                     connection.sendTCP(answer);
                     onlinePlayer++;
                 } else if (object instanceof Moving) {
-                    System.out.println(((Moving) object).post.posX);
-                    System.out.println(((Moving) object).post.posY);
                     server.sendToAllExceptTCP(connection.getID(), (Moving) object);
                 } else if (object instanceof Position) {
                     server.sendToAllExceptTCP(connection.getID(), (Position) object);
@@ -92,13 +88,15 @@ public class GameServer {
                     }
                 } else if (object instanceof FirstPacket) {
                     FirstPacket fp = (FirstPacket) object;
-                    System.out.println(onlinePlayer + " connected [FIRST_PACKET]");
                     fp.id = connection.getID();
                     server.sendToTCP(connection.getID(), fp);
 
                     playerArr[connection.getID()] = new Mage(fp.id, fp.x, fp.y);
-                    System.out.println(playerArr[connection.getID()].id + " " + playerArr[connection.getID()].PosX + " " + playerArr[connection.getID()].PosY);
                     PlayerID++;
+                } else if (object instanceof Door) {
+                    Door door = new Door();
+                    door.isDoorOpened = true;
+                    server.sendToAllTCP(door);
                 }
             }
 
@@ -116,6 +114,7 @@ public class GameServer {
         kryo.register(Moving.class);
         kryo.register(Position.class);
         kryo.register(Mage.State.class);
+        kryo.register(Door.class);
     }
 
     public static void main(String[] args) {

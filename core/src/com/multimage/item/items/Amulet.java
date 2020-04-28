@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.Mage;
 
@@ -16,6 +17,13 @@ public class Amulet extends Item {
     Stacks +10%.
      */
     public Amulet(PlayScreen screen, float x, float y) {
+        super(screen, x, y);
+        TextureAtlas atlas = new TextureAtlas("ui/items.pack");
+        setRegion(atlas.findRegion("amulet"), 0, 0, 32, 32);
+        velocity = new Vector2(0, 0);
+    }
+
+    public Amulet(MultiPlayer screen, float x, float y) {
         super(screen, x, y);
         TextureAtlas atlas = new TextureAtlas("ui/items.pack");
         setRegion(atlas.findRegion("amulet"), 0, 0, 32, 32);

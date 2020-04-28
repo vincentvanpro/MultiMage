@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.sprites.Mage;
 
@@ -14,6 +15,13 @@ public class Ring extends Item {
 
     /*Increases jumping velocity aka force*/
     public Ring(PlayScreen screen, float x, float y) {
+        super(screen, x, y);
+        TextureAtlas atlas = new TextureAtlas("ui/items.pack");
+        setRegion(atlas.findRegion("ring"), 0, 0, 32, 32);
+        velocity = new Vector2(0, 0);
+    }
+
+    public Ring(MultiPlayer screen, float x, float y) {
         super(screen, x, y);
         TextureAtlas atlas = new TextureAtlas("ui/items.pack");
         setRegion(atlas.findRegion("ring"), 0, 0, 32, 32);
