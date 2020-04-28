@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.SteeringBehaviourAI;
 
@@ -32,6 +33,32 @@ public class Demon extends Enemy {
     public SteeringBehaviourAI entity;
 
     public Demon(PlayScreen screen, float x, float y) {
+        super(screen, x, y);
+        stateTime = 0;
+        frames = new Array<TextureRegion>();
+        walkingRight = false;
+
+        setToDestroy = false;
+        destroyed = false;
+
+        for (int i = 1; i < 6; i++) {
+            frames.add(new TextureRegion(screen.getAtlasDemon().findRegion("demon-idle"), i * 160, 0, 160, 160));
+        }
+        idleAnimation = new Animation<TextureRegion>(0.18f, frames);
+        frames.clear();
+
+        // for (int i = 1; i < 7; i++) {
+        //     frames.add(new TextureRegion(screen.getAtlasDemon().findRegion("ghost-vanish"), i * 64, 0, 78, 80));
+        // }
+        // deathAnimation = new Animation<TextureRegion>(0.15f, frames);
+        // frames.clear();
+
+        stateTime = 0;
+        setBounds(getX(), getY(), 160 / MultiMage.PPM, 160 / MultiMage.PPM);
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    public Demon(MultiPlayer screen, float x, float y) {
         super(screen, x, y);
         stateTime = 0;
         frames = new Array<TextureRegion>();

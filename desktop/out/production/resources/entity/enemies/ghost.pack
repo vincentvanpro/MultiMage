@@ -1,0 +1,33 @@
+
+ghost.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ghost-idle
+  rotate: false
+  xy: 0, 64
+  size: 448, 80
+  orig: 448, 80
+  offset: 0, 0
+  index: -1
+ghost-vanish
+  rotate: false
+  xy: 0, 0
+  size: 448, 64
+  orig: 448, 64
+  offset: 0, 0
+  index: -1
+ghost-appears
+  rotate: false
+  xy: 448, 96
+  size: 384, 48
+  orig: 384, 48
+  offset: 0, 0
+  index: -1
+ghost-shriek
+  rotate: false
+  xy: 448, 16
+  size: 256, 80
+  orig: 256, 80
+  offset: 0, 0
+  index: -1

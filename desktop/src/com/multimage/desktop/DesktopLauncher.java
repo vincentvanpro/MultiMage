@@ -13,8 +13,12 @@ public class DesktopLauncher {
 		config.width = 1600;
 		config.height = 900;
 		config.fullscreen = false;
-		config.resizable = false;
+		config.resizable = true;
 
+		/*
+		MultiPlayer Breaks when run with config
+		*/
+		// new LwjglApplication(new MultiMage());
 		new LwjglApplication(new MultiMage(), config);
 	}
 }

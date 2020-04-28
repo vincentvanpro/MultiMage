@@ -8,6 +8,7 @@ import com.multimage.screens.PlayScreen;
 
 public class Levers extends InteractiveTileObject {
     private int leverCount = map.getLayers().get(12).getObjects().getCount();
+    private MultiPlayer multiPlayerScreen;
 
     public Levers(PlayScreen screen, MapObject object) {
         super(screen, object);
@@ -19,19 +20,27 @@ public class Levers extends InteractiveTileObject {
         super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.LEVERS_BIT);
+        this.multiPlayerScreen = screen;
     }
 
     @Override
     public void onBodyHit() {
-        System.out.println(leverCount);
-        Gdx.app.log("Levers", "collision");
-        setCategoryFilter(MultiMage.DESTROYED_BIT);
-        getCell(4).setTile(null);
-        screen.leverPulled(1);
-        System.out.println(screen.leversActivated());
-        if (screen.leversActivated() == leverCount) {
-            screen.setDoorOpened();
+        if (multiPlayerScreen == null) {
+            setCategoryFilter(MultiMage.DESTROYED_BIT);
+            getCell(4).setTile(null);
+            screen.leverPulled(1);
+            if (screen.leversActivated() == leverCount) {
+                screen.setDoorOpened();
+            }
+        } else {
+            setCategoryFilter(MultiMage.DESTROYED_BIT);
+            getCell(4).setTile(null);
+            multiPlayerScreen.leverPulled(1);
+            if (multiPlayerScreen.leversActivated() == leverCount) {
+                multiPlayerScreen.setDoorOpened();
+            }
         }
+
 
     }
 }

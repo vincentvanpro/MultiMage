@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.SteeringBehaviourAI;
 
@@ -31,6 +32,32 @@ public class Ghost extends Enemy {
     public SteeringBehaviourAI entity;
 
     public Ghost(PlayScreen screen, float x, float y) {
+        super(screen, x, y);
+        stateTime = 0;
+        frames = new Array<TextureRegion>();
+        walkingRight = false;
+
+        setToDestroy = false;
+        destroyed = false;
+
+        for (int i = 1; i < 7; i++) {
+            frames.add(new TextureRegion(screen.getAtlasGhost().findRegion("ghost-idle"), i * 64, 0, 78, 80));
+        }
+        walkAnimation = new Animation<TextureRegion>(0.2f, frames);
+        frames.clear();
+
+        for (int i = 1; i < 7; i++) {
+            frames.add(new TextureRegion(screen.getAtlasGhost().findRegion("ghost-vanish"), i * 64, 0, 78, 80));
+        }
+        deathAnimation = new Animation<TextureRegion>(0.15f, frames);
+        frames.clear();
+
+        stateTime = 0;
+        setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    public Ghost(MultiPlayer screen, float x, float y) {
         super(screen, x, y);
         stateTime = 0;
         frames = new Array<TextureRegion>();
