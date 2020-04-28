@@ -5,34 +5,43 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.multimage.screens.PlayScreen;
-import com.multimage.screens.Splash;
+import com.multimage.screens.*;
 
 public class MultiMage extends Game {
 	public static final String TITLE = "MultiMage" , VERSION = "RAW";
 
-	// public static final int V_WIDTH = 400;
-	// public static final int V_HEIGHT = 208;
-	public static final int V_WIDTH = 500;
-	public static final int V_HEIGHT = 300;
+	public static final int V_WIDTH = 864;
+	public static final int V_HEIGHT = 485;
 	public static final float PPM = 100;  // PIXELS PER METER / SCALE
 
-	public static final short DEFAULT_BIT = 1;
+	public static final short OBJECT_BIT = 1;
 	public static final short MAGE_BIT = 2;
 	public static final short GROUND_BIT  = 4;
 	public static final short CHEST_BIT = 8;
-	public static final short DESTROYED_BIT = 16;
+	public static final short BONUS_BIT = 16;
+	public static final short LEVERS_BIT = 32;
+	public static final short OPENABLE_DOOR_BIT = 64;
+	public static final short DESTROYED_BIT = 128;
+	public static final short ITEM_BIT = 256;
+	public static final short ENEMY_BIT = 512;
+	public static final short ENEMY_BODY_BIT = 1024;
+	public static final short PLATFORM_BIT = 2048;
+	public static final short MAGE_HAND_BIT = 4096;
+	public static final short PORTAL_BIT = 8192;
 
 	public SpriteBatch batch;
-	public Music music;
 
 	public static AssetManager manager;
+	public static Music music;
 
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
 		manager = new AssetManager();
 		manager.load("audio/music/main_menu_music.ogg", Music.class);
+		manager.load("audio/music/first_level_music.ogg", Music.class);
+		manager.load("audio/music/second_level_music.ogg", Music.class);
+		manager.load("audio/music/third_level_music.ogg", Music.class);
 		manager.finishLoading();
 		music = MultiMage.manager.get("audio/music/main_menu_music.ogg", Music.class);
 		music.setLooping(true);
@@ -45,8 +54,11 @@ public class MultiMage extends Game {
 		} else {
 			music.pause();
 		}
-		setScreen(new Splash(this));
-		// setScreen(new PlayScreen(this));
+		//setScreen(new Splash(this));
+		// setScreen(new MainMenu(this));
+		setScreen(new PlayScreen(this));
+		//setScreen(new PreferencesMenu(this));
+		//setScreen(new MultiPlayer(this));
 	}
 
 	@Override

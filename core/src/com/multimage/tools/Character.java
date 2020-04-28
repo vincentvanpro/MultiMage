@@ -1,19 +1,20 @@
 package com.multimage.tools;
 
+import com.multimage.item.Item;
+
 import java.util.HashMap;
 
 public interface Character {
 
-    int getArmour();
+    float getArmour();
     int getLevel();
     float getHealth();
 
     void levelUp();
-    void getBonusesFromItems();
+    void getBonusesFromItems(String item);
 
     void getPassiveSkillEffect();
 
-    // HashMap<Item, Integer> getItems();
-    // void addItem(Item item);
+    void addItem(String item);
 
 }

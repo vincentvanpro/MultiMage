@@ -1,19 +1,23 @@
 package com.multimage.sprites;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.maps.MapObject;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 
 public class Ground extends InteractiveTileObject {
-    public Ground(PlayScreen screen, Rectangle bounds) {
-        super(screen, bounds);
+    public Ground(PlayScreen screen, MapObject object) {
+        super(screen, object);
+        fixture.setUserData(this);
+        setCategoryFilter(MultiMage.GROUND_BIT);
+    }
+
+    public Ground(MultiPlayer screen, MapObject object) {
+        super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.GROUND_BIT);
     }
 
     @Override
-    public void onBodyHit() {
-        Gdx.app.log("Ground", "collision");
-    }
+    public void onBodyHit() { }
 }

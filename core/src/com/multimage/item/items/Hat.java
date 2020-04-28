@@ -8,10 +8,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
 import com.multimage.screens.PlayScreen;
+import com.multimage.sprites.Mage;
 
 public class Hat extends Item {
 
-    /*The amount of this item in inventory will increase the magic damage by 20%.
+    /*The amount of this item in inventory will increase the magic damage by 10%.
     Stacks +10%.
      */
     public Hat(PlayScreen screen, float x, float y) {
@@ -30,14 +31,24 @@ public class Hat extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6 / MultiMage.PPM);
+        shape.setRadius(10 / MultiMage.PPM);
+        fixtureDef.filter.categoryBits = MultiMage.ITEM_BIT;
+        fixtureDef.filter.maskBits =
+                MultiMage.MAGE_BIT |
+                        MultiMage.OBJECT_BIT |
+                        MultiMage.OPENABLE_DOOR_BIT |
+                        MultiMage.BONUS_BIT |
+                        MultiMage.LEVERS_BIT |
+                        MultiMage.CHEST_BIT |
+                        MultiMage.GROUND_BIT;
 
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData(this);
     }
 
     @Override
-    public void use() {
+    public void use(Mage mage) {
+        mage.addItem("Hat");
         destroy();
     }
 
