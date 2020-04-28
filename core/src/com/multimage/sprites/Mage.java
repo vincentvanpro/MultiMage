@@ -151,7 +151,7 @@ public class Mage extends Sprite implements Character {
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
         defineMage();
-        setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
+        setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
 
         healthPercent = 1f;

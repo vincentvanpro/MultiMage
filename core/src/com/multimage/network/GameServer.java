@@ -93,10 +93,6 @@ public class GameServer {
 
                     playerArr[connection.getID()] = new Mage(fp.id, fp.x, fp.y);
                     PlayerID++;
-                } else if (object instanceof Door) {
-                    Door door = new Door();
-                    door.isDoorOpened = true;
-                    server.sendToAllTCP(door);
                 }
             }
 
@@ -114,7 +110,6 @@ public class GameServer {
         kryo.register(Moving.class);
         kryo.register(Position.class);
         kryo.register(Mage.State.class);
-        kryo.register(Door.class);
     }
 
     public static void main(String[] args) {

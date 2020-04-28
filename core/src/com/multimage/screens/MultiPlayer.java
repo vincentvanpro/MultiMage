@@ -185,7 +185,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         kryo.register(Moving.class);
         kryo.register(Position.class);
         kryo.register(Mage.State.class);
-        kryo.register(Door.class);
 
         GameClient.addListener(new Listener() {
 
@@ -229,8 +228,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                     otherPlayer[((Disconnect) object).playerID] = null;
                     index--;
                     System.out.println(index + "DISCONNECTED");
-                } else if (object instanceof Door) {
-                    setDoorOpened();
                 }
             }
         });
