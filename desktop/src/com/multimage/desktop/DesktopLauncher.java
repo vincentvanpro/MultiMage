@@ -18,7 +18,7 @@ public class DesktopLauncher {
 		/*
 		MultiPlayer Breaks when run with config
 		*/
-		// new LwjglApplication(new MultiMage());
-		new LwjglApplication(new MultiMage(), config);
+		new LwjglApplication(new MultiMage());
+		//new LwjglApplication(new MultiMage(), config);
 	}
 }
