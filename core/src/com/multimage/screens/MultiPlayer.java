@@ -1,12 +1,13 @@
 package com.multimage.screens;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -87,6 +88,156 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     private int yMaxCord;
     private float xMaxCamCord;
     private float yMaxCamCord;
+
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
+    public MultiPlayer(MultiMage game, Mage mage, int whatLevelToSet) {
+        MultiMage.music.stop();
+        this.game = game;
+        mapLoader = new TmxMapLoader();
+        if (whatLevelToSet == 1) {
+            map = mapLoader.load("levels/level1.tmx");
+            MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
+            xMaxCord = 4690;
+            yMaxCord = 1675;
+            xMaxCamCord = 38.239f;
+            yMaxCamCord = 11.923f;
+        } else if (whatLevelToSet == 2) {
+            map = mapLoader.load("levels/level2.tmx");
+            MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        } else if (whatLevelToSet == 3) {
+            map = mapLoader.load("levels/level3.tmx");
+            MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
+            xMaxCord = 3086;
+            yMaxCord = 1035;
+            xMaxCamCord = 22.24f;
+            yMaxCamCord = 5.52f;
+        }
+        MultiMage.music.setVolume(Gdx.app.getPreferences("com.multimage.settings")
+                .getFloat("volume", 0.5f));
+        MultiMage.music.setLooping(true);
+        if (Gdx.app.getPreferences("com.multimage.settings")
+                .getBoolean("music.enabled", true)) {
+            MultiMage.music.play();
+        }
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
+        atlas = new TextureAtlas("entity/mage/mage.pack");
+        atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
+        atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+
+        //fireballs list
+        fireballs = new ArrayList<>();
+
+        // cam that follows you
+        gameCam = new OrthographicCamera();
+        // maintain virtual aspect ratio despite screen size
+        gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
+        // create hud
+        hud = new Hud(game.batch);
+
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        world = new World(new Vector2(0, -10), true);
+        box2DDebugRenderer = new Box2DDebugRenderer();
+        creator = new WorldCreator(this);
+
+        otherPlayer = new Mage[20];
+        for (int i = 0; i < 10; i++) {
+            otherPlayer[i] = new Mage(this);
+        }
+        player = mage;
+
+        world.setContactListener(new WorldContactListener());
+
+        items = new Array<>();
+        itemsToSpawn = new LinkedBlockingQueue<>();
+        levers = new ArrayList<>();
+
+        // AI behaviour
+        target = new SteeringBehaviourAI(player.body, 10);
+        for (Ghost g : creator.getGhosts()) {
+            Arrive<Vector2> arriveSB = new Arrive<Vector2>(g.entity, target)
+                    .setTimeToTarget(0.03f)
+                    .setArrivalTolerance(2f)
+                    .setDecelerationRadius(0);
+            g.entity.setBehaviour(arriveSB);
+        }
+        Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
+                .setTimeToTarget(0.1f)
+                .setArrivalTolerance(1.5f)
+                .setDecelerationRadius(0);
+        creator.getDemon().entity.setBehaviour(arriveSB);
+
+        kryo = GameClient.getKryo();
+        kryo.register(FirstPacket.class);
+        kryo.register(Request.class);
+        kryo.register(RequestAnswer.class);
+        kryo.register(Disconnect.class);
+        kryo.register(Moving.class);
+        kryo.register(Position.class);
+        kryo.register(Mage.State.class);
+
+        GameClient.addListener(new Listener() {
+
+            @Override
+            public void connected(Connection connection) {
+                // GameClient.sendTCP(new Request());
+            }
+
+            @Override
+            public void received(Connection connection, Object object) {
+                if (object instanceof RequestAnswer) {
+                    serverAnswer = ((RequestAnswer) object).accepted;
+                } else if (object instanceof FirstPacket) {
+                    FirstPacket firstPacket = (FirstPacket) object;
+                    player.id = firstPacket.id;
+                    Position pos = new Position();
+                    pos.playerID = firstPacket.id;
+                    pos.posX = (float) player.body.getPosition().x;
+                    pos.posY = (float) player.body.getPosition().y;
+                    GameClient.sendTCP(pos);
+                } else if (object instanceof Position) {
+                    otherPlayer[index].id = ((Position) object).playerID;
+                    otherPlayer[index].PosX = ((Position) object).posX;
+                    otherPlayer[index].PosY = ((Position) object).posY;
+                    otherPlayer[index].body.setTransform(new Vector2(otherPlayer[index].PosX, otherPlayer[index].PosY), 0);
+                    index++;
+                } else if (object instanceof Moving) {
+                    System.out.println(index);
+                    for (int i = 0; i < index; i++) {
+                        if (otherPlayer[i].id == ((Moving) object).post.playerID) {
+                            otherPlayer[i].PosX = ((Moving) object).post.posX;
+                            otherPlayer[i].PosY = ((Moving) object).post.posY;
+                            otherPlayer[i].body.setTransform(new Vector2(otherPlayer[i].PosX, otherPlayer[i].PosY), 0);
+                            otherPlayer[i].setCurrentState(((Moving) object).state);
+                            otherPlayer[i].setDirection(((Moving) object).walkingRight);
+                            break;
+                        }
+                    }
+                } else if (object instanceof Disconnect) {
+                    otherPlayer[((Disconnect) object).playerID] = null;
+                    index--;
+                }
+            }
+        });
+
+        GameClient.start();
+
+        try {
+            GameClient.connect(5000, "localhost", 5200, 5201);
+        } catch (IOException ex) {
+            Logger.getLogger(MultiPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        FirstPacket fp = new FirstPacket();
+        fp.x = player.body.getPosition().x;
+        fp.y = player.body.getPosition().y;
+        GameClient.sendTCP(fp); ////////////////////// NETWORK
+    }
+    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
 
     public MultiPlayer(MultiMage game) {
         String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
@@ -214,7 +365,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                 } else if (object instanceof Moving) {
                     System.out.println(index);
                     for (int i = 0; i < index; i++) {
-                        System.out.println("MOVING " + ((Moving) object).post.posX + " " + otherPlayer[i].id + otherPlayer[i].PosX);
                         if (otherPlayer[i].id == ((Moving) object).post.playerID) {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
                             otherPlayer[i].PosY = ((Moving) object).post.posY;
@@ -227,7 +377,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                 } else if (object instanceof Disconnect) {
                     otherPlayer[((Disconnect) object).playerID] = null;
                     index--;
-                    System.out.println(index + "DISCONNECTED");
                 }
             }
         });

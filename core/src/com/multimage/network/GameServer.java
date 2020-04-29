@@ -67,7 +67,6 @@ public class GameServer {
             public void received(Connection connection, Object object) {
                 if (object instanceof Request) {
                     RequestAnswer answer = new RequestAnswer();
-                    System.out.println("received");
                     answer.accepted = onlinePlayer <= 3;
                     connection.sendTCP(answer);
                     onlinePlayer++;
@@ -90,7 +89,6 @@ public class GameServer {
                     FirstPacket fp = (FirstPacket) object;
                     fp.id = connection.getID();
                     server.sendToTCP(connection.getID(), fp);
-
                     playerArr[connection.getID()] = new Mage(fp.id, fp.x, fp.y);
                     PlayerID++;
                 }

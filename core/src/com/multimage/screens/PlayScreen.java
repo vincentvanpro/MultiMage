@@ -164,19 +164,9 @@ public class PlayScreen implements Screen {
     }
 
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
     public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
         MultiMage.music.stop();
-        mapLoader = new TmxMapLoader();
-        // HERE LOAD LEVEL and all further thing
-        player = mage; // MAGE ALREADY EXISTS, BUT MAYBE NEEDS TO BE REDEFINED BECAUSE OF IT'S PHYSICAL BODY
-        // MAYBE CREATE NEW MAGE AND PASS HIM ITEMS, LEVEL ETC
-
+        this.game = game;
         mapLoader = new TmxMapLoader();
         if (whatLevelToSet == 1) {
             map = mapLoader.load("levels/level1.tmx");
@@ -209,10 +199,12 @@ public class PlayScreen implements Screen {
         }
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
-        this.game = game;
-        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
+
+        //fireballs list
+        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -227,7 +219,7 @@ public class PlayScreen implements Screen {
         box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
-        player = new Mage(this);
+        player = mage;
 
         world.setContactListener(new WorldContactListener());
 
@@ -250,10 +242,6 @@ public class PlayScreen implements Screen {
                 .setDecelerationRadius(0);
         creator.getDemon().entity.setBehaviour(arriveSB);
     }
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
 
     public TextureAtlas getAtlas(){
