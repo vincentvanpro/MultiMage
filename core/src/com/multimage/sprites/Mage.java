@@ -376,6 +376,13 @@ public class Mage extends Sprite implements Character {
         return items;
     }
 
+    public void setItemsAndGetBonus(HashMap<String, Integer> items) {
+        this.items = items;
+        for (String item : items.keySet()) {
+            getBonusesFromItems(item);
+        }
+    }
+
     public String getName() {
         return name;
     }

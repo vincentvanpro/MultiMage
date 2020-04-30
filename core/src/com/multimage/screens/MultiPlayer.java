@@ -148,7 +148,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         for (int i = 0; i < 10; i++) {
             otherPlayer[i] = new Mage(this);
         }
-        player = mage;
+        player = new Mage(this);
+        player.setItemsAndGetBonus(mage.getItems());
 
         world.setContactListener(new WorldContactListener());
 

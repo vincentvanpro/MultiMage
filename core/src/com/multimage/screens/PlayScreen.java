@@ -219,7 +219,8 @@ public class PlayScreen implements Screen {
         box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
-        player = mage;
+        player = new Mage(this);
+        player.setItemsAndGetBonus(mage.getItems());
 
         world.setContactListener(new WorldContactListener());
 
