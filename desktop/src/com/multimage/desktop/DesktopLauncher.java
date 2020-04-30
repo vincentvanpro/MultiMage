@@ -1,8 +1,10 @@
 package com.multimage.desktop;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.multimage.MultiMage;
+import com.multimage.screens.PreferencesMenu;
 
 
 public class DesktopLauncher {
@@ -12,13 +14,13 @@ public class DesktopLauncher {
 		config.vSyncEnabled = true;
 		config.width = 1600;
 		config.height = 900;
-		config.fullscreen = false;
+		config.fullscreen = PreferencesMenu.isFullScreenEnabled();
 		config.resizable = true;
 
 		/*
 		MultiPlayer Breaks when run with config
 		*/
-		new LwjglApplication(new MultiMage());
-		//new LwjglApplication(new MultiMage(), config);
+		//new LwjglApplication(new MultiMage());
+		new LwjglApplication(new MultiMage(), config);
 	}
 }

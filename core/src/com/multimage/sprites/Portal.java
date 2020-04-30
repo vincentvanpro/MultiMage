@@ -27,9 +27,9 @@ public class Portal extends InteractiveTileObject {
     @Override
     public void onBodyHit() {
         if (multiPlayerScreen == null) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame(), screen.getPlayer(), 2));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame(), screen.getPlayer(), screen.getNextLevelNumber()));
         } else {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new MultiPlayer(multiPlayerScreen.getGame(), multiPlayerScreen.getPlayer(), 2));
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new MultiPlayer(multiPlayerScreen.getGame(), multiPlayerScreen.getPlayer(), screen.getNextLevelNumber()));
         }
 
     }

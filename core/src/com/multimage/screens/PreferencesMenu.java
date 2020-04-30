@@ -1,9 +1,6 @@
 package com.multimage.screens;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,11 +22,9 @@ public class PreferencesMenu implements Screen {
 
     private static final String PREF_MUSIC_VOLUME = "volume";
     public static final String PREF_MUSIC_ENABLED = "music.enabled";
-    private static final String PREF_SOUND_ENABLED = "sound.enabled";
-    private static final String PREF_SOUND_VOL = "sound";
     private static final String PREFS_NAME = "com.multimage.settings";
-    private static final String FULLSCREEN_ENABLED = "fullscreen.enabled";
-    private static final String VSYNC_ENABLED = "vsync.enabled";
+    private static final String PREF_FULLSCREEN_ENABLED = "fullscreen.enabled";
+    private static final String PREF_VSYNC_ENABLED = "vsync.enabled";
 
     private String muteMusicString;
 
@@ -50,20 +45,21 @@ public class PreferencesMenu implements Screen {
         return Gdx.app.getPreferences(PREFS_NAME);
     }
 
-    public boolean isFullScreenEnabled() {
-        return getPrefs().getBoolean(FULLSCREEN_ENABLED, true);
+    public boolean isFullscreenEnabled() {
+        return getPrefs().getBoolean(PREF_FULLSCREEN_ENABLED, true);
+    }
+
+    public void setFullscreenEnabled(boolean fullscreenEnabled) {
+        getPrefs().putBoolean(PREF_FULLSCREEN_ENABLED, fullscreenEnabled);
+        getPrefs().flush();
     }
 
     public boolean isVSyncEnabled() {
-        return getPrefs().getBoolean(VSYNC_ENABLED, true);
+        return getPrefs().getBoolean(PREF_VSYNC_ENABLED, true);
     }
 
-    public boolean isSoundEffectsEnabled() {
-        return getPrefs().getBoolean(PREF_SOUND_ENABLED, true);
-    }
-
-    public void setSoundEffectsEnabled(boolean soundEffectsEnabled) {
-        getPrefs().putBoolean(PREF_SOUND_ENABLED, soundEffectsEnabled);
+    public void setVsyncEnabled(boolean vsyncEnabled) {
+        getPrefs().putBoolean(PREF_VSYNC_ENABLED, vsyncEnabled);
         getPrefs().flush();
     }
 
@@ -84,16 +80,6 @@ public class PreferencesMenu implements Screen {
         getPrefs().putFloat(PREF_MUSIC_VOLUME, volume);
         getPrefs().flush();
     }
-
-    public float getSoundVolume() {
-        return getPrefs().getFloat(PREF_SOUND_VOL, 0.5f);
-    }
-
-    public void setSoundVolume(float volume) {
-        getPrefs().putFloat(PREF_SOUND_VOL, volume);
-        getPrefs().flush();
-    }
-
 
     @Override
     public void show() {
@@ -135,18 +121,31 @@ public class PreferencesMenu implements Screen {
                 }
             });
 
-        // SoundBox
-        final CheckBox soundCheckbox = new CheckBox("SOUND", skinForSlidersAndCheckBox);
-        soundCheckbox.setChecked(!isSoundEffectsEnabled());
-        soundCheckbox.addListener(new ClickListener() {
+        // fullscreenBox
+        final CheckBox fullscreenCheckbox = new CheckBox("", skinForSlidersAndCheckBox);
+        fullscreenCheckbox.setChecked(!isFullscreenEnabled());
+        fullscreenCheckbox.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                boolean enabled = soundCheckbox.isChecked();
-                setSoundEffectsEnabled(!enabled);
-                Gdx.app.log(MultiMage.TITLE, "Sound " + (isSoundEffectsEnabled() ? "enabled" : "disabled"));
-                // System.out.println(getPrefs().getString(PREF_SOUND_ENABLED));
-                }
-            });
+                boolean enabled = fullscreenCheckbox.isChecked();
+                setFullscreenEnabled(!enabled);
+                Gdx.app.log(MultiMage.TITLE, "Fullscreen " + (isFullscreenEnabled() ? "enabled" : "disabled"));
+                //Gdx.graphics.setFullscreenMode(new Graphics.DisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 60, 100));
+            }
+        });
+
+        // vsyncBox
+        final CheckBox vsyncCheckbox = new CheckBox("", skinForSlidersAndCheckBox);
+        vsyncCheckbox.setChecked(!isVSyncEnabled());
+        vsyncCheckbox.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                boolean enabled = vsyncCheckbox.isChecked();
+                setVsyncEnabled(!enabled);
+                Gdx.app.log(MultiMage.TITLE, "VSync " + (isVSyncEnabled() ? "enabled" : "disabled"));
+                //Gdx.graphics.setFullscreenMode(new Graphics.DisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 60, 100));
+            }
+        });
 
         // volumeMUSIC Slider
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
@@ -157,22 +156,7 @@ public class PreferencesMenu implements Screen {
             public boolean handle(Event event) {
                 setMusicVolume(volumeMusicSlider.getValue());
                 game.music.setVolume(volumeMusicSlider.getValue());
-                // Gdx.app.log(MultiMageGame.TITLE, "Sound " + (getMusicVolume()));
                 return false;
-            }
-        });
-
-        // volumeSOUND Slider
-        final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, skinForSlidersAndCheckBox);
-        volumeSoundSlider.setValue(getSoundVolume());
-        setSoundVolume(getSoundVolume());
-        volumeSoundSlider.addListener( new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                setSoundVolume(volumeSoundSlider.getValue());
-                // Gdx.app.log(MultiMageGame.TITLE, "Sound " + (getSoundVolume()));
-                return false;
-
             }
         });
 
@@ -188,10 +172,10 @@ public class PreferencesMenu implements Screen {
 
         Label heading = new Label("PREFERENCES", skin);
         Label volumeMusicLabel = new Label("music", skin);
-        Label volumeSoundLabel = new Label("sound", skin);
         muteMusicString = isMusicEnabled() ? "mute music" : "unmute music";
         Label musicOnOffLabel = new Label(muteMusicString, skin);
-        Label soundOnOffLabel = new Label("mute sfx", skin);
+        Label fullscreenOnOffLabel = new Label("fullscreen", skin);
+        Label vsyncOnOffLabel = new Label("vsync", skin);
 
         heading.setFontScale(1f);
 
@@ -205,17 +189,22 @@ public class PreferencesMenu implements Screen {
         table.add(musicCheckbox);
         table.getCell(heading).spaceBottom(15);
         table.row();
-        table.add(volumeSoundLabel);
-        table.add(volumeSoundSlider);
+        table.add(fullscreenOnOffLabel);
+        table.add(fullscreenCheckbox);
+        table.getCell(heading).spaceBottom(15);
         table.row();
-        table.add(soundOnOffLabel);
-        table.add(soundCheckbox);
+        table.add(vsyncOnOffLabel);
+        table.add(vsyncCheckbox);
         table.getCell(heading).spaceBottom(15);
         table.row();
         table.add(backButton);
         table.getCell(backButton).spaceTop(50);
 
         stage.addActor(table);
+    }
+
+    public static boolean isFullScreenEnabled() {
+        return false;
     }
 
     @Override

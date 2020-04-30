@@ -18,6 +18,7 @@ public class Splash implements Screen {
     private TweenManager tweenManager;
     private MultiMage game;
 
+
     public Splash(MultiMage game) {
         this.game = game;
     }

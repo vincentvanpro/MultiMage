@@ -41,6 +41,7 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlasDemon;
     private List<Integer> levers;
     public static boolean isDoorOpened;
+    public static int levelNumber = 1;
 
     // sprites
     private Mage player;
@@ -81,6 +82,7 @@ public class PlayScreen implements Screen {
     private float yMaxCamCord;
 
     public PlayScreen(MultiMage game) {
+
         String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
 
         MultiMage.music.stop();
@@ -166,6 +168,7 @@ public class PlayScreen implements Screen {
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
     public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
         MultiMage.music.stop();
+        setDoorClosed();
         this.game = game;
         mapLoader = new TmxMapLoader();
         if (whatLevelToSet == 1) {
@@ -176,6 +179,8 @@ public class PlayScreen implements Screen {
             xMaxCamCord = 38.239f;
             yMaxCamCord = 11.923f;
         } else if (whatLevelToSet == 2) {
+            mage.PosX = 500;
+            mage.PosY = 50;
             map = mapLoader.load("levels/level2.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
             xMaxCord = 3086;
@@ -415,6 +420,15 @@ public class PlayScreen implements Screen {
 
     public void setDoorOpened() {
         isDoorOpened = true;
+    }
+
+    public void setDoorClosed() {
+        isDoorOpened = false;
+    }
+
+    public int getNextLevelNumber() {
+        levelNumber++;
+        return levelNumber;
     }
 
     @Override
