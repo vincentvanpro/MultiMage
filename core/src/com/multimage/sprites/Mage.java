@@ -405,9 +405,17 @@ public class Mage extends Sprite implements Character {
 
     public void fire() {
         if (multiPlayerScreen == null) {
-            fireballs.add(new Fireball(screen, body.getPosition().x + 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false));
+            if (walkingRight) {
+                fireballs.add(new Fireball(screen, body.getPosition().x + 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false));
+            } else {
+                fireballs.add(new Fireball(screen, body.getPosition().x - 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false));
+            }
         } else {
-            fireballs.add(new Fireball(multiPlayerScreen, body.getPosition().x, body.getPosition().y, walkingRight ? true : false));
+            if (walkingRight) {
+                fireballs.add(new Fireball(multiPlayerScreen, body.getPosition().x + 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false));
+            } else {
+                fireballs.add(new Fireball(multiPlayerScreen, body.getPosition().x - 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false));
+            }
         }
 
     }
