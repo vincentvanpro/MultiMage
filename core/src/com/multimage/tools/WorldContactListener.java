@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
 import com.multimage.sprites.Enemy;
+import com.multimage.sprites.Fireball;
 import com.multimage.sprites.InteractiveTileObject;
 import com.multimage.sprites.Mage;
 
@@ -83,7 +84,12 @@ public class WorldContactListener implements ContactListener {
 
                 movingOut = true;
                 break;
-            }
+            } case (MultiMage.FIREBALL_BIT | MultiMage.OBJECT_BIT):
+                if(fixA.getFilterData().categoryBits == MultiMage.FIREBALL_BIT)
+                    ((Fireball) fixA.getUserData()).setToDestroy();
+                else
+                    ((Fireball) fixB.getUserData()).setToDestroy();
+                break;
         }
     }
 

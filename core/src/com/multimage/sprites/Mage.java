@@ -44,12 +44,15 @@ public class Mage extends Sprite implements Character {
     public World world;
     public Body body;
 
+    private Array<Fireball> fireballs;
+
     private TextureRegion mageStand;
     private Animation<TextureRegion> mageWalk;
     private Animation<TextureRegion> mageJump;
     private Animation<TextureRegion> mageAttack;
     private float stateTimer;
     private boolean walkingRight;
+    private boolean isAttacking = false;
 
 
     private HashMap<String, Integer> items;
@@ -69,10 +72,14 @@ public class Mage extends Sprite implements Character {
     private Texture healthBorder;
     private float healthPercent;
 
+    private PlayScreen screen;
+    private MultiPlayer multiPlayerScreen;
+
 
     public Mage(PlayScreen screen) {
         super(screen.getAtlas().findRegion("walk"));
         this.world = screen.getWorld();
+        this.screen = screen;
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -99,6 +106,8 @@ public class Mage extends Sprite implements Character {
         defineMage();
         setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
+
+        fireballs = new Array<Fireball>();
 
         items = new HashMap<>();
         health = 100f;
@@ -127,6 +136,7 @@ public class Mage extends Sprite implements Character {
     public Mage(MultiPlayer screen) {
         super(screen.getAtlas().findRegion("walk"));
         this.world = screen.getWorld();
+        this.multiPlayerScreen = screen;
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
@@ -157,6 +167,7 @@ public class Mage extends Sprite implements Character {
         healthPercent = 1f;
 
         items = new HashMap<>();
+        fireballs = new Array<Fireball>();
     }
 
     public void update(float delta) {
@@ -168,10 +179,19 @@ public class Mage extends Sprite implements Character {
         }
         PosX = body.getPosition().x;
         PosY = body.getPosition().y;
+
+        for (Fireball  ball : fireballs) {
+            ball.update(delta);
+            if(ball.isDestroyed())
+                fireballs.removeValue(ball, true);
+        }
+
     }
 
     public void draw(Batch batch) {
         super.draw(batch);
+        for(Fireball ball : fireballs)
+            ball.draw(batch);
         batch.draw(healthBorder, body.getPosition().x - 4.05f, body.getPosition().y - 2.05f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
         batch.draw(healthBackground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
         batch.draw(healthForeground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
@@ -381,6 +401,27 @@ public class Mage extends Sprite implements Character {
         for (String item : items.keySet()) {
             getBonusesFromItems(item);
         }
+    }
+
+    public void fire() {
+        if (multiPlayerScreen == null) {
+            fireballs.add(new Fireball(screen, body.getPosition().x + 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false));
+        } else {
+            fireballs.add(new Fireball(multiPlayerScreen, body.getPosition().x, body.getPosition().y, walkingRight ? true : false));
+        }
+
+    }
+
+    public boolean isWalkingRight() {
+        return walkingRight;
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setAttacking(boolean isAttacking) {
+        this.isAttacking = isAttacking;
     }
 
     public String getName() {
