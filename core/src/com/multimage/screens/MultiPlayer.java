@@ -29,7 +29,6 @@ import com.multimage.item.items.*;
 import com.multimage.network.packets.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Enemy;
-import com.multimage.sprites.Fireball;
 import com.multimage.sprites.Ghost;
 import com.multimage.sprites.Mage;
 import com.multimage.tools.SteeringBehaviourAI;
@@ -74,8 +73,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     private WorldCreator creator;
 
     private SteeringBehaviourAI target;
-    // fireballs
-    private ArrayList<Fireball> fireballs;
 
     Client GameClient= new Client();
     Kryo kryo = new Kryo();
@@ -127,9 +124,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
-
-        //fireballs list
-        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -207,7 +201,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                     otherPlayer[index].body.setTransform(new Vector2(otherPlayer[index].PosX, otherPlayer[index].PosY), 0);
                     index++;
                 } else if (object instanceof Moving) {
-                    System.out.println(index);
                     for (int i = 0; i < index; i++) {
                         if (otherPlayer[i].id == ((Moving) object).post.playerID) {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
@@ -277,9 +270,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         atlas = new TextureAtlas("entity/mage/Mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
-
-        //fireballs list
-        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -364,7 +354,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                     otherPlayer[index].body.setTransform(new Vector2(otherPlayer[index].PosX, otherPlayer[index].PosY), 0);
                     index++;
                 } else if (object instanceof Moving) {
-                    System.out.println(index);
                     for (int i = 0; i < index; i++) {
                         if (otherPlayer[i].id == ((Moving) object).post.playerID) {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
@@ -461,6 +450,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             player.setCurrentState(Mage.State.JUMPING);
             Moving mv = new Moving();
             mv.state = Mage.State.JUMPING;
+            mv.walkingRight = player.isWalkingRight();
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
@@ -483,6 +473,28 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             Moving mv = new Moving();
             mv.walkingRight = false;
             mv.state = Mage.State.WALKING;
+            mv.post.playerID = player.id;
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
+            GameClient.sendTCP(mv);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            player.setAttacking(true);
+            player.fire();
+            player.setAttacking(false);
+        } else if(!Gdx.input.isKeyPressed(Input.Keys.D) && !Gdx.input.isKeyPressed(Input.Keys.S) && player.isAttacking()){
+            player.setCurrentState(Mage.State.STANDING);
+            player.setAttacking(false);
+            Moving mv = new Moving();
+            mv.state = Mage.State.STANDING;
+            mv.post.playerID = player.id;
+            mv.post.posX = player.body.getPosition().x;
+            mv.post.posY = player.body.getPosition().y;
+            GameClient.sendTCP(mv);
+        } else if (!player.isAttacking() && !(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))){
+            player.setCurrentState(Mage.State.WALKING);
+            Moving mv = new Moving();
+            mv.walkingRight = true;
+            mv.state = Mage.State.STANDING;
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
@@ -518,26 +530,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
         for (Enemy enemy: creator.getGhosts()) {
             enemy.draw(game.batch);
-        }
-
-        // Fireball shoot
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            fireballs.add(new Fireball(player.body.getPosition().x, player.body.getPosition().y));
-        }
-
-        //Update fireball
-        ArrayList<Fireball> fireballsToRemove = new ArrayList<>();
-        for (Fireball fireball : fireballs) {
-            fireball.update(delta);
-            if (fireball.remove) {
-                fireballsToRemove.add(fireball);
-            }
-        }
-        fireballs.removeAll(fireballsToRemove);
-
-        //render fireball
-        for (Fireball fireball : fireballs) {
-            fireball.render(game.batch);
         }
 
         creator.getDemon().draw(game.batch);

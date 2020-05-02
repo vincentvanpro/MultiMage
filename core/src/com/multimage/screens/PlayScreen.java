@@ -26,7 +26,6 @@ import com.multimage.sprites.*;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
-import com.multimage.sprites.Fireball;
 
 
 import java.util.ArrayList;
@@ -63,10 +62,6 @@ public class PlayScreen implements Screen {
     private WorldCreator creator;
 
     private SteeringBehaviourAI target;
-
-    // fireballs
-    private ArrayList<Fireball> fireballs;
-
 
     public TextureAtlas getAtlasGhost() {
         return atlasGhost;
@@ -119,9 +114,6 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
-
-        //fireballs list
-        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -207,9 +199,6 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
-
-        //fireballs list
-        fireballs = new ArrayList<>();
 
         // cam that follows you
         gameCam = new OrthographicCamera();
@@ -336,7 +325,8 @@ public class PlayScreen implements Screen {
             player.body.applyLinearImpulse(new Vector2(player.speed, 0), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
             player.body.applyLinearImpulse(new Vector2(-player.speed, 0), player.body.getWorldCenter(), true);
-        }
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            player.fire();
     }
 
     public World getWorld() {
@@ -370,26 +360,6 @@ public class PlayScreen implements Screen {
 
         for (Enemy enemy: creator.getGhosts()) {
             enemy.draw(game.batch);
-        }
-
-        // Fireball shoot
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            fireballs.add(new Fireball(player.body.getPosition().x, player.body.getPosition().y));
-        }
-
-        //Update fireball
-        ArrayList<Fireball> fireballsToRemove = new ArrayList<>();
-        for (Fireball fireball : fireballs) {
-            fireball.update(delta);
-            if (fireball.remove) {
-                fireballsToRemove.add(fireball);
-            }
-        }
-        fireballs.removeAll(fireballsToRemove);
-
-        //render fireball
-        for (Fireball fireball : fireballs) {
-            fireball.render(game.batch);
         }
 
         creator.getDemon().draw(game.batch);
