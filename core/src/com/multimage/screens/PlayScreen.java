@@ -47,7 +47,7 @@ public class PlayScreen implements Screen {
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
-    private OrthographicCamera gameCam;
+    private static OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
 
@@ -432,5 +432,11 @@ public class PlayScreen implements Screen {
         return player;
     }
 
+    public static float getCamPositionX() {
+        return gameCam.position.x;
+    }
 
+    public static float getCamPositionY() {
+        return gameCam.position.y;
+    }
 }
