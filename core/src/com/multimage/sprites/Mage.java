@@ -111,6 +111,7 @@ public class Mage extends Sprite implements Character {
 
         items = new HashMap<>();
         health = 100f;
+        healthPercent = 1f;
         armour = 5f;
         damage = 10f;
         chanceToInstantKill = 0;
