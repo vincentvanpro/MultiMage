@@ -192,9 +192,9 @@ public class Mage extends Sprite implements Character {
         super.draw(batch);
         for(Fireball ball : fireballs)
             ball.draw(batch);
-        batch.draw(healthBorder, body.getPosition().x - 4.05f, body.getPosition().y - 2.05f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
-        batch.draw(healthBackground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
-        batch.draw(healthForeground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+        batch.draw(healthBorder, PlayScreen.getCamPositionX() - 4.05f, PlayScreen.getCamPositionY() - 2.15f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+        batch.draw(healthBackground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+        batch.draw(healthForeground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
     }
 
 
