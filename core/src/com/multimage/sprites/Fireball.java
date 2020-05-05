@@ -10,7 +10,6 @@ import com.multimage.MultiMage;
 import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 
-
 public class Fireball extends Sprite {
 
     private PlayScreen screen;

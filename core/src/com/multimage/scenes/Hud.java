@@ -90,6 +90,14 @@ public class Hud implements Disposable {
         }
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public String getTime() {
+        return worldTimerMin + "m " + worldTimerSek + "s";
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
