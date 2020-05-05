@@ -384,8 +384,6 @@ public class Mage extends Sprite implements Character {
         health -= 20f;
         if (health <= 0) {
             setToDestroy = true;
-        } else {
-            health = 0;
         }
         updateHeathPercent();
     }
@@ -393,7 +391,10 @@ public class Mage extends Sprite implements Character {
     public void updateHeathPercent() {
         if (health != 0) {
             healthPercent = health / 100f ;
+        } else {
+            health = 0;
         }
+
     }
 
 
@@ -429,7 +430,7 @@ public class Mage extends Sprite implements Character {
     public void fire() {
         Random random = new Random();
         int randomInt = random.nextInt((int) (100 - chanceToInstantKill));
-        System.out.println(randomInt);
+
         float damageNow = damage;
         if (randomInt == 1) {
             damageNow = 1000000f;
