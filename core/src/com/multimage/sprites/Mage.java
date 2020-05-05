@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.GameOverScreen;
 import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.Character;
@@ -131,12 +132,15 @@ public class Mage extends Sprite implements Character {
     public Mage() {
         items = new HashMap<>();
         health = 100f;
+        healthPercent = 1f;
         armour = 5f;
         damage = 10f;
-        chanceToInstantKill = 0f;
+        chanceToInstantKill = 0;
     };
 
     public Mage(int id, float x, float y) {
+        setToDestroy = false;
+        destroyed = false;
         this.id = id;
         PosX = x;
         PosY = y;
@@ -150,6 +154,9 @@ public class Mage extends Sprite implements Character {
         previousState = State.STANDING;
         stateTimer = 0;
         walkingRight = true;
+
+        setToDestroy = false;
+        destroyed = false;
 
         Array<TextureRegion> frames = new Array<>();
         for (int i = 1; i < 6; i++)
@@ -173,7 +180,11 @@ public class Mage extends Sprite implements Character {
         setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
 
+        health = 100f;
         healthPercent = 1f;
+        armour = 5f;
+        damage = 10f;
+        chanceToInstantKill = 0;
 
         items = new HashMap<>();
         fireballs = new Array<Fireball>();
@@ -183,7 +194,12 @@ public class Mage extends Sprite implements Character {
         if (setToDestroy && !destroyed) {
             destroyed = true;
             world.destroyBody(body);
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame()));
+            if (multiPlayerScreen == null) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen(screen.getGame(), screen.getHud().getTime()));
+            } else {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen(multiPlayerScreen.getGame(), multiPlayerScreen.getHud().getTime()));
+            }
+
         } else if (!destroyed) {
             setRegion(getFrame(delta));
             if (walkingRight) {
@@ -207,9 +223,16 @@ public class Mage extends Sprite implements Character {
             super.draw(batch);
             for(Fireball ball : fireballs)
                 ball.draw(batch);
-            batch.draw(healthBorder, PlayScreen.getCamPositionX() - 4.05f, PlayScreen.getCamPositionY() - 2.15f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
-            batch.draw(healthBackground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
-            batch.draw(healthForeground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+            if (multiPlayerScreen == null) {
+                batch.draw(healthBorder, PlayScreen.getCamPositionX() - 4.05f, PlayScreen.getCamPositionY() - 2.15f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+                batch.draw(healthBackground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+                batch.draw(healthForeground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+            } else {
+                batch.draw(healthBorder, MultiPlayer.getCamPositionX() - 4.05f, MultiPlayer.getCamPositionY() - 2.15f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+                batch.draw(healthBackground, MultiPlayer.getCamPositionX() - 4f, MultiPlayer.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+                batch.draw(healthForeground, MultiPlayer.getCamPositionX() - 4f, MultiPlayer.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+            }
+
         }
     }
 
@@ -351,7 +374,7 @@ public class Mage extends Sprite implements Character {
         if (item.equalsIgnoreCase("Ambrosia")) {
             health = (float) (health + (health * (items.get(item) * 0.02)));
         } else if (item.equalsIgnoreCase("Amulet")) {
-            //TODO this item is hard to make work -> does nothing in game
+            // this item is hard to make work -> does nothing in game
         } else if (item.equalsIgnoreCase("Book")) {
             xpBoostPercent += 0.15f;
         } else if (item.equalsIgnoreCase("Boots")) {

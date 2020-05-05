@@ -439,4 +439,8 @@ public class PlayScreen implements Screen {
     public static float getCamPositionY() {
         return gameCam.position.y;
     }
+
+    public Hud getHud() {
+        return hud;
+    }
 }

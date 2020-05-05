@@ -51,6 +51,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     private List<Integer> levers;
     public static boolean isDoorOpened;
 
+    private static OrthographicCamera gameCam;
+
     private Music music;
 
     // sprites
@@ -58,7 +60,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
-    private OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
 
@@ -632,4 +633,17 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     public Mage getPlayer() {
         return player;
     }
+
+    public static float getCamPositionX() {
+        return gameCam.position.x;
+    }
+
+    public static float getCamPositionY() {
+        return gameCam.position.y;
+    }
+
+    public Hud getHud() {
+        return hud;
+    }
+
 }
