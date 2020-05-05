@@ -167,4 +167,22 @@ public class Demon extends Enemy {
         }
     }
 
+    public void updateHeathPercent() {
+        if (health != 0) {
+            healthPercent = health / 100f ;
+        } else {
+            health = 0;
+        }
+
+    }
+
+    @Override
+    public void damage(Fireball fireball) {
+        health -= fireball.getDamage();
+        if (health <= 0) {
+            setToDestroy = true;
+        }
+        updateHeathPercent();
+    }
+
 }
