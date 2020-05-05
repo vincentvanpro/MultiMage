@@ -61,6 +61,20 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Item) fixB.getUserData()).use((Mage) fixA.getUserData());
                 } break;
+            } case (MultiMage.ENEMY_BIT | MultiMage.FIREBALL_BIT) : {
+                if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).damage((Fireball) fixB.getUserData());
+                } else {
+                    ((Enemy) fixB.getUserData()).damage((Fireball) fixA.getUserData());
+                } break;
+            } case (MultiMage.ENEMY_BODY_BIT | MultiMage.FIREBALL_BIT) : {
+                if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
+                    ((Enemy) fixA.getUserData()).damage((Fireball) fixB.getUserData());
+                    ((Fireball) fixB.getUserData()).setToDestroy();
+                } else {
+                    ((Enemy) fixB.getUserData()).damage((Fireball) fixA.getUserData());
+                    ((Fireball) fixA.getUserData()).setToDestroy();
+                } break;
             } case (MultiMage.PLATFORM_BIT | MultiMage.MAGE_BIT) : {
 
                 int pointCount = contact.getWorldManifold().getNumberOfContactPoints();

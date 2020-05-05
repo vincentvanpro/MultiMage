@@ -54,6 +54,7 @@ public class Ghost extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        health = 100f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
 
@@ -80,6 +81,7 @@ public class Ghost extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        health = 100f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
 
@@ -132,6 +134,8 @@ public class Ghost extends Enemy {
                 MultiMage.OBJECT_BIT |
                 MultiMage.GROUND_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
+                MultiMage.FIREBALL_BIT |
+                MultiMage.MAGE_BIT |
                 MultiMage.ITEM_BIT ;
 
 
@@ -163,6 +167,23 @@ public class Ghost extends Enemy {
             super.draw(batch);
             batch.draw(healthBar, body.getPosition().x - 0.15f, body.getPosition().y + 0.4f, (30f / MultiMage.PPM) * healthPercent, 3 / MultiMage.PPM); // healthBar
         }
+    }
+
+    public void updateHeathPercent() {
+        if (health != 0) {
+            healthPercent = health / 100f ;
+        } else {
+            health = 0;
+        }
+    }
+
+    @Override
+    public void damage(Fireball fireball) {
+        health -= fireball.getDamage();
+        if (health <= 0) {
+            setToDestroy = true;
+        }
+        updateHeathPercent();
     }
 
 }

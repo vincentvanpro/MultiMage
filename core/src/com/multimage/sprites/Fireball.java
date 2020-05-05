@@ -23,11 +23,14 @@ public class Fireball extends Sprite {
     private boolean setToDestroy;
     private boolean fireRight;
 
+    private float damage;
+
     private Body b2body;
 
-    public Fireball(PlayScreen screen, float x, float y, boolean fireRight){
+    public Fireball(PlayScreen screen, float x, float y, boolean fireRight, float damage){
         this.fireRight = fireRight;
         this.screen = screen;
+        this.damage = damage;
         this.world = screen.getWorld();
         frames = new Array<TextureRegion>();
         for(int i = 0; i < 4; i++){
@@ -39,10 +42,11 @@ public class Fireball extends Sprite {
         defineFireBall();
     }
 
-    public Fireball(MultiPlayer screen, float x, float y, boolean fireRight){
+    public Fireball(MultiPlayer screen, float x, float y, boolean fireRight, float damage){
         this.fireRight = fireRight;
         this.multiPlayerScreen = screen;
         this.world = screen.getWorld();
+        this.damage = damage;
         frames = new Array<TextureRegion>();
         for(int i = 0; i < 4; i++){
             frames.add(new TextureRegion(screen.getAtlas().findRegion("fireball"), i * 8, 0, 8, 8));
@@ -67,6 +71,7 @@ public class Fireball extends Sprite {
         fdef.filter.categoryBits = MultiMage.FIREBALL_BIT;
         fdef.filter.maskBits = MultiMage.GROUND_BIT |
                 MultiMage.ENEMY_BIT |
+                MultiMage.ENEMY_BODY_BIT |
                 MultiMage.OBJECT_BIT;
 
         fdef.shape = shape;
@@ -96,6 +101,10 @@ public class Fireball extends Sprite {
 
     public boolean isDestroyed(){
         return destroyed;
+    }
+
+    public float getDamage() {
+        return damage;
     }
 
 
