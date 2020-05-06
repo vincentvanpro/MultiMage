@@ -4,7 +4,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.multimage.MultiMage;
 import com.multimage.network.packets.*;
 import com.multimage.sprites.Mage;
 
@@ -20,7 +19,7 @@ public class GameServer {
     int udpPort = 5201;
     int ServerPort, ServerPort1, ServerPort2;
 
-    Mage[] playerArr = new Mage[150];
+    Mage[] playerArr = new Mage[200];
 
     public int onlinePlayer = 0;
     public int PlayerID = 0;
@@ -44,14 +43,12 @@ public class GameServer {
 
         registerPackets();
         server.start();
-        System.out.println("Server started");
 
         server.addListener(new Listener() {
 
             @Override
             public void connected(Connection connection) {
                 onlinePlayer++;
-                System.out.println(onlinePlayer + " Connected");
             }
 
             @Override
