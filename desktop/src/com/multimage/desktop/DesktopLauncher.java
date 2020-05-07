@@ -1,6 +1,5 @@
 package com.multimage.desktop;
 
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.multimage.MultiMage;

@@ -13,7 +13,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -71,7 +70,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
     //box 2d
     private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
     private WorldCreator creator;
 
     private SteeringBehaviourAI target;
@@ -137,7 +135,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
         otherPlayer = new Mage[20];
@@ -221,7 +218,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         GameClient.start();
 
         try {
-            GameClient.connect(5000, "localhost", 5200, 5201);
+            GameClient.connect(5000, "193.40.255.37", 5200, 5201);
         } catch (IOException ex) {
             Logger.getLogger(MultiPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -286,7 +283,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
         for (int i = 0; i < 10; i++) {
@@ -373,7 +369,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         GameClient.start();
 
         try {
-            GameClient.connect(5000, "localhost", 5200, 5201);
+            GameClient.connect(5000, "193.40.255.37", 5200, 5201);
         } catch (IOException ex) {
             Logger.getLogger(MultiPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -515,9 +511,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         // render game map
         renderer.render();
 
-        // render box2dDebugLines
-        box2DDebugRenderer.render(world, gameCam.combined);
-
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
 
@@ -557,7 +550,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
         hud.dispose();
     }
 
