@@ -374,7 +374,8 @@ public class Mage extends Sprite implements Character {
         if (item.equalsIgnoreCase("Ambrosia")) {
             health = (float) (health + (health * (items.get(item) * 0.02)));
         } else if (item.equalsIgnoreCase("Amulet")) {
-            // this item is hard to make work -> does nothing in game
+            health =  (1 - healthPercent + healthPercent) * 100f;
+            updateHeathPercent();
         } else if (item.equalsIgnoreCase("Book")) {
             xpBoostPercent += 0.15f;
         } else if (item.equalsIgnoreCase("Boots")) {

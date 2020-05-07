@@ -13,8 +13,7 @@ import com.multimage.sprites.Mage;
 
 public class Amulet extends Item {
 
-    /*The amount of this item in inventory will increase the attack speed of it's owner by 15% of initial.
-    Stacks +10%.
+    /*Heals full hp
      */
     public Amulet(PlayScreen screen, float x, float y) {
         super(screen, x, y);
