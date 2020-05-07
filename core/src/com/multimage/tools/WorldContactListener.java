@@ -36,9 +36,9 @@ public class WorldContactListener implements ContactListener {
         switch (cDef) {
             case (MultiMage.ENEMY_BODY_BIT | MultiMage.MAGE_BIT) : {
                 if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
-                    ((Enemy) fixA.getUserData()).hitOnHead();
+                    ((Mage) fixB.getUserData()).hit();
                 } else if (fixB.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
-                    ((Enemy) fixB.getUserData()).hitOnHead();
+                    ((Mage) fixA.getUserData()).hit();
                 }
                 break;
             } case (MultiMage.ENEMY_BODY_BIT | MultiMage.GROUND_BIT) : {
