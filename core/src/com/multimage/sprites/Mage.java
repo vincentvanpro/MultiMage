@@ -122,7 +122,7 @@ public class Mage extends Sprite implements Character {
         health = 100f;
         healthPercent = 1f;
         armour = 5f;
-        damage = 10f;
+        damage = 20f;
         chanceToInstantKill = 0;
     }
 
@@ -134,7 +134,7 @@ public class Mage extends Sprite implements Character {
         health = 100f;
         healthPercent = 1f;
         armour = 5f;
-        damage = 10f;
+        damage = 20f;
         chanceToInstantKill = 0;
     };
 
@@ -183,7 +183,7 @@ public class Mage extends Sprite implements Character {
         health = 100f;
         healthPercent = 1f;
         armour = 5f;
-        damage = 10f;
+        damage = 20f;
         chanceToInstantKill = 0;
 
         items = new HashMap<>();
