@@ -57,7 +57,6 @@ public class Mage extends Sprite implements Character {
     private boolean walkingRight;
     private boolean isAttacking = false;
 
-
     private HashMap<String, Integer> items;
     private float health;
     private float armour;
@@ -80,7 +79,6 @@ public class Mage extends Sprite implements Character {
 
     private boolean setToDestroy;
     private boolean destroyed;
-
 
     public Mage(PlayScreen screen) {
         super(screen.getAtlas().findRegion("walk"));
@@ -516,5 +514,9 @@ public class Mage extends Sprite implements Character {
 
     public void setDirection(boolean walkingRight) {
         this.walkingRight = walkingRight;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
     }
 }

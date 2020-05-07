@@ -26,7 +26,6 @@ import com.multimage.MultiMage;
 import com.multimage.item.Item;
 import com.multimage.item.ItemDef;
 import com.multimage.item.items.*;
-import com.multimage.network.packets.*;
 import com.multimage.scenes.Hud;
 import com.multimage.sprites.Enemy;
 import com.multimage.sprites.Ghost;
@@ -34,6 +33,8 @@ import com.multimage.sprites.Mage;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
+// import network.packets.*;
+import com.multimage.network.packets.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -174,7 +175,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         kryo.register(Disconnect.class);
         kryo.register(Moving.class);
         kryo.register(Position.class);
-        kryo.register(Mage.State.class);
 
         GameClient.addListener(new Listener() {
 
@@ -207,7 +207,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
                             otherPlayer[i].PosY = ((Moving) object).post.posY;
                             otherPlayer[i].body.setTransform(new Vector2(otherPlayer[i].PosX, otherPlayer[i].PosY), 0);
-                            otherPlayer[i].setCurrentState(((Moving) object).state);
                             otherPlayer[i].setDirection(((Moving) object).walkingRight);
                             break;
                         }
@@ -360,7 +359,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
                             otherPlayer[i].PosX = ((Moving) object).post.posX;
                             otherPlayer[i].PosY = ((Moving) object).post.posY;
                             otherPlayer[i].body.setTransform(new Vector2(otherPlayer[i].PosX, otherPlayer[i].PosY), 0);
-                            otherPlayer[i].setCurrentState(((Moving) object).state);
                             otherPlayer[i].setDirection(((Moving) object).walkingRight);
                             break;
                         }
@@ -409,6 +407,10 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         player.update(delta);
         hud.update(delta);
 
+        if (player.isDestroyed()) {
+            GameClient.stop();
+        }
+
         // doesn't draw because index is always 0
         if (index > 0) {
             for (int i = 0; i < index; i++) {
@@ -455,7 +457,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             player.body.applyLinearImpulse(new Vector2(0, player.jump()), player.body.getWorldCenter(), true);
             player.setCurrentState(Mage.State.JUMPING);
             Moving mv = new Moving();
-            mv.state = Mage.State.JUMPING;
             mv.walkingRight = player.isWalkingRight();
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
@@ -467,7 +468,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             //player.setPosX(player.getPosX() - delta * player.getSpeed());
             Moving mv = new Moving();
             mv.walkingRight = true;
-            mv.state = Mage.State.WALKING;
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
@@ -478,7 +478,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             player.setCurrentState(Mage.State.WALKING);
             Moving mv = new Moving();
             mv.walkingRight = false;
-            mv.state = Mage.State.WALKING;
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
@@ -491,7 +490,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             player.setCurrentState(Mage.State.STANDING);
             player.setAttacking(false);
             Moving mv = new Moving();
-            mv.state = Mage.State.STANDING;
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
@@ -500,7 +498,6 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             player.setCurrentState(Mage.State.WALKING);
             Moving mv = new Moving();
             mv.walkingRight = true;
-            mv.state = Mage.State.STANDING;
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;

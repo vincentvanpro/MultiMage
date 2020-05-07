@@ -1,11 +1,10 @@
-package com.multimage.network;
+package network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
-import com.multimage.network.packets.*;
-import com.multimage.sprites.Mage;
+import network.packets.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -104,7 +103,6 @@ public class GameServer {
         kryo.register(Disconnect.class);
         kryo.register(Moving.class);
         kryo.register(Position.class);
-        kryo.register(Mage.State.class);
     }
 
     public static void main(String[] args) {

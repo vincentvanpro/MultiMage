@@ -65,6 +65,20 @@ project(":core") {
     }
 }
 
+project(":server") {
+    apply plugin: "java-library"
+
+
+    dependencies {
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+
+        compile fileTree(dir: '../libs', include: '*.jar')
+        compile "com.esotericsoftware:kryonet:2.22.0-RC1"
+        compile "com.badlogicgames.gdx:gdx-ai:1.8.1"
+    }
+}
+
 dependencies {
     implementation 'org.junit.jupiter:junit-jupiter'
     implementation 'org.junit.jupiter:junit-jupiter'

@@ -1,4 +1,4 @@
-package com.multimage.network.packets;
+package network.packets;
 
 public class FirstPacket {
 
