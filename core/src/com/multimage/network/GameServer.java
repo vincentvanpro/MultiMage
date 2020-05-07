@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.multimage.network.packets.*;
 import com.multimage.sprites.Mage;
+import com.sun.media.jfxmediaimpl.platform.Platform;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -19,7 +20,7 @@ public class GameServer {
     int udpPort = 5201;
     int ServerPort, ServerPort1, ServerPort2;
 
-    Mage[] playerArr = new Mage[200];
+    Mage[] playerArr = new Mage[450];
 
     public int onlinePlayer = 0;
     public int PlayerID = 0;
@@ -64,7 +65,7 @@ public class GameServer {
             public void received(Connection connection, Object object) {
                 if (object instanceof Request) {
                     RequestAnswer answer = new RequestAnswer();
-                    answer.accepted = onlinePlayer <= 3;
+                    answer.accepted = onlinePlayer < 3;
                     connection.sendTCP(answer);
                     onlinePlayer++;
                 } else if (object instanceof Moving) {

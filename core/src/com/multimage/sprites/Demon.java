@@ -120,7 +120,7 @@ public class Demon extends Enemy {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX(), getY()); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
-
+        bodyDef.gravityScale = 0f;
         body = world.createBody(bodyDef);
 
         entity = new SteeringBehaviourAI(body, 10);

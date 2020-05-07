@@ -380,10 +380,15 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             Logger.getLogger(MultiPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        GameClient.sendTCP(new Request());
+
         FirstPacket fp = new FirstPacket();
         fp.x = player.body.getPosition().x;
         fp.y = player.body.getPosition().y;
         GameClient.sendTCP(fp); ////////////////////// NETWORK
+
+
+
     }
 
     @Override
