@@ -58,6 +58,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if(Gdx.input.justTouched()) {
+            PlayScreen.levelNumber = 1;
             game.setScreen(new PlayScreen((MultiMage) game));
             dispose();
         }

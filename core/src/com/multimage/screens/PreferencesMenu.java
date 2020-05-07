@@ -189,14 +189,6 @@ public class PreferencesMenu implements Screen {
         table.add(musicCheckbox);
         table.getCell(heading).spaceBottom(15);
         table.row();
-        table.add(fullscreenOnOffLabel);
-        table.add(fullscreenCheckbox);
-        table.getCell(heading).spaceBottom(15);
-        table.row();
-        table.add(vsyncOnOffLabel);
-        table.add(vsyncCheckbox);
-        table.getCell(heading).spaceBottom(15);
-        table.row();
         table.add(backButton);
         table.getCell(backButton).spaceTop(50);
 
