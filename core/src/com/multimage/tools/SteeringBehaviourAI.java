@@ -24,7 +24,7 @@ public class SteeringBehaviourAI implements Steerable<Vector2> {
         this.boundingRadius = boundingRadius;
 
         this.maxLinearSpeed = 500;
-        this.maxLinearAcceleration = 3000;
+        this.maxLinearAcceleration = 400;
         this.maxAngularSpeed = 30;
         this.maxAngularAcceleration = 5;
 
