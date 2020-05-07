@@ -3,10 +3,8 @@ package com.multimage.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -37,9 +35,10 @@ public class GameOverScreen implements Screen {
         table.center();
         table.setFillParent(true);
 
-        Label gameOverLabel = new Label("GAME OVER", skin);
+        Label gameOverLabel = new Label("GAME OVER", skin, "big");
         Label scoreLabel = new Label("YOUR TIME IS: " + time, skin);
-        Label playAgainLabel = new Label("Click to Play Again", skin);
+        Label playAgainLabel = new Label("Click to Play Again", skin, "small");
+
 
         table.add(gameOverLabel).expandX();
         table.row();

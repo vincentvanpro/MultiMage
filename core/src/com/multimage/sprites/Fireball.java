@@ -56,6 +56,11 @@ public class Fireball extends Sprite {
         defineFireBall();
     }
 
+    // Class for TEST
+    public Fireball(float damage) {
+        this.damage = damage;
+    }
+
     public void defineFireBall(){
         BodyDef bdef = new BodyDef();
         bdef.position.set(fireRight ? getX() + 12 / MultiMage.PPM : getX() - 12 / MultiMage.PPM, getY());

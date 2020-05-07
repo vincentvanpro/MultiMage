@@ -27,7 +27,7 @@ public class Ghost extends Enemy {
 
     private float healthPercent;
     private float health;
-    private Texture healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+    private Texture healthBar;
 
     public SteeringBehaviourAI entity;
 
@@ -54,6 +54,7 @@ public class Ghost extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
         health = 100f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
@@ -81,6 +82,13 @@ public class Ghost extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 100f;
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    // CLASS FOR TEST
+    public Ghost() {
         health = 100f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
@@ -186,4 +194,11 @@ public class Ghost extends Enemy {
         updateHeathPercent();
     }
 
+    public float getHealthPercent() {
+        return healthPercent;
+    }
+
+    public float getHealth() {
+        return health;
+    }
 }

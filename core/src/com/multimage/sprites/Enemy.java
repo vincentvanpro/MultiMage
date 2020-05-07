@@ -30,6 +30,8 @@ public abstract class Enemy extends Sprite {
         velocity = new Vector2(-1f, -1);
     }
 
+    public Enemy() { };
+
     protected abstract void defineEnemy();
 
     public abstract void hitOnHead();

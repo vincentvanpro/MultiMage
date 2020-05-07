@@ -6,7 +6,6 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.multimage.network.packets.*;
 import com.multimage.sprites.Mage;
-import com.sun.media.jfxmediaimpl.platform.Platform;
 
 import java.io.IOException;
 import java.net.InetAddress;

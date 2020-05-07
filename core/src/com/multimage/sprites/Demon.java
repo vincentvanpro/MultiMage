@@ -28,7 +28,7 @@ public class Demon extends Enemy {
 
     private float healthPercent;
     private float health;
-    private Texture healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+    private Texture healthBar;
 
     public SteeringBehaviourAI entity;
 
@@ -55,6 +55,8 @@ public class Demon extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 160 / MultiMage.PPM, 160 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 300f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
 
@@ -81,6 +83,14 @@ public class Demon extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 160 / MultiMage.PPM, 160 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 300f;
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    // CLASS FOR TEST
+    public Demon() {
+        health = 300f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
 
@@ -169,7 +179,7 @@ public class Demon extends Enemy {
 
     public void updateHeathPercent() {
         if (health != 0) {
-            healthPercent = health / 100f ;
+            healthPercent = health / 300f ;
         } else {
             health = 0;
         }
@@ -183,6 +193,14 @@ public class Demon extends Enemy {
             setToDestroy = true;
         }
         updateHeathPercent();
+    }
+
+    public float getHealthPercent() {
+        return healthPercent;
+    }
+
+    public float getHealth() {
+        return health;
     }
 
 }
