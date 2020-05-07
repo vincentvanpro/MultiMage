@@ -275,7 +275,7 @@
  <objectgroup id="17" name="ghosts">
   <object id="363" x="128" y="1600" width="32" height="32"/>
   <object id="364" x="192" y="1184" width="32" height="32"/>
-  <object id="378" x="2272" y="1632" width="32" height="32"/>
+  <object id="378" x="1120" y="1536" width="32" height="32"/>
   <object id="379" x="992" y="1152" width="32" height="32"/>
   <object id="380" x="64" y="160" width="32" height="32"/>
   <object id="381" x="128" y="352" width="32" height="32"/>
