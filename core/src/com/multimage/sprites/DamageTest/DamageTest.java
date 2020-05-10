@@ -34,7 +34,7 @@
 //       }
 //
 //       @Test
-//       void damage() {
+//       public void damage() {
 //           ghost.damage(fireball);
 //           assertEquals(ghost.getHealth(), 50);
 //           assertEquals(ghost.getHealthPercent(), 0.5);
@@ -45,6 +45,7 @@
 //
 //           mage.hit();
 //           mage.hit();
-//           assertEquals(mage.getHealth(), 60f);
+//           assertEquals(mage.getHealth(), 61f);
 //       }
 //   }
+//

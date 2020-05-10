@@ -140,6 +140,7 @@ public class Mage extends Sprite implements Character {
         setToDestroy = false;
         destroyed = false;
         this.id = id;
+        armour = 5f;
         PosX = x;
         PosY = y;
     }
@@ -403,7 +404,7 @@ public class Mage extends Sprite implements Character {
     }
 
     public void hit() {
-        health -= 20f;
+        health -= 20f - (armour / 10);
         if (health <= 0) {
             setToDestroy = true;
         }
