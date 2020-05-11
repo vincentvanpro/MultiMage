@@ -453,7 +453,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
-            GameClient.sendTCP(mv);
+            GameClient.sendUDP(mv);
         } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2.4f) {
             player.body.applyLinearImpulse(new Vector2(player.speed, 0), player.body.getWorldCenter(), true);
             player.setCurrentState(Mage.State.WALKING);
@@ -463,7 +463,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
-            GameClient.sendTCP(mv);
+            GameClient.sendUDP(mv);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
             player.body.applyLinearImpulse(new Vector2(-player.speed, 0), player.body.getWorldCenter(), true);
             //player.setPosX(player.getPosX() - delta * player.getSpeed());
@@ -473,7 +473,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
-            GameClient.sendTCP(mv);
+            GameClient.sendUDP(mv);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.setAttacking(true);
             player.fire();
@@ -485,7 +485,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
-            GameClient.sendTCP(mv);
+            GameClient.sendUDP(mv);
         } else if (!player.isAttacking() && !(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))){
             player.setCurrentState(Mage.State.WALKING);
             Moving mv = new Moving();
@@ -493,7 +493,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             mv.post.playerID = player.id;
             mv.post.posX = player.body.getPosition().x;
             mv.post.posY = player.body.getPosition().y;
-            GameClient.sendTCP(mv);
+            GameClient.sendUDP(mv);
         }
     }
 
