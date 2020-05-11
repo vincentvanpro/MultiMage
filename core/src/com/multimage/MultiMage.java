@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.multimage.screens.*;
+import com.multimage.screens.Splash;
 
 public class MultiMage extends Game {
 	public static final String TITLE = "MultiMage" , VERSION = "RAW";
@@ -56,10 +56,6 @@ public class MultiMage extends Game {
 			music.pause();
 		}
 		setScreen(new Splash(this));
-		// setScreen(new MainMenu(this));
-		// setScreen(new PlayScreen(this));
-		// setScreen(new PreferencesMenu(this));
-		// setScreen(new MultiPlayer(this));
 	}
 
 	@Override
