@@ -264,7 +264,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         }
         this.game = game;
 
-        atlas = new TextureAtlas("entity/mage/Mage.pack");
+        atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
