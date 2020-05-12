@@ -70,8 +70,8 @@ public class Hud implements Disposable {
         table.add(levelLabel).expandX();
         table.add(countDownLabel).expandX();
 
-        experienceLvlLabel.setPosition(35,65);
-        experienceLvlLabel.setAlignment(Align.bottomLeft);
+        // experienceLvlLabel.setPosition(35,65);
+        // experienceLvlLabel.setAlignment(Align.bottomLeft);
         // stage.addActor(experienceLvlLabel);
 
         stage.addActor(table);
