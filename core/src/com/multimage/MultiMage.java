@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.multimage.screens.Splash;
 
 public class MultiMage extends Game {
-	public static final String TITLE = "MultiMage" , VERSION = "RAW";
+	public static final String TITLE = "MultiMage" , VERSION = "1.0";
 
 	public static final int V_WIDTH = 864;
 	public static final int V_HEIGHT = 485;

@@ -1,6 +1,5 @@
 package com.multimage.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -59,7 +57,6 @@ public class PlayScreen implements Screen {
 
     //box 2d
     private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
     private WorldCreator creator;
 
     private SteeringBehaviourAI target;
@@ -131,7 +128,6 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
         player = new Mage(this);
@@ -211,7 +207,6 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
         player = new Mage(this);
@@ -352,9 +347,6 @@ public class PlayScreen implements Screen {
         // render game map
         renderer.render();
 
-        // render box2dDebugLines
-        box2DDebugRenderer.render(world, gameCam.combined);
-
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
@@ -421,7 +413,6 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
         hud.dispose();
     }
 
