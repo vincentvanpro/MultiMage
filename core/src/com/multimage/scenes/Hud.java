@@ -60,7 +60,7 @@ public class Hud implements Disposable {
         levelLabel = new Label("1-1", skin, "small");
         worldLabel = new Label("WORLD", skin, "small");
         mageLabel = new Label("MAGE", skin, "small");
-        experienceLvlLabel = new Label("LVL " + level +"    EXP " + exp + "/100", skin, "small");
+        // experienceLvlLabel = new Label("LVL " + level +"    EXP " + exp + "/100", skin, "small");
 
         table.add(mageLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
@@ -72,7 +72,7 @@ public class Hud implements Disposable {
 
         experienceLvlLabel.setPosition(35,65);
         experienceLvlLabel.setAlignment(Align.bottomLeft);
-        stage.addActor(experienceLvlLabel);
+        // stage.addActor(experienceLvlLabel);
 
         stage.addActor(table);
     }
