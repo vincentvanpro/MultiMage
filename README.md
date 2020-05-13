@@ -1,4 +1,4 @@
-[**DOWNLOAD LINK**](https://livettu-my.sharepoint.com/:u:/g/personal/arzarv_ttu_ee/ERncIu-3cMdLqpyBo0e5Yt0BWDsVwNocIeJRJqJCG4BdkQ?e=ebE9yV)
+[**DOWNLOAD LINK**](https://livettu-my.sharepoint.com/:u:/g/personal/arzarv_ttu_ee/EeS4vIZwBbtLju7068M7NM8BnOEW151GXoH4xNqxHuUSJw?e=IUvr03)
 
 # Game
 
