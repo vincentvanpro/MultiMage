@@ -43,9 +43,9 @@ Stacking an item changes one or more of its effects.
 For example: item that blocks damage, +15%, the next you've gained will give a 
 slitely less %, and this value cannot reach 100%.
 
-We have the **difficulty multiplier**. This applies to an enemy strength.
-As you progress through the game, it becomes harder and harder with every minute you mess around.
-Each level you've passed also adds a difficulty.
+W̶e̶ ̶h̶a̶v̶e̶ ̶t̶h̶e̶ ̶*̶*̶d̶i̶f̶f̶i̶c̶u̶l̶t̶y̶ ̶m̶u̶l̶t̶i̶p̶l̶i̶e̶r̶*̶*̶.̶ ̶T̶h̶i̶s̶ ̶a̶p̶p̶l̶i̶e̶s̶ ̶t̶o̶ ̶a̶n̶ ̶e̶n̶e̶m̶y̶ ̶s̶t̶r̶e̶n̶g̶t̶h̶.̶
+̶A̶s̶ ̶y̶o̶u̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶h̶e̶ ̶g̶a̶m̶e̶,̶ ̶i̶t̶ ̶b̶e̶c̶o̶m̶e̶s̶ ̶h̶a̶r̶d̶e̶r̶ ̶a̶n̶d̶ ̶h̶a̶r̶d̶e̶r̶ ̶w̶i̶t̶h̶ ̶e̶v̶e̶r̶y̶ ̶m̶i̶n̶u̶t̶e̶ ̶y̶o̶u̶ ̶m̶e̶s̶s̶ ̶a̶r̶o̶u̶n̶d̶.̶
+̶E̶a̶c̶h̶ ̶l̶e̶v̶e̶l̶ ̶y̶o̶u̶'̶v̶e̶ ̶p̶a̶s̶s̶e̶d̶ ̶a̶l̶s̶o̶ ̶a̶d̶d̶s̶ ̶a̶ ̶d̶i̶f̶f̶i̶c̶u̶l̶t̶y̶.
 
 #̶ ̶H̶e̶r̶o̶ ̶d̶e̶s̶c̶r̶i̶p̶t̶i̶o̶n̶
 ̶S̶w̶o̶r̶d̶-̶m̶a̶g̶e̶ ̶b̶a̶s̶e̶d̶ ̶o̶n̶ ̶d̶e̶f̶e̶n̶c̶e̶,̶ ̶h̶i̶g̶h̶ ̶H̶P̶ ̶a̶n̶d̶ ̶d̶e̶f̶e̶n̶c̶e̶;̶ ̶l̶o̶o̶k̶s̶ ̶l̶i̶k̶e̶ ̶m̶a̶g̶e̶ ̶w̶i̶t̶h̶ ̶s̶w̶o̶r̶d̶
