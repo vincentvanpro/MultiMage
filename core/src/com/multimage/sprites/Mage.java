@@ -290,9 +290,9 @@ public class Mage extends Sprite implements Character {
         healthForeground = new Texture("entity/mage/healthForeground.png");
         healthBorder = new Texture("entity/mage/healthBorder.png");
 
-        PosX = 200;
+        PosX = 500;
         PosY = 50;
-        bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 500x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
