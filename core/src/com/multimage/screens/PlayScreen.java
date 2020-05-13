@@ -38,7 +38,7 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlasGhost;
     private TextureAtlas atlasDemon;
     private List<Integer> levers;
-    public static boolean isDoorOpened;
+    public static boolean isDoorOpened = false;
     public static int levelNumber = 1;
 
     // sprites
