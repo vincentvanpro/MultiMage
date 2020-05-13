@@ -27,15 +27,21 @@ public class Portal extends InteractiveTileObject {
     @Override
     public void onBodyHit() {
         if (multiPlayerScreen == null) {
-            if (screen.isBossDead() || screen.isDoorOpened()) {
+            if (screen.getLevelNumber() == 1) {
+                if (screen.isBossDead()) {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame(), screen.getPlayer(), screen.getNextLevelNumber(), screen.getHud()));
+                }
+            } else if (screen.getLevelNumber() > 1 || screen.isDoorOpened()) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame(), screen.getPlayer(), screen.getNextLevelNumber(), screen.getHud()));
             }
         } else if (multiPlayerScreen != null) {
-            if (multiPlayerScreen.isBossDead() || multiPlayerScreen.isDoorOpened()) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MultiPlayer(multiPlayerScreen.getGame(), multiPlayerScreen.getPlayer(), screen.getNextLevelNumber(), multiPlayerScreen.getHud()));
+            if (multiPlayerScreen.getLevelNumber() == 1) {
+                if (multiPlayerScreen.isBossDead()) {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(multiPlayerScreen.getGame(), multiPlayerScreen.getPlayer(), multiPlayerScreen.getNextLevelNumber(), multiPlayerScreen.getHud()));
+                }
+            } else if (multiPlayerScreen.getLevelNumber() > 1 || multiPlayerScreen.isDoorOpened()) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(multiPlayerScreen.getGame(), multiPlayerScreen.getPlayer(), multiPlayerScreen.getNextLevelNumber(), multiPlayerScreen.getHud()));
             }
-
         }
-
     }
 }

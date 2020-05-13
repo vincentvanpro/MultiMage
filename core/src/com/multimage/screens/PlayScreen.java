@@ -77,9 +77,11 @@ public class PlayScreen implements Screen {
     public PlayScreen(MultiMage game) {
 
         String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
+        levelNumber = 1;
 
         MultiMage.music.stop();
         if (levelPath.equals("levels/level1.tmx")) {
+            levelNumber = 1;
             MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
             xMaxCord = 4690;
             yMaxCord = 1675;
@@ -87,6 +89,7 @@ public class PlayScreen implements Screen {
             yMaxCamCord = 11.923f;
         }
         else if (levelPath.equals("levels/level2.tmx")) {
+            levelNumber = 2;
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
             xMaxCord = 3086;
             yMaxCord = 1035;
@@ -94,6 +97,7 @@ public class PlayScreen implements Screen {
             yMaxCamCord = 5.52f;
         }
         else if (levelPath.equals("levels/level3.tmx")) {
+            levelNumber = 3;
             MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
             xMaxCord = 3086;
             yMaxCord = 1035;
@@ -161,6 +165,7 @@ public class PlayScreen implements Screen {
         this.game = game;
         mapLoader = new TmxMapLoader();
         if (whatLevelToSet == 1) {
+            levelNumber = 1;
             map = mapLoader.load("levels/level1.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
             xMaxCord = 4690;
@@ -168,6 +173,7 @@ public class PlayScreen implements Screen {
             xMaxCamCord = 38.239f;
             yMaxCamCord = 11.923f;
         } else if (whatLevelToSet == 2) {
+            levelNumber = 2;
             mage.PosX = 500;
             mage.PosY = 50;
             map = mapLoader.load("levels/level2.tmx");
@@ -177,6 +183,7 @@ public class PlayScreen implements Screen {
             xMaxCamCord = 22.24f;
             yMaxCamCord = 5.52f;
         } else if (whatLevelToSet == 3) {
+            levelNumber = 3;
             map = mapLoader.load("levels/level3.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
             xMaxCord = 3086;
@@ -437,5 +444,9 @@ public class PlayScreen implements Screen {
 
     public boolean isBossDead() {
         return creator.getDemon().isBossDefeated();
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
     }
 }
