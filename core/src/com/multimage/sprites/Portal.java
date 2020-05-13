@@ -27,11 +27,11 @@ public class Portal extends InteractiveTileObject {
     @Override
     public void onBodyHit() {
         if (multiPlayerScreen == null) {
-            if (screen.isBossDead()) {
+            if (screen.isBossDead() || screen.isDoorOpened()) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new PlayScreen(screen.getGame(), screen.getPlayer(), screen.getNextLevelNumber(), screen.getHud()));
             }
         } else if (multiPlayerScreen != null) {
-            if (multiPlayerScreen.isBossDead()) {
+            if (multiPlayerScreen.isBossDead() || multiPlayerScreen.isDoorOpened()) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new MultiPlayer(multiPlayerScreen.getGame(), multiPlayerScreen.getPlayer(), screen.getNextLevelNumber(), multiPlayerScreen.getHud()));
             }
 
