@@ -155,7 +155,7 @@ public class PlayScreen implements Screen {
     }
 
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
+    public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet, Hud hudOld) {
         MultiMage.music.stop();
         setDoorClosed();
         this.game = game;
@@ -202,7 +202,7 @@ public class PlayScreen implements Screen {
         // maintain virtual aspect ratio despite screen size
         gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
         // create hud
-        hud = new Hud(game.batch);
+        hud = hudOld;
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
@@ -285,7 +285,11 @@ public class PlayScreen implements Screen {
            enemy.entity.update(delta);
        }
 
-       //if (isDoorOpened) {
+       // if (isDoorOpened) {
+       //      creator.getDemon().body.setActive(true);
+       // } else {
+       //     creator.getDemon().body.setActive(false);
+       // }
        creator.getDemon().update(delta);
        creator.getDemon().entity.update(delta);
 

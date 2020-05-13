@@ -59,10 +59,10 @@ public class Hud implements Disposable {
         timeLabel = new Label("TIME", skin, "small");
         // levelLabel = new Label("1-1", skin, "small");
         // worldLabel = new Label("WORLD", skin, "small");
-        mageLabel = new Label("MAGE", skin, "small");
+        // mageLabel = new Label("MAGE", skin, "small");
         // experienceLvlLabel = new Label("LVL " + level +"    EXP " + exp + "/100", skin, "small");
 
-        table.add(mageLabel).expandX().padTop(10);
+        // table.add(mageLabel).expandX().padTop(10);
         // table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
         table.row();

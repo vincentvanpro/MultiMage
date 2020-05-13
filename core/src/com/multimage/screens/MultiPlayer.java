@@ -87,7 +87,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
     private float yMaxCamCord;
 
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    public MultiPlayer(MultiMage game, Mage mage, int whatLevelToSet) {
+    public MultiPlayer(MultiMage game, Mage mage, int whatLevelToSet, Hud oldHud) {
         MultiMage.music.stop();
         this.game = game;
         mapLoader = new TmxMapLoader();
@@ -130,7 +130,7 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
         // maintain virtual aspect ratio despite screen size
         gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
         // create hud
-        hud = new Hud(game.batch);
+        hud = oldHud;
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
