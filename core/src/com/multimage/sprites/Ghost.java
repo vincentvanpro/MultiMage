@@ -143,8 +143,7 @@ public class Ghost extends Enemy {
                 MultiMage.GROUND_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
                 MultiMage.FIREBALL_BIT |
-                MultiMage.MAGE_BIT |
-                MultiMage.ITEM_BIT ;
+                MultiMage.MAGE_BIT;
 
 
         fixtureDef.shape = shape;

@@ -55,19 +55,19 @@ public class Hud implements Disposable {
         table.setFillParent(true); // table is size of a stage
 
         countDownLabel = new Label(worldTimerMin + " m " + worldTimerSek + " s", skin, "small");
-        scoreLabel = new Label(String.format("%03d", score), skin, "small");
+        // scoreLabel = new Label(String.format("%03d", score), skin, "small");
         timeLabel = new Label("TIME", skin, "small");
-        levelLabel = new Label("1-1", skin, "small");
-        worldLabel = new Label("WORLD", skin, "small");
+        // levelLabel = new Label("1-1", skin, "small");
+        // worldLabel = new Label("WORLD", skin, "small");
         mageLabel = new Label("MAGE", skin, "small");
         // experienceLvlLabel = new Label("LVL " + level +"    EXP " + exp + "/100", skin, "small");
 
         table.add(mageLabel).expandX().padTop(10);
-        table.add(worldLabel).expandX().padTop(10);
+        // table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
         table.row();
-        table.add(scoreLabel).expandX();
-        table.add(levelLabel).expandX();
+        // table.add(scoreLabel).expandX();
+        // table.add(levelLabel).expandX();
         table.add(countDownLabel).expandX();
 
         // experienceLvlLabel.setPosition(35,65);

@@ -144,7 +144,8 @@ public class Demon extends Enemy {
                 MultiMage.OBJECT_BIT |
                         MultiMage.GROUND_BIT |
                         MultiMage.OPENABLE_DOOR_BIT |
-                        MultiMage.ITEM_BIT ;
+                        MultiMage.FIREBALL_BIT |
+                        MultiMage.MAGE_BIT;
 
 
         fixtureDef.shape = shape;
