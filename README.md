@@ -1,10 +1,10 @@
-[**DOWNLOAD LINK**](https://livettu-my.sharepoint.com/:u:/g/personal/arzarv_ttu_ee/ETBeWnm65sRCi4mSUoO2euMBVUBklzgyftqJA_5eEMyMxg?e=3ZptXL)
+[**DOWNLOAD LINK**](https://livettu-my.sharepoint.com/:u:/g/personal/arzarv_ttu_ee/ERncIu-3cMdLqpyBo0e5Yt0BWDsVwNocIeJRJqJCG4BdkQ?e=ebE9yV)
 
 # Game
 
 > This could be a good game. 
 
-The multiMage is a RPG & platformer multiplayer game where main heroes fight 
+The multiMage is a RPG & platformer multiplayer game where main hero fight 
 against ancient evil in dungeon.
 
 Controls
