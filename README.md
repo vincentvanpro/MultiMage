@@ -4,7 +4,7 @@
 
 > This could be a good game. 
 
-The multiMage is a RPG & platformer multiplayer game where main heroes fight 
+The multiMage is a RPG & platformer multiplayer game where main hero fight 
 against ancient evil in dungeon.
 
 Controls
