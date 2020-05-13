@@ -14,6 +14,8 @@ import com.multimage.MultiMage;
 import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.SteeringBehaviourAI;
+import com.multimage.tools.WorldContactListener;
+import com.multimage.tools.WorldCreator;
 
 
 public class Demon extends Enemy {
@@ -31,6 +33,7 @@ public class Demon extends Enemy {
     private Texture healthBar;
 
     public SteeringBehaviourAI entity;
+    private boolean bossDefeated = false;
 
     public Demon(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -95,13 +98,18 @@ public class Demon extends Enemy {
     }
 
     public void update(float delta) {
-        body.setActive(PlayScreen.isDoorOpened);
+        if (screen == null) {
+            body.setActive(screen2.isDoorOpened());
+        } else if (screen2 == null) {
+            body.setActive(screen.isDoorOpened());
+        }
         stateTime += delta;
         if (setToDestroy && !destroyed) {
-            setRegion(deathAnimation.getKeyFrame(stateTime, true));
+            // setRegion(deathAnimation.getKeyFrame(stateTime, true));
             stateTime = 0;
             destroyed = true;
             world.destroyBody(body);
+            bossDefeated = true;
         } else if (!destroyed) {
             // body.setLinearVelocity(velocity);
             setRegion(getFrame(delta));
@@ -202,6 +210,10 @@ public class Demon extends Enemy {
 
     public float getHealth() {
         return health;
+    }
+
+    public boolean isBossDefeated() {
+        return bossDefeated;
     }
 
 }

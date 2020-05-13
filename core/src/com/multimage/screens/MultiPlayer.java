@@ -160,8 +160,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             g.entity.setBehaviour(arriveSB);
         }
         Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
-                .setTimeToTarget(0.1f)
-                .setArrivalTolerance(1.5f)
+                .setTimeToTarget(0.05f)
+                .setArrivalTolerance(0.5f)
                 .setDecelerationRadius(0);
         creator.getDemon().entity.setBehaviour(arriveSB);
 
@@ -310,8 +310,8 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
             g.entity.setBehaviour(arriveSB);
         }
         Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
-                .setTimeToTarget(0.1f)
-                .setArrivalTolerance(1.5f)
+                .setTimeToTarget(0.05f)
+                .setArrivalTolerance(0.5f)
                 .setDecelerationRadius(0);
         creator.getDemon().entity.setBehaviour(arriveSB);
 
@@ -634,6 +634,10 @@ public class MultiPlayer extends ApplicationAdapter implements Screen {
 
     public Hud getHud() {
         return hud;
+    }
+
+    public boolean isBossDead() {
+        return creator.getDemon().isBossDefeated();
     }
 
 }
