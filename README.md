@@ -8,12 +8,12 @@ The multiMage is a RPG & platformer multiplayer game where main heroes fight
 against ancient evil in dungeon.
 
 Controls
-| Control | button|
-| Jump	 | up arrow |
-| Move left| left arrow |
+| ------ | ------ |
+| Control | button |
+| Jump | up arrow |
+| Move left | left arrow |
 | Move right | right arrow | 
 | Shoot	| SPACE |
-| header | header |
 
 # The Concept
 You play as mage, you have a choice between archer-mage, meele-mage and 
