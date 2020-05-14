@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		config.vSyncEnabled = true;
 		config.width = 1600;
 		config.height = 900;
-		config.fullscreen = PreferencesMenu.isFullScreenEnabled();
+		config.fullscreen = true;
 		config.resizable = true;
 
 		/*
