@@ -142,10 +142,18 @@ public class WorldCreator {
         }
 
         //create ghosts
-        //ghosts = new Array<Ghost>();
-        //for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
-        //    Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-        //    ghosts.add(new Ghost(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM));
-        //}
+        ghosts = new Array<Ghost>();
+        for (MapObject object : map.getLayers().get(14).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            ghosts.add(new Ghost(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM));
+        }
+
+        //create level1 boss
+        for (MapObject object : map.getLayers().get(15).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+
+            demon = new Demon(screen, rectangle.getX() / MultiMage.PPM, rectangle.getY() / MultiMage.PPM);
+        }
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.SteeringBehaviourAI;
 
@@ -26,7 +27,7 @@ public class Ghost extends Enemy {
 
     private float healthPercent;
     private float health;
-    private Texture healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+    private Texture healthBar;
 
     public SteeringBehaviourAI entity;
 
@@ -53,6 +54,42 @@ public class Ghost extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 100f;
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    public Ghost(MultiPlayer screen, float x, float y) {
+        super(screen, x, y);
+        stateTime = 0;
+        frames = new Array<TextureRegion>();
+        walkingRight = false;
+
+        setToDestroy = false;
+        destroyed = false;
+
+        for (int i = 1; i < 7; i++) {
+            frames.add(new TextureRegion(screen.getAtlasGhost().findRegion("ghost-idle"), i * 64, 0, 78, 80));
+        }
+        walkAnimation = new Animation<TextureRegion>(0.2f, frames);
+        frames.clear();
+
+        for (int i = 1; i < 7; i++) {
+            frames.add(new TextureRegion(screen.getAtlasGhost().findRegion("ghost-vanish"), i * 64, 0, 78, 80));
+        }
+        deathAnimation = new Animation<TextureRegion>(0.15f, frames);
+        frames.clear();
+
+        stateTime = 0;
+        setBounds(getX(), getY(), 110 / MultiMage.PPM, 98 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 100f;
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    // CLASS FOR TEST
+    public Ghost() {
+        health = 100f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
 
@@ -91,7 +128,7 @@ public class Ghost extends Enemy {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX(), getY()); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
-
+        bodyDef.gravityScale = 0f;
         body = world.createBody(bodyDef);
 
         entity = new SteeringBehaviourAI(body, 10);
@@ -105,7 +142,8 @@ public class Ghost extends Enemy {
                 MultiMage.OBJECT_BIT |
                 MultiMage.GROUND_BIT |
                 MultiMage.OPENABLE_DOOR_BIT |
-                MultiMage.ITEM_BIT ;
+                MultiMage.FIREBALL_BIT |
+                MultiMage.MAGE_BIT;
 
 
         fixtureDef.shape = shape;
@@ -138,4 +176,28 @@ public class Ghost extends Enemy {
         }
     }
 
+    public void updateHeathPercent() {
+        if (health != 0) {
+            healthPercent = health / 100f ;
+        } else {
+            health = 0;
+        }
+    }
+
+    @Override
+    public void damage(Fireball fireball) {
+        health -= fireball.getDamage();
+        if (health <= 0) {
+            setToDestroy = true;
+        }
+        updateHeathPercent();
+    }
+
+    public float getHealthPercent() {
+        return healthPercent;
+    }
+
+    public float getHealth() {
+        return health;
+    }
 }

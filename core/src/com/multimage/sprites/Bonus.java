@@ -1,8 +1,6 @@
 package com.multimage.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.multimage.MultiMage;
 import com.multimage.item.ItemDef;
@@ -15,6 +13,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Bonus extends InteractiveTileObject {
+    private MultiPlayer multiPlayerScreen;
+
     public Bonus(PlayScreen screen, MapObject object) {
         super(screen, object);
         fixture.setUserData(this);
@@ -25,17 +25,28 @@ public class Bonus extends InteractiveTileObject {
         super(screen, object);
         fixture.setUserData(this);
         setCategoryFilter(MultiMage.BONUS_BIT);
+        this.multiPlayerScreen = screen;
     }
 
     @Override
     public void onBodyHit() {
-        Random random = new Random();
-        List<?> items1 = Arrays.asList(Ambrosia.class, Amulet.class, Book.class, Boots.class,
-               Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
-        List<?> items = Arrays.asList(Ring.class,Ring.class,Ring.class,Ring.class,Ring.class,Ring.class,Ring.class,Ring.class,Ring.class,Ring.class);
-        setCategoryFilter(MultiMage.DESTROYED_BIT);
-        getCell(2).setTile(null);
-        screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y),
-                (Class<?>) items.get(random.nextInt(10))));
+        if (multiPlayerScreen == null) {
+            Random random = new Random();
+            List<?> items = Arrays.asList(Ambrosia.class, Amulet.class, Book.class, Boots.class,
+                    Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
+            setCategoryFilter(MultiMage.DESTROYED_BIT);
+            getCell(2).setTile(null);
+            screen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y),
+                    (Class<?>) items.get(random.nextInt(10))));
+        } else {
+            Random random = new Random();
+            List<?> items = Arrays.asList(Ambrosia.class, Amulet.class, Book.class, Boots.class,
+                    Crown.class, Hat.class, Ring.class, Shield.class, Staff.class, Sword.class);
+            setCategoryFilter(MultiMage.DESTROYED_BIT);
+            getCell(2).setTile(null);
+            multiPlayerScreen.spawnItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y),
+                    (Class<?>) items.get(random.nextInt(10))));
+        }
+
     }
 }

@@ -24,3 +24,10 @@ walk
   orig: 468, 78
   offset: 0, 0
   index: -1
+fireball
+  rotate: false
+  xy: 1024, 246
+  size: 34, 10
+  orig: 34, 10
+  offset: 0, 0
+  index: -1

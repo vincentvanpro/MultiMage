@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -26,7 +25,6 @@ import com.multimage.sprites.*;
 import com.multimage.tools.SteeringBehaviourAI;
 import com.multimage.tools.WorldContactListener;
 import com.multimage.tools.WorldCreator;
-import com.multimage.sprites.Fireball;
 
 
 import java.util.ArrayList;
@@ -40,14 +38,15 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlasGhost;
     private TextureAtlas atlasDemon;
     private List<Integer> levers;
-    public static boolean isDoorOpened;
+    public static boolean isDoorOpened = false;
+    public static int levelNumber = 1;
 
     // sprites
     private Mage player;
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
-    private OrthographicCamera gameCam;
+    private static OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
 
@@ -58,14 +57,9 @@ public class PlayScreen implements Screen {
 
     //box 2d
     private World world;
-    private Box2DDebugRenderer box2DDebugRenderer;
     private WorldCreator creator;
 
     private SteeringBehaviourAI target;
-
-    // fireballs
-    private ArrayList<Fireball> fireballs;
-
 
     public TextureAtlas getAtlasGhost() {
         return atlasGhost;
@@ -81,10 +75,13 @@ public class PlayScreen implements Screen {
     private float yMaxCamCord;
 
     public PlayScreen(MultiMage game) {
+
         String levelPath = "levels/level1.tmx";  //change 1 to 2 to change level
+        levelNumber = 1;
 
         MultiMage.music.stop();
         if (levelPath.equals("levels/level1.tmx")) {
+            levelNumber = 1;
             MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
             xMaxCord = 4690;
             yMaxCord = 1675;
@@ -92,6 +89,7 @@ public class PlayScreen implements Screen {
             yMaxCamCord = 11.923f;
         }
         else if (levelPath.equals("levels/level2.tmx")) {
+            levelNumber = 2;
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
             xMaxCord = 3086;
             yMaxCord = 1035;
@@ -99,6 +97,7 @@ public class PlayScreen implements Screen {
             yMaxCamCord = 5.52f;
         }
         else if (levelPath.equals("levels/level3.tmx")) {
+            levelNumber = 3;
             MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
             xMaxCord = 3086;
             yMaxCord = 1035;
@@ -118,9 +117,6 @@ public class PlayScreen implements Screen {
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
-        //fireballs list
-        fireballs = new ArrayList<>();
-
         // cam that follows you
         gameCam = new OrthographicCamera();
         // maintain virtual aspect ratio despite screen size
@@ -136,7 +132,6 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
         player = new Mage(this);
@@ -157,28 +152,20 @@ public class PlayScreen implements Screen {
             g.entity.setBehaviour(arriveSB);
         }
         Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
-                .setTimeToTarget(0.1f)
-                .setArrivalTolerance(1.5f)
+                .setTimeToTarget(0.05f)
+                .setArrivalTolerance(0.5f)
                 .setDecelerationRadius(0);
         creator.getDemon().entity.setBehaviour(arriveSB);
     }
 
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS
-    public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet) {
+    public PlayScreen(MultiMage game, Mage mage, int whatLevelToSet, Hud hudOld) {
         MultiMage.music.stop();
-        mapLoader = new TmxMapLoader();
-        // HERE LOAD LEVEL and all further thing
-        player = mage; // MAGE ALREADY EXISTS, BUT MAYBE NEEDS TO BE REDEFINED BECAUSE OF IT'S PHYSICAL BODY
-        // MAYBE CREATE NEW MAGE AND PASS HIM ITEMS, LEVEL ETC
-
+        setDoorClosed();
+        this.game = game;
         mapLoader = new TmxMapLoader();
         if (whatLevelToSet == 1) {
+            levelNumber = 1;
             map = mapLoader.load("levels/level1.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/first_level_music.ogg", Music.class);
             xMaxCord = 4690;
@@ -186,6 +173,9 @@ public class PlayScreen implements Screen {
             xMaxCamCord = 38.239f;
             yMaxCamCord = 11.923f;
         } else if (whatLevelToSet == 2) {
+            levelNumber = 2;
+            mage.PosX = 500;
+            mage.PosY = 50;
             map = mapLoader.load("levels/level2.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/second_level_music.ogg", Music.class);
             xMaxCord = 3086;
@@ -193,6 +183,7 @@ public class PlayScreen implements Screen {
             xMaxCamCord = 22.24f;
             yMaxCamCord = 5.52f;
         } else if (whatLevelToSet == 3) {
+            levelNumber = 3;
             map = mapLoader.load("levels/level3.tmx");
             MultiMage.music = MultiMage.manager.get("audio/music/third_level_music.ogg", Music.class);
             xMaxCord = 3086;
@@ -209,8 +200,7 @@ public class PlayScreen implements Screen {
         }
         renderer = new OrthogonalTiledMapRenderer(map, 1 / MultiMage.PPM);
 
-        this.game = game;
-        atlas = new TextureAtlas("entity/mage/MageTextures.pack");
+        atlas = new TextureAtlas("entity/mage/mage.pack");
         atlasGhost = new TextureAtlas("entity/enemies/ghost.pack");
         atlasDemon = new TextureAtlas("entity/enemies/demon.pack");
 
@@ -219,15 +209,15 @@ public class PlayScreen implements Screen {
         // maintain virtual aspect ratio despite screen size
         gamePort = new FitViewport(MultiMage.V_WIDTH / MultiMage.PPM, MultiMage.V_HEIGHT / MultiMage.PPM, gameCam);
         // create hud
-        hud = new Hud(game.batch);
+        hud = hudOld;
 
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
         creator = new WorldCreator(this);
 
         player = new Mage(this);
+        player.setItemsAndGetBonus(mage.getItems());
 
         world.setContactListener(new WorldContactListener());
 
@@ -245,15 +235,11 @@ public class PlayScreen implements Screen {
             g.entity.setBehaviour(arriveSB);
         }
         Arrive<Vector2> arriveSB = new Arrive<Vector2>(creator.getDemon().entity, target)
-                .setTimeToTarget(0.1f)
-                .setArrivalTolerance(1.5f)
+                .setTimeToTarget(0.05f)
+                .setArrivalTolerance(0.5f)
                 .setDecelerationRadius(0);
         creator.getDemon().entity.setBehaviour(arriveSB);
     }
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
-    /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
     /// SECOND CONSTRUCTOR FOR TRANSITION BETWEEN LEVELS ABOVE
 
     public TextureAtlas getAtlas(){
@@ -306,7 +292,6 @@ public class PlayScreen implements Screen {
            enemy.entity.update(delta);
        }
 
-       //if (isDoorOpened) {
        creator.getDemon().update(delta);
        creator.getDemon().entity.update(delta);
 
@@ -342,7 +327,8 @@ public class PlayScreen implements Screen {
             player.body.applyLinearImpulse(new Vector2(player.speed, 0), player.body.getWorldCenter(), true);
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2.4f) {
             player.body.applyLinearImpulse(new Vector2(-player.speed, 0), player.body.getWorldCenter(), true);
-        }
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+            player.fire();
     }
 
     public World getWorld() {
@@ -367,35 +353,12 @@ public class PlayScreen implements Screen {
         // render game map
         renderer.render();
 
-        // render box2dDebugLines
-        box2DDebugRenderer.render(world, gameCam.combined);
-
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
         player.draw(game.batch);
 
         for (Enemy enemy: creator.getGhosts()) {
             enemy.draw(game.batch);
-        }
-
-        // Fireball shoot
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            fireballs.add(new Fireball(player.body.getPosition().x, player.body.getPosition().y));
-        }
-
-        //Update fireball
-        ArrayList<Fireball> fireballsToRemove = new ArrayList<>();
-        for (Fireball fireball : fireballs) {
-            fireball.update(delta);
-            if (fireball.remove) {
-                fireballsToRemove.add(fireball);
-            }
-        }
-        fireballs.removeAll(fireballsToRemove);
-
-        //render fireball
-        for (Fireball fireball : fireballs) {
-            fireball.render(game.batch);
         }
 
         creator.getDemon().draw(game.batch);
@@ -428,6 +391,15 @@ public class PlayScreen implements Screen {
         isDoorOpened = true;
     }
 
+    public void setDoorClosed() {
+        isDoorOpened = false;
+    }
+
+    public int getNextLevelNumber() {
+        levelNumber++;
+        return levelNumber;
+    }
+
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
@@ -447,7 +419,6 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
         hud.dispose();
     }
 
@@ -459,5 +430,23 @@ public class PlayScreen implements Screen {
         return player;
     }
 
+    public static float getCamPositionX() {
+        return gameCam.position.x;
+    }
 
+    public static float getCamPositionY() {
+        return gameCam.position.y;
+    }
+
+    public Hud getHud() {
+        return hud;
+    }
+
+    public boolean isBossDead() {
+        return creator.getDemon().isBossDefeated();
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
 }

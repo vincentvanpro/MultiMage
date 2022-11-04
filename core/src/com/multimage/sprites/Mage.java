@@ -1,5 +1,6 @@
 package com.multimage.sprites;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,14 +9,21 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.GameOverScreen;
 import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.Character;
 
 import java.util.HashMap;
+import java.util.Random;
 
 
 // ordinary Mage class
@@ -39,13 +47,15 @@ public class Mage extends Sprite implements Character {
     public World world;
     public Body body;
 
+    private Array<Fireball> fireballs;
+
     private TextureRegion mageStand;
     private Animation<TextureRegion> mageWalk;
     private Animation<TextureRegion> mageJump;
     private Animation<TextureRegion> mageAttack;
     private float stateTimer;
     private boolean walkingRight;
-
+    private boolean isAttacking = false;
 
     private HashMap<String, Integer> items;
     private float health;
@@ -56,21 +66,31 @@ public class Mage extends Sprite implements Character {
 
     private float damage;
     private float jumpPlus = 5.75f;
+
     private float chanceToInstantKill;
 
-    private Texture healthBackground = new Texture("entity/mage/healthBackground.png");
-    private Texture healthForeground= new Texture("entity/mage/healthForeground.png");
-    private Texture healthBorder = new Texture("entity/mage/healthBorder.png");
+    private Texture healthBackground;
+    private Texture healthForeground;
+    private Texture healthBorder;
     private float healthPercent;
 
+    private PlayScreen screen;
+    private MultiPlayer multiPlayerScreen;
+
+    private boolean setToDestroy;
+    private boolean destroyed;
 
     public Mage(PlayScreen screen) {
         super(screen.getAtlas().findRegion("walk"));
         this.world = screen.getWorld();
+        this.screen = screen;
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
         walkingRight = true;
+
+        setToDestroy = false;
+        destroyed = false;
 
         Array<TextureRegion> frames = new Array<>();
         for (int i = 1; i < 6; i++)
@@ -94,22 +114,48 @@ public class Mage extends Sprite implements Character {
         setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
 
+        fireballs = new Array<Fireball>();
+
         items = new HashMap<>();
+        health = 100f;
+        healthPercent = 1f;
+        armour = 5f;
+        damage = 20f;
+        chanceToInstantKill = 0;
     }
 
+    /*Class for tests because they wouldn't run -> to run test go to
+      Settings > Build, Execution, Deployment > Build Tools > Gradle
+      and change Run tests using && Build and Run: from Gradle (Default) to IntelliJ IDEA.*/
+    public Mage() {
+        items = new HashMap<>();
+        health = 100f;
+        healthPercent = 1f;
+        armour = 5f;
+        damage = 20f;
+        chanceToInstantKill = 0;
+    };
+
     public Mage(int id, float x, float y) {
+        setToDestroy = false;
+        destroyed = false;
         this.id = id;
+        armour = 5f;
         PosX = x;
         PosY = y;
     }
 
     public Mage(MultiPlayer screen) {
-        super(screen.getAtlas().findRegion("standing"));
+        super(screen.getAtlas().findRegion("walk"));
         this.world = screen.getWorld();
+        this.multiPlayerScreen = screen;
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
         walkingRight = true;
+
+        setToDestroy = false;
+        destroyed = false;
 
         Array<TextureRegion> frames = new Array<>();
         for (int i = 1; i < 6; i++)
@@ -130,30 +176,63 @@ public class Mage extends Sprite implements Character {
         mageStand = new TextureRegion(getTexture(), 0, 80, 78, 80);
 
         defineMage();
-        setBounds(0, 80, 78 / MultiMage.PPM, 80 / MultiMage.PPM);
+        setBounds(0, 40, 110 / MultiMage.PPM, 98 / MultiMage.PPM);
         setRegion(mageStand);
 
+        health = 100f;
         healthPercent = 1f;
+        armour = 5f;
+        damage = 20f;
+        chanceToInstantKill = 0;
 
         items = new HashMap<>();
+        fireballs = new Array<Fireball>();
     }
 
     public void update(float delta) {
-        setRegion(getFrame(delta));
-        if (walkingRight) {
-            setPosition(body.getPosition().x - getWidth() / 3, body.getPosition().y - getHeight() / 3.10f);}
-        else {
-            setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
+        if (setToDestroy && !destroyed) {
+            destroyed = true;
+            world.destroyBody(body);
+            if (multiPlayerScreen == null) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen(screen.getGame(), screen.getHud().getTime()));
+            } else {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameOverScreen(multiPlayerScreen.getGame(), multiPlayerScreen.getHud().getTime()));
+            }
+
+        } else if (!destroyed) {
+            setRegion(getFrame(delta));
+            if (walkingRight) {
+                setPosition(body.getPosition().x - getWidth() / 3, body.getPosition().y - getHeight() / 3.10f);}
+            else {
+                setPosition(body.getPosition().x - getWidth() / 1.5f, body.getPosition().y - getHeight() / 3.10f);
+            }
+            PosX = body.getPosition().x;
+            PosY = body.getPosition().y;
+
+            for (Fireball  ball : fireballs) {
+                ball.update(delta);
+                if(ball.isDestroyed())
+                    fireballs.removeValue(ball, true);
+            }
         }
-        PosX = body.getPosition().x;
-        PosY = body.getPosition().y;
     }
 
     public void draw(Batch batch) {
-        super.draw(batch);
-        batch.draw(healthBorder, body.getPosition().x - 4.05f, body.getPosition().y - 2.05f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
-        batch.draw(healthBackground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
-        batch.draw(healthForeground, body.getPosition().x - 4f, body.getPosition().y - 2f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+        if (!destroyed) {
+            super.draw(batch);
+            for(Fireball ball : fireballs)
+                ball.draw(batch);
+            if (multiPlayerScreen == null) {
+                batch.draw(healthBorder, PlayScreen.getCamPositionX() - 4.05f, PlayScreen.getCamPositionY() - 2.15f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+                batch.draw(healthBackground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+                batch.draw(healthForeground, PlayScreen.getCamPositionX() - 4f, PlayScreen.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+            } else {
+                batch.draw(healthBorder, MultiPlayer.getCamPositionX() - 4.05f, MultiPlayer.getCamPositionY() - 2.15f, (310f / MultiMage.PPM) * 1f, 24 / MultiMage.PPM);
+                batch.draw(healthBackground, MultiPlayer.getCamPositionX() - 4f, MultiPlayer.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * 1f, 15 / MultiMage.PPM);
+                batch.draw(healthForeground, MultiPlayer.getCamPositionX() - 4f, MultiPlayer.getCamPositionY() - 2.1f, (300f / MultiMage.PPM) * healthPercent, 15 / MultiMage.PPM);// healthBar
+            }
+
+        }
     }
 
 
@@ -207,10 +286,13 @@ public class Mage extends Sprite implements Character {
     BodyDef bodyDef = new BodyDef();
 
     public void defineMage() {
+        healthBackground = new Texture("entity/mage/healthBackground.png");
+        healthForeground = new Texture("entity/mage/healthForeground.png");
+        healthBorder = new Texture("entity/mage/healthBorder.png");
 
         PosX = 500;
         PosY = 50;
-        bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 200x 50y - start (cage), 1750x 50y - stairs
+        bodyDef.position.set(PosX / MultiMage.PPM, PosY / MultiMage.PPM); // 500x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
 
         body = world.createBody(bodyDef);
@@ -271,6 +353,18 @@ public class Mage extends Sprite implements Character {
         return health;
     }
 
+    public float getXpBoostPercent() {
+        return xpBoostPercent;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public float getChanceToInstantKill() {
+        return chanceToInstantKill;
+    }
+
     @Override
     public void levelUp() { }
 
@@ -279,9 +373,10 @@ public class Mage extends Sprite implements Character {
         if (item.equalsIgnoreCase("Ambrosia")) {
             health = (float) (health + (health * (items.get(item) * 0.02)));
         } else if (item.equalsIgnoreCase("Amulet")) {
-            //TODO
+            health =  (1 - healthPercent + healthPercent) * 100f;
+            updateHeathPercent();
         } else if (item.equalsIgnoreCase("Book")) {
-            xpBoostPercent += 0.15f * items.get(item);
+            xpBoostPercent += 0.15f;
         } else if (item.equalsIgnoreCase("Boots")) {
             if (items.get(item) > 1) {
                 speed += speed * (0.05 * (items.get(item) - 1));
@@ -309,9 +404,20 @@ public class Mage extends Sprite implements Character {
     }
 
     public void hit() {
-        if (healthPercent >= 0.2f) {
-            healthPercent = healthPercent - 0.2f;
+        health -= 20f - (armour / 10);
+        if (health <= 0) {
+            setToDestroy = true;
         }
+        updateHeathPercent();
+    }
+
+    public void updateHeathPercent() {
+        if (health != 0) {
+            healthPercent = health / 100f ;
+        } else {
+            health = 0;
+        }
+
     }
 
 
@@ -326,11 +432,9 @@ public class Mage extends Sprite implements Character {
             items.put(item, 1);
         }
         getBonusesFromItems(item);
-        System.out.println(items);
-        System.out.println(speed);
-        System.out.println(jumpPlus);
     }
 
+    // Return bonus velocity to add for jump
     public float jump() {
         return jumpPlus;
     }
@@ -339,6 +443,47 @@ public class Mage extends Sprite implements Character {
         return items;
     }
 
+    public void setItemsAndGetBonus(HashMap<String, Integer> items) {
+        this.items = items;
+        for (String item : items.keySet()) {
+            getBonusesFromItems(item);
+        }
+    }
+
+    public void fire() {
+        Random random = new Random();
+        int randomInt = random.nextInt((int) (100 - chanceToInstantKill));
+
+        float damageNow = damage;
+        if (randomInt == 1) {
+            damageNow = 1000000f;
+        }
+        if (multiPlayerScreen == null) {
+            if (walkingRight) {
+                fireballs.add(new Fireball(screen, body.getPosition().x + 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false, damageNow));
+            } else {
+                fireballs.add(new Fireball(screen, body.getPosition().x - 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false, damageNow));
+            }
+        } else {
+            if (walkingRight) {
+                fireballs.add(new Fireball(multiPlayerScreen, body.getPosition().x + 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false, damageNow));
+            } else {
+                fireballs.add(new Fireball(multiPlayerScreen, body.getPosition().x - 24 / MultiMage.PPM, body.getPosition().y + 12 / MultiMage.PPM, walkingRight ? true : false, damageNow));
+            }
+        }
+    }
+
+    public boolean isWalkingRight() {
+        return walkingRight;
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setAttacking(boolean isAttacking) {
+        this.isAttacking = isAttacking;
+    }
 
     public String getName() {
         return name;
@@ -370,5 +515,9 @@ public class Mage extends Sprite implements Character {
 
     public void setDirection(boolean walkingRight) {
         this.walkingRight = walkingRight;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
     }
 }

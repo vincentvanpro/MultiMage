@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.multimage.MultiMage;
 import com.multimage.item.Item;
 import com.multimage.sprites.Enemy;
+import com.multimage.sprites.Fireball;
 import com.multimage.sprites.InteractiveTileObject;
 import com.multimage.sprites.Mage;
 
@@ -35,9 +36,9 @@ public class WorldContactListener implements ContactListener {
         switch (cDef) {
             case (MultiMage.ENEMY_BODY_BIT | MultiMage.MAGE_BIT) : {
                 if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
-                    ((Enemy) fixA.getUserData()).hitOnHead();
+                    ((Mage) fixB.getUserData()).hit();
                 } else if (fixB.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
-                    ((Enemy) fixB.getUserData()).hitOnHead();
+                    ((Mage) fixA.getUserData()).hit();
                 }
                 break;
             } case (MultiMage.ENEMY_BODY_BIT | MultiMage.GROUND_BIT) : {
@@ -59,6 +60,22 @@ public class WorldContactListener implements ContactListener {
                     ((Item) fixA.getUserData()).use((Mage) fixB.getUserData());
                 } else {
                     ((Item) fixB.getUserData()).use((Mage) fixA.getUserData());
+                } break;
+            } case (MultiMage.ENEMY_BIT | MultiMage.FIREBALL_BIT) : {
+                if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BIT) {
+                    ((Enemy) fixA.getUserData()).damage((Fireball) fixB.getUserData());
+                    ((Fireball) fixB.getUserData()).setToDestroy();
+                } else {
+                    ((Enemy) fixB.getUserData()).damage((Fireball) fixA.getUserData());
+                    ((Fireball) fixA.getUserData()).setToDestroy();
+                } break;
+            } case (MultiMage.ENEMY_BODY_BIT | MultiMage.FIREBALL_BIT) : {
+                if (fixA.getFilterData().categoryBits == MultiMage.ENEMY_BODY_BIT) {
+                    ((Enemy) fixA.getUserData()).damage((Fireball) fixB.getUserData());
+                    ((Fireball) fixB.getUserData()).setToDestroy();
+                } else {
+                    ((Enemy) fixB.getUserData()).damage((Fireball) fixA.getUserData());
+                    ((Fireball) fixA.getUserData()).setToDestroy();
                 } break;
             } case (MultiMage.PLATFORM_BIT | MultiMage.MAGE_BIT) : {
 
@@ -83,7 +100,12 @@ public class WorldContactListener implements ContactListener {
 
                 movingOut = true;
                 break;
-            }
+            } case (MultiMage.FIREBALL_BIT | MultiMage.OBJECT_BIT):
+                if(fixA.getFilterData().categoryBits == MultiMage.FIREBALL_BIT)
+                    ((Fireball) fixA.getUserData()).setToDestroy();
+                else
+                    ((Fireball) fixB.getUserData()).setToDestroy();
+                break;
         }
     }
 

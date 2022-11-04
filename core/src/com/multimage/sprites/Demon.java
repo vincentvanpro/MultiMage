@@ -11,8 +11,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.multimage.MultiMage;
+import com.multimage.screens.MultiPlayer;
 import com.multimage.screens.PlayScreen;
 import com.multimage.tools.SteeringBehaviourAI;
+import com.multimage.tools.WorldContactListener;
+import com.multimage.tools.WorldCreator;
 
 
 public class Demon extends Enemy {
@@ -27,9 +30,10 @@ public class Demon extends Enemy {
 
     private float healthPercent;
     private float health;
-    private Texture healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+    private Texture healthBar;
 
     public SteeringBehaviourAI entity;
+    private boolean bossDefeated = false;
 
     public Demon(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -54,17 +58,58 @@ public class Demon extends Enemy {
 
         stateTime = 0;
         setBounds(getX(), getY(), 160 / MultiMage.PPM, 160 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 300f;
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    public Demon(MultiPlayer screen, float x, float y) {
+        super(screen, x, y);
+        stateTime = 0;
+        frames = new Array<TextureRegion>();
+        walkingRight = false;
+
+        setToDestroy = false;
+        destroyed = false;
+
+        for (int i = 1; i < 6; i++) {
+            frames.add(new TextureRegion(screen.getAtlasDemon().findRegion("demon-idle"), i * 160, 0, 160, 160));
+        }
+        idleAnimation = new Animation<TextureRegion>(0.18f, frames);
+        frames.clear();
+
+        // for (int i = 1; i < 7; i++) {
+        //     frames.add(new TextureRegion(screen.getAtlasDemon().findRegion("ghost-vanish"), i * 64, 0, 78, 80));
+        // }
+        // deathAnimation = new Animation<TextureRegion>(0.15f, frames);
+        // frames.clear();
+
+        stateTime = 0;
+        setBounds(getX(), getY(), 160 / MultiMage.PPM, 160 / MultiMage.PPM);
+        healthBar = new Texture("entity/healthBar/enemyhealthfg.png");
+        health = 300f;
+        healthPercent = 1f; // 1f - full, 0f - dead
+    }
+
+    // CLASS FOR TEST
+    public Demon() {
+        health = 300f;
         healthPercent = 1f; // 1f - full, 0f - dead
     }
 
     public void update(float delta) {
-        body.setActive(PlayScreen.isDoorOpened);
+        if (screen == null) {
+            body.setActive(screen2.isDoorOpened());
+        } else if (screen2 == null) {
+            body.setActive(screen.isDoorOpened());
+        }
         stateTime += delta;
         if (setToDestroy && !destroyed) {
-            setRegion(deathAnimation.getKeyFrame(stateTime, true));
+            // setRegion(deathAnimation.getKeyFrame(stateTime, true));
             stateTime = 0;
             destroyed = true;
             world.destroyBody(body);
+            bossDefeated = true;
         } else if (!destroyed) {
             // body.setLinearVelocity(velocity);
             setRegion(getFrame(delta));
@@ -93,7 +138,7 @@ public class Demon extends Enemy {
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(getX(), getY()); // 200x 50y - start (cage), 1750x 50y - stairs
         bodyDef.type = BodyDef.BodyType.DynamicBody; //        1000x 1400y - cages, 4050x 50y - boss, 1750x 1100y - long
-
+        bodyDef.gravityScale = 0f;
         body = world.createBody(bodyDef);
 
         entity = new SteeringBehaviourAI(body, 10);
@@ -107,7 +152,8 @@ public class Demon extends Enemy {
                 MultiMage.OBJECT_BIT |
                         MultiMage.GROUND_BIT |
                         MultiMage.OPENABLE_DOOR_BIT |
-                        MultiMage.ITEM_BIT ;
+                        MultiMage.FIREBALL_BIT |
+                        MultiMage.MAGE_BIT;
 
 
         fixtureDef.shape = shape;
@@ -138,6 +184,36 @@ public class Demon extends Enemy {
             super.draw(batch);
             batch.draw(healthBar, body.getPosition().x - 0.15f, body.getPosition().y + 0.45f, (30f / MultiMage.PPM) * healthPercent, 3 / MultiMage.PPM); // healthBar
         }
+    }
+
+    public void updateHeathPercent() {
+        if (health != 0) {
+            healthPercent = health / 300f ;
+        } else {
+            health = 0;
+        }
+
+    }
+
+    @Override
+    public void damage(Fireball fireball) {
+        health -= fireball.getDamage();
+        if (health <= 0) {
+            setToDestroy = true;
+        }
+        updateHeathPercent();
+    }
+
+    public float getHealthPercent() {
+        return healthPercent;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public boolean isBossDefeated() {
+        return bossDefeated;
     }
 
 }

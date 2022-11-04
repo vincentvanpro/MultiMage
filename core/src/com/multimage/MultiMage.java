@@ -5,10 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.multimage.screens.*;
+import com.multimage.screens.PlayScreen;
+import com.multimage.screens.Splash;
 
 public class MultiMage extends Game {
-	public static final String TITLE = "MultiMage" , VERSION = "RAW";
+	public static final String TITLE = "MultiMage" , VERSION = "1.0";
 
 	public static final int V_WIDTH = 864;
 	public static final int V_HEIGHT = 485;
@@ -28,6 +29,7 @@ public class MultiMage extends Game {
 	public static final short PLATFORM_BIT = 2048;
 	public static final short MAGE_HAND_BIT = 4096;
 	public static final short PORTAL_BIT = 8192;
+	public static final short FIREBALL_BIT = 16384;
 
 	public SpriteBatch batch;
 
@@ -54,11 +56,7 @@ public class MultiMage extends Game {
 		} else {
 			music.pause();
 		}
-		//setScreen(new Splash(this));
-		// setScreen(new MainMenu(this));
-		setScreen(new PlayScreen(this));
-		//setScreen(new PreferencesMenu(this));
-		//setScreen(new MultiPlayer(this));
+		setScreen(new Splash(this));
 	}
 
 	@Override
