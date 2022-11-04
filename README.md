@@ -1,4 +1,4 @@
-[**DOWNLOAD LINK**](https://livettu-my.sharepoint.com/:u:/g/personal/arzarv_ttu_ee/EcI6_tuesEJJurDxStdJEJIB-4wKCU9q4OusQvNg4U3g6Q?e=fGzjBI)
+[**DOWNLOAD LINK (does not work anymore)**](https://livettu-my.sharepoint.com/:u:/g/personal/arzarv_ttu_ee/EcI6_tuesEJJurDxStdJEJIB-4wKCU9q4OusQvNg4U3g6Q?e=fGzjBI)
 
 # Game
 
@@ -42,6 +42,8 @@ Other items do not have restrictions.
 Stacking an item changes one or more of its effects.
 For example: item that blocks damage, +15%, the next you've gained will give a 
 slitely less %, and this value cannot reach 100%.
+
+![ITEMS](core/assets/ui/items.png)
 
 W̶e̶ ̶h̶a̶v̶e̶ ̶t̶h̶e̶ ̶*̶*̶d̶i̶f̶f̶i̶c̶u̶l̶t̶y̶ ̶m̶u̶l̶t̶i̶p̶l̶i̶e̶r̶*̶*̶.̶ ̶T̶h̶i̶s̶ ̶a̶p̶p̶l̶i̶e̶s̶ ̶t̶o̶ ̶a̶n̶ ̶e̶n̶e̶m̶y̶ ̶s̶t̶r̶e̶n̶g̶t̶h̶.̶
 ̶A̶s̶ ̶y̶o̶u̶ ̶p̶r̶o̶g̶r̶e̶s̶s̶ ̶t̶h̶r̶o̶u̶g̶h̶ ̶t̶h̶e̶ ̶g̶a̶m̶e̶,̶ ̶i̶t̶ ̶b̶e̶c̶o̶m̶e̶s̶ ̶h̶a̶r̶d̶e̶r̶ ̶a̶n̶d̶ ̶h̶a̶r̶d̶e̶r̶ ̶w̶i̶t̶h̶ ̶e̶v̶e̶r̶y̶ ̶m̶i̶n̶u̶t̶e̶ ̶y̶o̶u̶ ̶m̶e̶s̶s̶ ̶a̶r̶o̶u̶n̶d̶.̶
